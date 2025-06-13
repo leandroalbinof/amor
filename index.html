@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nosso Amor - Dia dos Namorados</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(to right, #2e003e, #12001b);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Surpresa (inicial) */
+    #surpresa-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #e60073, #73004d);
+      flex-direction: column;
+      transition: opacity 1s ease;
+      position: relative;
+      z-index: 10;
+    }
+    #btn-surpresa {
+      background: #fff;
+      color: #e60073;
+      border: none;
+      border-radius: 30px;
+      padding: 1rem 3rem;
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #e60073;
+      transition: opacity 1s ease;
+      user-select: none;
+    }
+    #btn-surpresa.fade-out {
+      opacity: 0;
+    }
+
+    /* Página principal (inicialmente oculto) */
+    #main-content {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    #main-content.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: linear-gradient(to right, #e60073, #73004d);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      user-select: none;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      font-weight: 900;
+    }
+    header p {
+      margin: 0.5rem 0 0;
+      font-size: 1.2rem;
+      font-style: italic;
+    }
+
+    /* Container das fotos e botões */
+    .photo-nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      padding: 1rem 0;
+      background: #1a001f;
+    }
+
+    button.nav-btn {
+      background: rgba(230,0,115,0.8);
+      border: none;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 8px #e60073;
+      transition: background-color 0.3s ease;
+    }
+    button.nav-btn:hover {
+      background: #e60073;
+    }
+
+    /* Fotos responsivas fixas */
+    .photo-container {
+      flex: 1 1 auto;
+      width: 100vw;
+      height: 100vh;
+      max-width: 100vw;
+      max-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 0;
+      box-shadow: none;
+      position: relative;
+      user-select: none;
+      background-color: #3c004d;
+    }
+    .photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      user-select: none;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeIn 0.8s forwards;
+    }
+
+    /* Animação fadeIn para as fotos */
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Legenda da foto */
+    .caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      background: rgba(30,0,50,0.7);
+      color: #ffcce0;
+      font-size: 1.1rem;
+      padding: 0.8rem 1rem;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Contador */
+    section.contador-section {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background-color: #1a001f;
+      font-size: 1.3rem;
+      font-weight: bold;
+      user-select: none;
+      box-shadow: inset 0 0 10px #e60073;
+      margin-top: auto;
+    }
+
+    /* Mensagens abaixo do contador */
+    section.message-section {
+      background: #1a001f;
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.5;
+      color: #ffcce0;
+      font-style: italic;
+      user-select: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background-color: #2e003e;
+      color: #ffcce0;
+      font-style: italic;
+      user-select: none;
+    }
+
+    /* Animação dos corações da surpresa */
+    .heart {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: #e60073;
+      transform: rotate(-45deg);
+      animation: floatUp 4s linear forwards;
+      z-index: 20;
+      user-select: none;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #e60073;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0) rotate(-45deg) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-150px) rotate(-45deg) scale(1.5);
+      }
+    }
+
+    /* Setinha para rolar para baixo - estilo anterior */
+    #scroll-arrow {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 4.5rem;
+      color: #ff4ebc;
+      cursor: pointer;
+      user-select: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: bounce 2s infinite;
+    }
+    #scroll-arrow.show {
+      opacity: 1;
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-20px);
+      }
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      button.nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+      }
+      .caption {
+        font-size: 1rem;
+        padding: 0.5rem;
+      }
+      .photo-container {
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+      }
+      section.contador-section {
+        font-size: 1.1rem;
+        padding: 1rem 0.5rem;
+      }
+    }
+	
+	#header, #photo-nav, #contador-section, #message1, #message2 {
+	  display: none;
+	}
+  </style>
+</head>
+<body>
+
+  <!-- Página inicial com botão "Surpresa" -->
+  <div id="surpresa-container">
+    <button id="btn-surpresa" aria-label="Botão Surpresa">Surpresa</button>
+  </div>
+
+  <!-- Conteúdo principal (inicialmente oculto) -->
+  <div id="main-content" tabindex="-1">
+
+	<audio id="audioSurpresa" src="https://drive.google.com/uc?export=download&id=1OfYqxi0C2_zPMhMZKD8XQFnX3WsibOb4" preload="auto"></audio>
+
+
+    <header id="header">
+      <h1>Feliz Dia dos Namorados ❤️</h1>
+      <p>Nossa história contada em fotos e em canção</p>
+    </header>
+
+    <div class="photo-nav-container" id="photo-nav">
+      <button id="btn-prev" class="nav-btn" aria-label="Foto anterior">&#9664;</button>
+
+      <div class="photo-container" aria-live="polite" aria-atomic="true">
+        <img id="photo" src="fotos/foto (1).jpg" alt="Nosso primeiro olhar" />
+        <div class="caption" id="caption">Nosso primeiro olhar 💕</div>
+      </div>
+
+      <button id="btn-next" class="nav-btn" aria-label="Próxima foto">&#9654;</button>
+    </div>
+
+    <section class="contador-section" aria-live="polite" aria-atomic="true" id="contador-section">
+      <div>Nosso tempo juntos desde 21/12/2011:</div>
+      <div id="contador"></div>
+    </section>
+
+    <section class="message-section" id="message1">
+      "O amor é construído nos detalhes, nas lembranças e nos sonhos que dividimos."
+    </section>
+
+    <section class="message-section" id="message2">
+      "Obrigado por ser meu porto seguro, minha alegria diária, minha história mais bonita."
+    </section>
+
+    <footer>
+      Te amo hoje e sempre. Obrigado por cada momento que vivemos juntos. 💕
+    </footer>
+
+  <!-- Setinha para rolar a página para baixo -->
+  <div id="scroll-arrow" aria-label="Rolar para baixo" role="button" tabindex="0" title="Rolar para baixo">&#x25BC;</div>
+
+  <script>
+    // Fotos e legendas
+    const fotos = [
+      "foto (1).jpg",
+      "foto (2).jpg",
+      "foto (3).jpg",
+      "foto (4).jpg",
+      "foto (5).jpg",
+      "foto (6).jpg",
+      "foto (7).jpg",
+      "foto (8).jpg",
+      "foto (9).jpg",
+      "foto (10).jpg",
+      "foto (11).jpg",
+      "foto (12).jpg",
+      "foto (13).jpg",
+      "foto (14).jpg",
+      "foto (15).jpg",
+      "foto (16).jpg",
+      "foto (17).jpg",
+      "foto (18).jpg",
+      "foto (19).jpg",
+      "foto (20).jpg",
+      "foto (21).jpg",
+      "foto (22).jpg",
+      "foto (23).jpg"
+    ];
+
+    const legendas = [
+      "Nosso primeiro olhar 💕",
+      "Cada sorriso seu é um motivo pra amar mais",
+      "A gente se completa em cada abraço",
+      "Nossas aventuras lado a lado",
+      "Te amo hoje e sempre",
+      "Seu sorriso é meu lugar preferido",
+      "Mais de uma década escrevendo nossa história",
+      "Momentos inesquecíveis juntos",
+      "Amor que só cresce",
+      "Nosso lar, nosso porto",
+      "Risos e cumplicidade",
+      "Nosso café da manhã favorito",
+      "Passeios inesquecíveis",
+      "Sempre lado a lado",
+      "Amor que inspira",
+      "Cumplicidade e carinho",
+      "Nosso pôr do sol especial",
+      "Cada dia mais apaixonados",
+      "A vida ao seu lado é melhor",
+      "Amor verdadeiro",
+      "Nossa jornada continua",
+      "Sempre em sintonia",
+      "Te amo além das palavras"
+    ];
+
+    let index = 0;
+
+    const photoEl = document.getElementById("photo");
+    const captionEl = document.getElementById("caption");
+    const btnNext = document.getElementById("btn-next");
+    const btnPrev = document.getElementById("btn-prev");
+    const mainContent = document.getElementById("main-content");
+    const surpresaBtn = document.getElementById("btn-surpresa");
+    const surpresaContainer = document.getElementById("surpresa-container");
+    const scrollArrow = document.getElementById("scroll-arrow");
+
+    function mostrarFoto(i) {
+      // Para efeito fade-in: remover animação antes de trocar
+      photoEl.style.animation = "none";
+      void photoEl.offsetWidth;
+      photoEl.src = `fotos/${fotos[i]}`;
+      photoEl.alt = legendas[i];
+      captionEl.textContent = legendas[i];
+      photoEl.style.animation = "fadeIn 0.8s forwards";
+    }
+
+    btnNext.addEventListener("click", () => {
+      index = (index + 1) % fotos.length;
+      mostrarFoto(index);
+    });
+
+    btnPrev.addEventListener("click", () => {
+      index = (index - 1 + fotos.length) % fotos.length;
+      mostrarFoto(index);
+    });
+
+    mostrarFoto(index);
+
+    function atualizarContador() {
+      const inicio = new Date('2011-12-21T00:00:00');
+      const agora = new Date();
+
+      let anos = agora.getFullYear() - inicio.getFullYear();
+      let meses = agora.getMonth() - inicio.getMonth();
+      let dias = agora.getDate() - inicio.getDate();
+      let horas = agora.getHours() - inicio.getHours();
+      let minutos = agora.getMinutes() - inicio.getMinutes();
+      let segundos = agora.getSeconds() - inicio.getSeconds();
+
+      if (segundos < 0) { segundos += 60; minutos--; }
+      if (minutos < 0) { minutos += 60; horas--; }
+      if (horas < 0) { horas += 24; dias--; }
+      if (dias < 0) {
+        meses--;
+        const ultimoMes = new Date(agora.getFullYear(), agora.getMonth(), 0);
+        dias += ultimoMes.getDate();
+      }
+      if (meses < 0) { meses += 12; anos--; }
+
+      document.getElementById("contador").innerText =
+        `Estamos juntos há ${anos} anos, ${meses} meses, ${dias} dias, ` +
+        `${horas} horas, ${minutos} minutos e ${segundos} segundos 💘`;
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+
+    function criarCoracao() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + 20 + "px";
+      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 4000);
+    }
+
+	const audioSurpresa = document.getElementById("audioSurpresa");
+
+    surpresaBtn.addEventListener("click", () => {
+      surpresaBtn.classList.add("fade-out");
+	  
+	  // Tocar a música quando clicar no botão
+	  audioSurpresa.currentTime = 0;
+	  audioSurpresa.play().catch(err => {
+		// Pode haver restrições do navegador que bloqueiam autoplay
+		console.log("Erro ao tentar reproduzir áudio:", err);
+	  });
+
+      let coracoesInterval = setInterval(criarCoracao, 200);
+
+      setTimeout(() => {
+        clearInterval(coracoesInterval);
+
+        setTimeout(() => {
+          mainContent.classList.add("show");
+
+          scrollArrow.classList.add("show");
+        }, 4000);
+
+      }, 4000);
+    });
+	
+	let etapa = 0;
+
+	scrollArrow.addEventListener("click", () => {
+	  etapa++;
+
+	  if (etapa === 1) {
+		document.getElementById("header").style.display = "block";
+		document.getElementById("header").scrollIntoView({ behavior: 'smooth' });
+	  } else if (etapa === 2) {
+		document.getElementById("photo-nav").style.display = "flex";
+		document.getElementById("photo-nav").scrollIntoView({ behavior: 'smooth' });
+	  } else if (etapa === 3) {
+		document.getElementById("contador-section").style.display = "block";
+		document.getElementById("message1").style.display = "block";
+		document.getElementById("message2").style.display = "block";
+		document.getElementById("contador-section").scrollIntoView({ behavior: 'smooth' });
+		
+		// Esconde a seta depois da última etapa
+		scrollArrow.classList.remove("show");
+	  }
+	});
+
+    scrollArrow.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        scrollArrow.click();
+      }
+    });
+  </script>
+</body>
+</html>
