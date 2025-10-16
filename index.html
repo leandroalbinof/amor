@@ -1,529 +1,385 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nosso Amor - Dia dos Namorados</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8 Anos de Amor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: linear-gradient(to right, #2e003e, #12001b);
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    /* Surpresa (inicial) */
-    #surpresa-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    body {
+      font-family: 'Poppins', sans-serif;
       height: 100vh;
-      background: linear-gradient(to right, #e60073, #73004d);
+      display: flex;
       flex-direction: column;
-      transition: opacity 1s ease;
-      position: relative;
-      z-index: 10;
     }
-    #btn-surpresa {
-      background: #fff;
-      color: #e60073;
-      border: none;
-      border-radius: 30px;
-      padding: 1rem 3rem;
-      font-size: 1.8rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 10px #e60073;
-      transition: opacity 1s ease;
-      user-select: none;
+    .font-dancing-script {
+      font-family: 'Dancing Script', cursive;
     }
-    #btn-surpresa.fade-out {
-      opacity: 0;
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
-
-    /* Página principal (inicialmente oculto) */
-    #main-content {
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    /* Hide pages by default */
+    .page {
       display: none;
-      flex-direction: column;
-      min-height: 100vh;
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
-    #main-content.show {
-      display: flex;
-      opacity: 1;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem;
-      background: linear-gradient(to right, #e60073, #73004d);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      user-select: none;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.8rem;
-      font-weight: 900;
-    }
-    header p {
-      margin: 0.5rem 0 0;
-      font-size: 1.2rem;
-      font-style: italic;
-    }
-
-    /* Container das fotos e botões */
-    .photo-nav-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      padding: 1rem 0;
-      background: #1a001f;
-    }
-
-    button.nav-btn {
-      background: rgba(230,0,115,0.8);
-      border: none;
-      color: white;
-      font-size: 2rem;
-      font-weight: bold;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 8px #e60073;
-      transition: background-color 0.3s ease;
-    }
-    button.nav-btn:hover {
-      background: #e60073;
-    }
-
-    /* Fotos responsivas fixas */
-    .photo-container {
-      flex: 1 1 auto;
-      width: 100vw;
-      height: 100vh;
-      max-width: 100vw;
-      max-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      border-radius: 0;
-      box-shadow: none;
-      position: relative;
-      user-select: none;
-      background-color: #3c004d;
-    }
-    .photo-container img {
+      flex-grow: 1;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      user-select: none;
-      pointer-events: none;
-      opacity: 0;
-      animation: fadeIn 0.8s forwards;
     }
-
-    /* Animação fadeIn para as fotos */
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-
-    /* Legenda da foto */
-    .caption {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      background: rgba(30,0,50,0.7);
-      color: #ffcce0;
-      font-size: 1.1rem;
-      padding: 0.8rem 1rem;
-      text-align: center;
-      user-select: none;
-    }
-
-    /* Contador */
-    section.contador-section {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      background-color: #1a001f;
-      font-size: 1.3rem;
-      font-weight: bold;
-      user-select: none;
-      box-shadow: inset 0 0 10px #e60073;
-      margin-top: auto;
-    }
-
-    /* Mensagens abaixo do contador */
-    section.message-section {
-      background: #1a001f;
-      padding: 2rem 1rem;
-      text-align: center;
-      font-size: 1.2rem;
-      line-height: 1.5;
-      color: #ffcce0;
-      font-style: italic;
-      user-select: none;
-    }
-
-    footer {
-      text-align: center;
-      padding: 1.5rem 1rem;
-      background-color: #2e003e;
-      color: #ffcce0;
-      font-style: italic;
-      user-select: none;
-    }
-
-    /* Animação dos corações da surpresa */
-    .heart {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      background: #e60073;
-      transform: rotate(-45deg);
-      animation: floatUp 4s linear forwards;
-      z-index: 20;
-      user-select: none;
-    }
-    .heart::before,
-    .heart::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: #e60073;
-      border-radius: 50%;
-    }
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-    .heart::after {
-      left: 10px;
-      top: 0;
-    }
-    @keyframes floatUp {
-      0% {
-        opacity: 1;
-        transform: translateY(0) rotate(-45deg) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-150px) rotate(-45deg) scale(1.5);
-      }
-    }
-
-    /* Setinha para rolar para baixo - estilo anterior */
-    #scroll-arrow {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 4.5rem;
-      color: #ff4ebc;
-      cursor: pointer;
-      user-select: none;
-      opacity: 0;
-      transition: opacity 0.8s ease;
-      z-index: 30;
+    .page.active {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: bounce 2s infinite;
     }
-    #scroll-arrow.show {
-      opacity: 1;
+    #gallery-image {
+        transition: opacity 0.5s ease-in-out;
     }
-    @keyframes bounce {
-      0%, 100% {
-        transform: translateX(-50%) translateY(0);
-      }
-      50% {
-        transform: translateX(-50%) translateY(-20px);
-      }
+    .hidden {
+      display: none;
     }
-
-    /* Responsividade */
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2rem;
-      }
-      header p {
-        font-size: 1rem;
-      }
-      button.nav-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-      }
-      .caption {
-        font-size: 1rem;
-        padding: 0.5rem;
-      }
-      .photo-container {
-        width: 100vw;
-        height: 100vh;
-        max-width: 100vw;
-        max-height: 100vh;
-      }
-      section.contador-section {
-        font-size: 1.1rem;
-        padding: 1rem 0.5rem;
-      }
+    #splash-screen {
+      transition: opacity 0.8s ease-in-out;
     }
-	
-	#header, #photo-nav, #contador-section, #message1, #message2 {
-	  display: none;
-	}
+    #app-container {
+      transition: opacity 0.8s ease-in-out;
+      opacity: 0;
+    }
   </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
-<body>
+<body class="bg-gradient-to-br from-rose-100 via-white to-rose-100 text-rose-800 flex flex-col antialiased overflow-y-hidden">
 
-  <!-- Página inicial com botão "Surpresa" -->
-  <div id="surpresa-container">
-    <button id="btn-surpresa" aria-label="Botão Surpresa">Surpresa</button>
+  <!-- Splash Screen -->
+  <div id="splash-screen" class="fixed inset-0 bg-rose-50 z-50 flex flex-col items-center justify-center text-center p-8">
+      <div class="relative">
+          <h1 class="font-dancing-script text-5xl md:text-7xl text-rose-600 mb-8" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1)">Uma história de amor...</h1>
+          <button id="start-button" class="group relative flex items-center justify-center w-24 h-24 bg-white rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
+              <span class="absolute inline-flex h-full w-full rounded-full bg-rose-300 opacity-75 animate-ping"></span>
+              <div class="relative w-20 h-20 bg-rose-500 rounded-full flex items-center justify-center text-white">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                  </svg>
+              </div>
+          </button>
+          <p class="mt-8 text-rose-500 text-sm animate-pulse">Clique para começar</p>
+      </div>
   </div>
 
-  <!-- Conteúdo principal (inicialmente oculto) -->
-  <div id="main-content" tabindex="-1">
-
-	<audio id="audioSurpresa" src="musica/musica.mp3" preload="auto"></audio>
-
-    <header id="header">
-      <h1>Feliz Dia dos Namorados ❤️</h1>
-      <p>Nossa história contada em fotos e em canção</p>
-    </header>
-
-    <div class="photo-nav-container" id="photo-nav">
-      <button id="btn-prev" class="nav-btn" aria-label="Foto anterior">&#9664;</button>
-
-      <div class="photo-container" aria-live="polite" aria-atomic="true">
-        <img id="photo" src="fotos/foto (1).jpg" alt="Nosso primeiro olhar" />
-        <div class="caption" id="caption">Nosso primeiro olhar 💕</div>
+  <div id="app-container" class="flex-grow flex flex-col w-full h-full hidden">
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-grow flex flex-col relative">
+      <!-- Page 1: Time Counter -->
+      <div id="page-counter" class="page active flex-col items-center justify-center text-center p-6 bg-cover bg-center" style="background-image: url('https://picsum.photos/1080/1920?grayscale&blur=2')">
+        <div class="absolute inset-0 bg-black/30"></div>
+        <div class="relative z-10 text-white">
+          <h1 class="font-dancing-script text-4xl md:text-6xl animate-float" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.5)">
+            "Desde aquele sim, tudo mudou pra melhor..."
+          </h1>
+          <div class="mt-8 md:mt-12 bg-white/20 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/30">
+            <h2 class="text-lg md:text-2xl font-light mb-4">Estamos juntos há:</h2>
+            <div class="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 text-center">
+              <div class="p-2"><p id="years" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Anos</p></div>
+              <div class="p-2"><p id="months" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Meses</p></div>
+              <div class="p-2"><p id="days" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Dias</p></div>
+              <div class="p-2"><p id="hours" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Horas</p></div>
+              <div class="p-2"><p id="minutes" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Minutos</p></div>
+              <div class="p-2"><p id="seconds" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Segundos</p></div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <button id="btn-next" class="nav-btn" aria-label="Próxima foto">&#9654;</button>
-    </div>
+      <!-- Page 2: Photo Gallery -->
+      <div id="page-gallery" class="page flex-col items-center justify-center w-full bg-rose-50 overflow-hidden p-4 pb-20">
+          <div class="w-full max-w-2xl aspect-[4/3] relative shadow-2xl rounded-lg overflow-hidden bg-rose-200">
+              <img id="gallery-image" src="" alt="Lembrança" class="w-full h-full object-cover"/>
+              <button id="prev-photo" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/50 text-rose-800 p-2 rounded-full hover:bg-white/80 transition-colors z-10" aria-label="Foto anterior">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+              </button>
+              <button id="next-photo" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/50 text-rose-800 p-2 rounded-full hover:bg-white/80 transition-colors z-10" aria-label="Próxima foto">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+              </button>
+              <div id="gallery-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"></div>
+          </div>
+          <p id="gallery-counter" class="mt-4 text-rose-700 font-semibold"></p>
+      </div>
 
-    <section class="contador-section" aria-live="polite" aria-atomic="true" id="contador-section">
-      <div>Nosso tempo juntos desde 21/12/2011:</div>
-      <div id="contador"></div>
-    </section>
+      <!-- Page 3: Love Message -->
+      <div id="page-message" class="page flex-col items-center justify-center text-center p-8 bg-rose-100 overflow-hidden pb-24">
+         <div id="hearts-container" class="absolute inset-0 z-0 opacity-20"></div>
+        <div class="relative z-10 max-w-2xl bg-white/70 backdrop-blur-md p-8 rounded-xl shadow-lg">
+          <h2 class="font-dancing-script text-4xl md:text-5xl text-rose-700 mb-6">Para o Amor da Minha Vida</h2>
+          <p id="typed-message" class="text-left text-base sm:text-lg md:text-xl text-rose-800 leading-relaxed min-h-[280px] sm:min-h-[200px] md:min-h-[280px]"></p>
+        </div>
+        <button class="relative z-10 mt-10 flex items-center justify-center px-8 py-4 bg-rose-500 text-white font-bold rounded-full shadow-lg transform hover:scale-105 transition-transform animate-pulse">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" /></svg>
+          <span class="ml-3 text-lg">Te amo para sempre</span>
+        </button>
+      </div>
+    </main>
+    
+    <!-- Music Control -->
+    <button id="play-pause-music" class="fixed top-4 right-4 z-50 bg-rose-200 text-rose-700 p-3 rounded-full shadow-lg hover:bg-rose-300 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-50" aria-label="Tocar música">
+    </button>
 
-    <section class="message-section" id="message1">
-      "O amor é construído nos detalhes, nas lembranças e nos sonhos que dividimos."
-    </section>
-
-    <section class="message-section" id="message2">
-      "Obrigado por ser meu porto seguro, minha alegria diária, minha história mais bonita."
-    </section>
-
-    <footer>
-      Te amo hoje e sempre. Obrigado por cada momento que vivemos juntos. 💕
+    <!-- Footer Navigation -->
+    <footer class="fixed bottom-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-sm border-t border-rose-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.05)] z-40">
+      <div class="flex justify-around items-center h-full max-w-md mx-auto">
+          <button data-page="counter" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span class="text-xs font-medium mt-1">Nossa História</span>
+          </button>
+          <button data-page="gallery" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <span class="text-xs font-medium mt-1">Galeria</span>
+          </button>
+          <button data-page="message" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" /></svg>
+              <span class="text-xs font-medium mt-1">Mensagem</span>
+          </button>
+      </div>
     </footer>
+  </div>
 
-  <!-- Setinha para rolar a página para baixo -->
-  <div id="scroll-arrow" aria-label="Rolar para baixo" role="button" tabindex="0" title="Rolar para baixo">&#x25BC;</div>
+  <audio id="background-music" loop>
+    <source src="musica/musica.mp3" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+  </audio>
+  
+  <div id="root"></div>
 
-  <script>
-    // Fotos e legendas
-    const fotos = [
-      "foto (1).jpg",
-      "foto (2).jpg",
-      "foto (3).jpg",
-      "foto (4).jpg",
-      "foto (5).jpg",
-      "foto (6).jpg",
-      "foto (7).jpg",
-      "foto (8).jpg",
-      "foto (9).jpg",
-      "foto (10).jpg",
-      "foto (11).jpg",
-      "foto (12).jpg",
-      "foto (13).jpg",
-      "foto (14).jpg",
-      "foto (15).jpg",
-      "foto (16).jpg",
-      "foto (17).jpg",
-      "foto (18).jpg",
-      "foto (19).jpg",
-      "foto (20).jpg",
-      "foto (21).jpg",
-      "foto (22).jpg",
-      "foto (23).jpg"
-    ];
+  <script type="module">
+    document.addEventListener('DOMContentLoaded', () => {
+      const splashScreen = document.getElementById('splash-screen');
+      const startButton = document.getElementById('start-button');
+      const appContainer = document.getElementById('app-container');
+      const audio = document.getElementById('background-music');
 
-    const legendas = [
-      "Nosso primeiro olhar 💕",
-      "Cada sorriso seu é um motivo pra amar mais",
-      "A gente se completa em cada abraço",
-      "Nossas aventuras lado a lado",
-      "Te amo hoje e sempre",
-      "Seu sorriso é meu lugar preferido",
-      "Mais de uma década escrevendo nossa história",
-      "Momentos inesquecíveis juntos",
-      "Amor que só cresce",
-      "Nosso lar, nosso porto",
-      "Risos e cumplicidade",
-      "Nosso café da manhã favorito",
-      "Passeios inesquecíveis",
-      "Sempre lado a lado",
-      "Amor que inspira",
-      "Cumplicidade e carinho",
-      "Nosso pôr do sol especial",
-      "Cada dia mais apaixonados",
-      "A vida ao seu lado é melhor",
-      "Amor verdadeiro",
-      "Nossa jornada continua",
-      "Sempre em sintonia",
-      "Te amo além das palavras"
-    ];
+      startButton.addEventListener('click', () => {
+        // Tenta tocar a música
+        audio.play().catch(e => console.error("Erro ao tocar música:", e));
 
-    let index = 0;
-
-    const photoEl = document.getElementById("photo");
-    const captionEl = document.getElementById("caption");
-    const btnNext = document.getElementById("btn-next");
-    const btnPrev = document.getElementById("btn-prev");
-    const mainContent = document.getElementById("main-content");
-    const surpresaBtn = document.getElementById("btn-surpresa");
-    const surpresaContainer = document.getElementById("surpresa-container");
-    const scrollArrow = document.getElementById("scroll-arrow");
-
-    function mostrarFoto(i) {
-      // Para efeito fade-in: remover animação antes de trocar
-      photoEl.style.animation = "none";
-      void photoEl.offsetWidth;
-      photoEl.src = `fotos/${fotos[i]}`;
-      photoEl.alt = legendas[i];
-      captionEl.textContent = legendas[i];
-      photoEl.style.animation = "fadeIn 0.8s forwards";
-    }
-
-    btnNext.addEventListener("click", () => {
-      index = (index + 1) % fotos.length;
-      mostrarFoto(index);
-    });
-
-    btnPrev.addEventListener("click", () => {
-      index = (index - 1 + fotos.length) % fotos.length;
-      mostrarFoto(index);
-    });
-
-    mostrarFoto(index);
-
-    function atualizarContador() {
-      const inicio = new Date('2011-12-21T00:00:00');
-      const agora = new Date();
-
-      let anos = agora.getFullYear() - inicio.getFullYear();
-      let meses = agora.getMonth() - inicio.getMonth();
-      let dias = agora.getDate() - inicio.getDate();
-      let horas = agora.getHours() - inicio.getHours();
-      let minutos = agora.getMinutes() - inicio.getMinutes();
-      let segundos = agora.getSeconds() - inicio.getSeconds();
-
-      if (segundos < 0) { segundos += 60; minutos--; }
-      if (minutos < 0) { minutos += 60; horas--; }
-      if (horas < 0) { horas += 24; dias--; }
-      if (dias < 0) {
-        meses--;
-        const ultimoMes = new Date(agora.getFullYear(), agora.getMonth(), 0);
-        dias += ultimoMes.getDate();
-      }
-      if (meses < 0) { meses += 12; anos--; }
-
-      document.getElementById("contador").innerText =
-        `Estamos juntos há ${anos} anos, ${meses} meses, ${dias} dias, ` +
-        `${horas} horas, ${minutos} minutos e ${segundos} segundos 💘`;
-    }
-
-    setInterval(atualizarContador, 1000);
-    atualizarContador();
-
-    function criarCoracao() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.style.left = Math.random() * window.innerWidth + "px";
-      heart.style.top = window.innerHeight + 20 + "px";
-      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 4000);
-    }
-
-	const audioSurpresa = document.getElementById("audioSurpresa");
-
-    surpresaBtn.addEventListener("click", () => {
-      surpresaBtn.classList.add("fade-out");
-	  
-	  // Tocar a música quando clicar no botão
-	  audioSurpresa.currentTime = 0;
-	  audioSurpresa.play().catch(err => {
-		// Pode haver restrições do navegador que bloqueiam autoplay
-		console.log("Erro ao tentar reproduzir áudio:", err);
-	  });
-
-      let coracoesInterval = setInterval(criarCoracao, 200);
-
-      setTimeout(() => {
-        clearInterval(coracoesInterval);
-
+        // Inicia a transição
+        splashScreen.style.opacity = '0';
+        appContainer.classList.remove('hidden');
         setTimeout(() => {
-          mainContent.classList.add("show");
+          appContainer.style.opacity = '1';
+        }, 50); // Pequeno delay para garantir que a classe 'hidden' foi removida
+        
+        // Esconde a splash screen após a transição
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 800);
+      });
 
-          scrollArrow.classList.add("show");
-        }, 4000);
+      const pages = document.querySelectorAll('.page');
+      const navButtons = document.querySelectorAll('.nav-button');
+      let currentTypingInterval = null;
 
-      }, 4000);
-    });
-	
-	let etapa = 0;
+      function showPage(pageId) {
+        pages.forEach(page => {
+          page.classList.toggle('active', page.id === `page-${pageId}`);
+        });
 
-	scrollArrow.addEventListener("click", () => {
-	  etapa++;
+        navButtons.forEach(button => {
+          const isActive = button.dataset.page === pageId;
+          button.classList.toggle('text-rose-600', isActive);
+          button.classList.toggle('scale-110', isActive);
+          button.classList.toggle('text-rose-400', !isActive);
+          button.classList.toggle('hover:text-rose-500', !isActive);
+          button.querySelector('span').classList.toggle('font-bold', isActive);
+        });
+        
+        if (currentTypingInterval) {
+            clearInterval(currentTypingInterval);
+            currentTypingInterval = null;
+        }
 
-	  if (etapa === 1) {
-		document.getElementById("header").style.display = "block";
-		document.getElementById("header").scrollIntoView({ behavior: 'smooth' });
-	  } else if (etapa === 2) {
-		document.getElementById("photo-nav").style.display = "flex";
-		document.getElementById("photo-nav").scrollIntoView({ behavior: 'smooth' });
-	  } else if (etapa === 3) {
-		document.getElementById("contador-section").style.display = "block";
-		document.getElementById("message1").style.display = "block";
-		document.getElementById("message2").style.display = "block";
-		document.getElementById("contador-section").scrollIntoView({ behavior: 'smooth' });
-		
-		// Esconde a seta depois da última etapa
-		scrollArrow.classList.remove("show");
-	  }
-	});
-
-    scrollArrow.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        scrollArrow.click();
+        if (pageId === 'message') {
+          startTypingEffect();
+        }
       }
+
+      navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const pageId = button.dataset.page;
+          showPage(pageId);
+        });
+      });
+
+      // --- Music Player ---
+      const playPauseBtn = document.getElementById('play-pause-music');
+      let isPlaying = false;
+      
+      const playIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" /></svg>`;
+      const pauseIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm3 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" /></svg>`;
+      
+      function setPlayingState(playing) {
+        isPlaying = playing;
+        if (playing) {
+          playPauseBtn.innerHTML = pauseIcon;
+          playPauseBtn.setAttribute('aria-label', 'Pausar música');
+        } else {
+          playPauseBtn.innerHTML = playIcon;
+          playPauseBtn.setAttribute('aria-label', 'Tocar música');
+        }
+      }
+
+      function togglePlayPause() {
+        if (isPlaying) {
+          audio.pause();
+        } else {
+          audio.play().catch(error => {
+            console.log("A reprodução falhou.", error);
+            setPlayingState(false);
+          });
+        }
+      }
+
+      audio.onplay = () => setPlayingState(true);
+      audio.onpause = () => setPlayingState(false);
+      
+      playPauseBtn.addEventListener('click', togglePlayPause);
+      
+      setPlayingState(false); // Inicia com ícone de play
+
+      // --- Time Counter ---
+      const startDate = new Date('2011-12-21T00:00:00');
+      const elements = {
+          years: document.getElementById('years'),
+          months: document.getElementById('months'),
+          days: document.getElementById('days'),
+          hours: document.getElementById('hours'),
+          minutes: document.getElementById('minutes'),
+          seconds: document.getElementById('seconds'),
+      };
+
+      function updateCounter() {
+        const now = new Date();
+        let years = now.getFullYear() - startDate.getFullYear();
+        let months = now.getMonth() - startDate.getMonth();
+        let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
+
+        if (seconds < 0) { seconds += 60; minutes--; }
+        if (minutes < 0) { minutes += 60; hours--; }
+        if (hours < 0) { hours += 24; days--; }
+        if (days < 0) {
+          const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+          days += prevMonth.getDate();
+          months--;
+        }
+        if (months < 0) { months += 12; years--; }
+
+        elements.years.textContent = years;
+        elements.months.textContent = months;
+        elements.days.textContent = days;
+        elements.hours.textContent = String(hours).padStart(2, '0');
+        elements.minutes.textContent = String(minutes).padStart(2, '0');
+        elements.seconds.textContent = String(seconds).padStart(2, '0');
+      }
+      setInterval(updateCounter, 1000);
+      updateCounter();
+
+      // --- Photo Gallery ---
+      const photos = Array.from({ length: 23 }, (_, i) => `fotos/foto (${i + 1}).jpg`);
+      let currentIndex = 0;
+      const galleryImage = document.getElementById('gallery-image');
+      const galleryCounter = document.getElementById('gallery-counter');
+      const dotsContainer = document.getElementById('gallery-dots');
+      let galleryInterval = null;
+
+      function updateGallery(isNext = true) {
+        if (isNext) {
+            currentIndex = (currentIndex === photos.length - 1) ? 0 : currentIndex + 1;
+        } else {
+            currentIndex = (currentIndex === 0) ? photos.length - 1 : currentIndex - 1;
+        }
+        
+        galleryImage.style.opacity = 0;
+        setTimeout(() => {
+            galleryImage.src = photos[currentIndex];
+            galleryImage.style.opacity = 1;
+        }, 300);
+
+        galleryCounter.textContent = `Foto ${currentIndex + 1} de ${photos.length}`;
+        dotsContainer.innerHTML = photos.map((_, index) => 
+            `<div class="w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-rose-500 scale-125 shadow-md' : 'bg-rose-500/50'}"></div>`
+        ).join('');
+      }
+
+      function resetGalleryInterval() {
+        clearInterval(galleryInterval);
+        galleryInterval = setInterval(() => updateGallery(true), 5000);
+      }
+      
+      document.getElementById('next-photo').addEventListener('click', () => {
+        updateGallery(true);
+        resetGalleryInterval();
+      });
+
+      document.getElementById('prev-photo').addEventListener('click', () => {
+        updateGallery(false);
+        resetGalleryInterval();
+      });
+      
+      currentIndex = photos.length - 1;
+      updateGallery(true); 
+      resetGalleryInterval();
+
+      // --- Love Message ---
+      const fullMessage = "Meu amor, 8 anos se passaram desde que dissemos 'sim'. Olhar para trás e ver tudo que construímos juntos enche meu coração de uma alegria que mal cabe em mim. Cada risada, cada desafio superado, cada sonho compartilhado... tudo valeu a pena ao seu lado. Você é meu porto seguro, minha inspiração e a razão do meu sorriso mais sincero. Que venham mais 100 anos de nós. Eu te amo, hoje e para todo o sempre.";
+      const typedMessageEl = document.getElementById('typed-message');
+
+      function startTypingEffect() {
+        typedMessageEl.innerHTML = '';
+        let i = 0;
+        const typingCursor = '<span class="inline-block w-0.5 h-6 bg-rose-500 animate-pulse ml-1"></span>';
+        
+        currentTypingInterval = setInterval(() => {
+          if (i < fullMessage.length) {
+            typedMessageEl.innerHTML = fullMessage.substring(0, i + 1) + typingCursor;
+            i++;
+          } else {
+            clearInterval(currentTypingInterval);
+            currentTypingInterval = null;
+            typedMessageEl.innerHTML = fullMessage;
+          }
+        }, 50);
+      }
+      
+      const heartsContainer = document.getElementById('hearts-container');
+      if(heartsContainer.children.length === 0){
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '♡';
+            heart.className = 'absolute text-rose-300 text-3xl animate-pulse';
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `${Math.random() * 100}%`;
+            heart.style.animationDelay = `${Math.random() * 5}s`;
+            heart.style.animationDuration = `${2 + Math.random() * 3}s`;
+            heartsContainer.appendChild(heart);
+        }
+      }
+
+      // --- Initial setup ---
+      showPage('counter');
     });
   </script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
