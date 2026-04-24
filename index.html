@@ -1,385 +1,684 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>8 Anos de Amor</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .font-dancing-script {
-      font-family: 'Dancing Script', cursive;
-    }
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
-      100% { transform: translateY(0px); }
-    }
-    .animate-float {
-      animation: float 3s ease-in-out infinite;
-    }
-    /* Hide pages by default */
-    .page {
-      display: none;
-      flex-grow: 1;
-      width: 100%;
-    }
-    .page.active {
-      display: flex;
-    }
-    #gallery-image {
-        transition: opacity 0.5s ease-in-out;
-    }
-    .hidden {
-      display: none;
-    }
-    #splash-screen {
-      transition: opacity 0.8s ease-in-out;
-    }
-    #app-container {
-      transition: opacity 0.8s ease-in-out;
-      opacity: 0;
-    }
-  </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Nossa História 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Caveat:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;margin:0}
+body{height:100%;overflow:hidden;font-family:'Poppins',sans-serif;background:#1a0f08;margin:0;
+display:flex;flex-direction:column;align-items:center;justify-content:center}
+
+.wrap{perspective:2000px;position:relative;transition:width .8s,height .8s}
+.wrap.closed #s0{width:100%}
+.wrap.closed .spread:not(#s0){visibility:hidden}
+.book{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+
+.spread{position:absolute;top:0;right:0;width:50%;height:100%;transform-origin:left center;transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(.4,.05,.2,1)}
+.spread.flip{transform:rotateY(-180deg)}
+
+.sf,.sb{position:absolute;inset:0;backface-visibility:hidden;overflow:hidden}
+.sf{z-index:2}
+.sb{transform:rotateY(180deg)}
+
+.page{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;padding:1.2rem 1rem;overflow:hidden;position:relative}
+.page-r{background:linear-gradient(to left,#ede0cf,#faf3ea 12%,#fefcf8 70%);border-radius:0 6px 6px 0;box-shadow:inset -15px 0 30px -12px rgba(0,0,0,.07)}
+.page-l{background:linear-gradient(to right,#ede0cf,#faf3ea 12%,#fefcf8 70%);border-radius:6px 0 0 6px;box-shadow:inset 15px 0 30px -12px rgba(0,0,0,.07)}
+.page.romantic.page-r{background:linear-gradient(to left,#f0d4de,#fff5f8 12%,#fffafb 70%)}
+.page.romantic.page-l{background:linear-gradient(to right,#f0d4de,#fff5f8 12%,#fffafb 70%)}
+
+.sf::after{content:'';position:absolute;top:0;left:0;bottom:0;width:25px;background:linear-gradient(to right,rgba(0,0,0,.05),transparent);pointer-events:none}
+.sb::after{content:'';position:absolute;top:0;right:0;bottom:0;width:25px;background:linear-gradient(to left,rgba(0,0,0,.05),transparent);pointer-events:none}
+
+.cover-pg{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fdf6ee;padding:2rem;background:linear-gradient(135deg,#8b5e3c,#a0714f 40%,#6b3a2a);position:relative;overflow:hidden;width:100%;height:100%}
+.cover-pg.front-c{border-radius:0 6px 6px 0}
+.cover-pg.back-c{border-radius:6px 0 0 6px}
+.cover-pg::before{content:'';position:absolute;inset:0}
+.cn{font-family:'Dancing Script',cursive;font-size:clamp(2rem,6vw,3.2rem);font-weight:700;text-shadow:2px 3px 6px rgba(0,0,0,.4);position:relative}
+.cd{width:90px;height:2px;margin:.7rem auto;background:linear-gradient(90deg,transparent,#fdf6ee,transparent);position:relative}
+.ct{font-family:'Caveat',cursive;font-size:clamp(1.2rem,4vw,1.8rem);opacity:.9;position:relative}
+.cs{font-size:.8rem;opacity:.6;margin-top:.3rem;font-style:italic;position:relative}
+.co{font-size:1.5rem;opacity:.5;letter-spacing:.6rem;margin-bottom:.6rem;position:relative}
+.bo{margin-top:1.3rem;padding:.6rem 1.5rem;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.4);color:#fdf6ee;font-family:'Poppins',sans-serif;font-size:.85rem;border-radius:50px;cursor:pointer;transition:all .3s;position:relative;display:inline-flex;align-items:center;gap:.4rem;animation:gl 2s infinite}
+.bo:hover{background:rgba(255,255,255,.3);transform:scale(1.05)}
+@keyframes gl{0%,100%{box-shadow:0 0 8px rgba(255,255,255,.2)}50%{box-shadow:0 0 20px rgba(255,255,255,.4)}}
+
+/* Back cover overlay */
+.backcover{position:absolute;top:0;width:50%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fdf6ee;padding:2rem;background:linear-gradient(135deg,#8b5e3c,#a0714f 40%,#6b3a2a);border-radius:6px;z-index:10000;opacity:0;pointer-events:none;left:50%}
+.backcover::before{content:'';position:absolute;inset:0;border-radius:6px}
+.backcover.show{opacity:1;pointer-events:auto}
+
+.spine{position:absolute;left:50%;top:0;bottom:0;width:6px;margin-left:-3px;background:linear-gradient(90deg,#2a1508,#4a2a15,#2a1508);z-index:9999;border-radius:1px;box-shadow:-2px 0 6px rgba(0,0,0,.4),2px 0 6px rgba(0,0,0,.4);opacity:0;transition:opacity .5s;pointer-events:none;transform-style:flat}
+.spine.show{opacity:1}
+
+.tape{position:absolute;width:48px;height:17px;background:rgba(255,230,150,.5);z-index:5;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.t1{top:8px;left:8px;transform:rotate(-25deg)}
+.t2{top:8px;right:8px;transform:rotate(25deg)}
+
+.pt{font-family:'Dancing Script',cursive;font-size:clamp(.9rem,2.5vw,1.3rem);color:#8b5e3c;margin-bottom:.3rem;text-align:center;flex:0 0 auto}
+
+.pg-grid{display:grid;gap:.4rem;width:100%;margin-bottom:.3rem;flex:1 1 0;min-height:0;overflow:hidden}
+/* Page layout styles */
+.ly-a .pg-grid{grid-template-columns:1fr;gap:.6rem}
+.ly-a .fr{background:#fff;padding:5px;padding-bottom:18px;box-shadow:2px 3px 8px rgba(0,0,0,.13);transform:rotate(-2deg)}
+.ly-a .fr:nth-child(2){transform:rotate(1.5deg)}
+.ly-a .fr img{max-height:none;aspect-ratio:16/9}
+
+.ly-b .pg-grid{grid-template-columns:1fr 1fr;gap:.6rem}
+.ly-b .fr{border-radius:8px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+.ly-b .fr img{max-height:none;aspect-ratio:3/4}
+
+.ly-c .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-c .fr{border:4px double #8b5e3c;padding:3px;border-radius:2px}
+.ly-c .fr:nth-child(2){margin:0 12% 0 12%}
+.ly-c .fr img{max-height:none;aspect-ratio:16/9}
+
+.ly-d .pg-grid{grid-template-columns:1fr 1fr;gap:.5rem;align-items:end}
+.ly-d .fr{background:#fff;padding:4px;padding-bottom:14px;box-shadow:2px 2px 6px rgba(0,0,0,.1)}
+.ly-d .fr:nth-child(1){transform:rotate(-3deg)}
+.ly-d .fr:nth-child(2){transform:rotate(2.5deg);margin-top:-10%}
+.ly-d .fr img{max-height:none;aspect-ratio:4/3}
+
+.ly-e .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-e .fr{border-radius:50%;aspect-ratio:1;overflow:hidden;width:65%;margin:0 auto;box-shadow:0 3px 12px rgba(0,0,0,.15)}
+.ly-e .fr:nth-child(2){width:50%;margin:0 0 0 auto}
+.ly-e .fr img{max-height:none;aspect-ratio:1;height:100%}
+
+.ly-f .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-f .fr{border-left:5px solid #d4a07a;padding-left:8px;box-shadow:2px 2px 0 rgba(0,0,0,.06)}
+.ly-f .fr:nth-child(2){border-left-color:#c9a0dc;margin-left:8%}
+.ly-f .fr img{max-height:none;aspect-ratio:16/10}
+
+.ly-g .pg-grid{grid-template-columns:1fr;gap:0}
+.ly-g .fr{border:none;position:relative}
+.ly-g .fr:nth-child(2){margin-top:-15%;margin-left:25%;z-index:1;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.ly-g .fr:nth-child(1){z-index:0;box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.ly-g .fr img{max-height:none;aspect-ratio:16/9;border-radius:4px}
+
+.ly-h .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-h .fr{border:3px solid transparent;border-image:linear-gradient(135deg,#d4a07a,#c9a0dc) 1;padding:3px}
+.ly-h .fr img{max-height:none;aspect-ratio:16/9}
+
+.ly-i .pg-grid{grid-template-columns:1fr 1fr;gap:.4rem}
+.ly-i .fr{border:2px dashed #d4a0c0;border-radius:10px;padding:4px;overflow:hidden}
+.ly-i .fr img{max-height:none;aspect-ratio:1;border-radius:6px}
+
+.ly-j .pg-grid{grid-template-columns:1fr;gap:.4rem}
+.ly-j .fr{position:relative;border:2px solid #e0d0b8;background:#fff;padding:3px}
+.ly-j .fr img{max-height:none;aspect-ratio:16/9}
+.ly-j .fr::after{content:'📌';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:.8rem}
+
+.ly-k .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-k .fr{border-radius:0;box-shadow:5px 5px 0 rgba(139,94,60,.15);border:1px solid #d4c0a8}
+.ly-k .fr:nth-child(odd){margin-right:15%}
+.ly-k .fr:nth-child(even){margin-left:15%}
+.ly-k .fr img{max-height:none;aspect-ratio:16/9}
+
+.ly-l .pg-grid{grid-template-columns:1fr;gap:.5rem}
+.ly-l .fr{border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.ly-l .fr img{max-height:none;aspect-ratio:3/2}
+.fr{box-shadow:none;overflow:hidden;transition:transform .4s;padding:0;position:relative;background-size:cover;background-position:center}
+.fr::before{content:'';position:absolute;inset:0;background:inherit;background-size:cover;background-position:center;filter:blur(15px) brightness(.85);transform:scale(1.15);z-index:0}
+.fr:hover{transform:scale(1.02)!important;z-index:2}
+.fr img{width:100%;height:100%;object-fit:contain;display:block;position:relative;z-index:1}
+.fr video{width:100%;height:100%;object-fit:contain;display:block;filter:grayscale(1);transition:filter .5s;position:relative;z-index:1}
+.fr video.playing{filter:grayscale(0)}
+.tl{transform:rotate(-2deg)}.tr{transform:rotate(2deg)}
+
+.pm{font-family:'Caveat',cursive;font-size:clamp(.7rem,1.6vw,.92rem);color:#6b4c3b;text-align:left;line-height:1.3;width:100%;text-indent:1.5em;flex:0 0 3.6em;overflow-y:auto}
+.cur{display:inline-block;width:2px;height:1em;background:#8b5e3c;margin-left:1px;animation:bk .7s infinite;vertical-align:text-bottom}
+@keyframes bk{0%,100%{opacity:1}50%{opacity:0}}
+
+.ltr{background:rgba(255,255,255,.5);border:1px dashed #d4a0c0;border-radius:6px;padding:.4rem;width:100%;flex:0 1 auto;overflow-y:auto;min-height:0}
+.ltr .pm{font-size:clamp(.6rem,1.4vw,.75rem);text-align:left}
+
+.et{font-family:'Dancing Script',cursive;font-size:1.3rem;color:#fdf6ee;position:relative}
+.ee{font-size:1.6rem;margin-top:.6rem;position:relative}
+
+.nav{display:flex;align-items:center;gap:.7rem;margin-top:6px;z-index:200}
+.nb{width:44px;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;color:#ccc}
+.nb:hover:not(:disabled){background:rgba(255,255,255,.2);color:#fff;transform:scale(1.1)}
+.nb:disabled{opacity:.15;cursor:default}
+.pi{font-family:'Caveat',cursive;font-size:1rem;color:rgba(255,255,255,.6);min-width:100px;text-align:center}
+
+.ctrl{position:fixed;top:.7rem;right:.7rem;z-index:200;display:flex;gap:.4rem}
+.cb{width:38px;height:38px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;color:#fff}
+.cb:hover{background:rgba(255,255,255,.25);transform:scale(1.1)}
+.cb.on{background:rgba(212,160,192,.3)}
+
+.bsh{width:70%;height:16px;background:radial-gradient(ellipse,rgba(0,0,0,.3),transparent);border-radius:50%;filter:blur(5px);margin-top:2px}
+
+.page::-webkit-scrollbar{width:3px}
+.page::-webkit-scrollbar-thumb{background:#d4c0a8;border-radius:3px}
+
+@media(max-width:600px){
+  .page{padding:.8rem .5rem}
+  .tape{width:34px;height:12px}
+  .fr{padding:3px;padding-bottom:8px}
+  .pg-grid{gap:.3rem}
+  .g3{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="wrap">
+  <div class="backcover" id="bc">
+    <div style="position:relative">
+      <p class="et">Nossa História</p>
+      <p class="ee">💕</p>
+    </div>
+    <button class="bo" style="animation:none;position:relative;margin-top:1.3rem" id="bReopen">Voltar ao início</button>
+  </div>
+  <div class="spine" id="spine"></div>
+  <div class="book" id="book"></div>
+</div>
+<div class="bsh"></div>
+<div class="nav" id="nav" style="visibility:hidden">
+  <button id="bp" class="nb" disabled><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+  <span id="pi" class="pi"></span>
+  <button id="bn" class="nb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+</div>
+<div class="ctrl" id="ctrl" style="visibility:hidden">
+  <button id="bm" class="cb" title="Música">🎵</button>
+  <button id="br" class="cb" title="Reiniciar">🔄</button>
+</div>
+<audio id="aud" loop preload="auto"><source src="musica/musica.mp3" type="audio/mpeg"></audio>
+
+<script>
+var D=[
+{t:'Infância 👶',r:0,f:{p:['fotos/foto (1).jpg','fotos/foto (2).jpg'],ly:'a',m:'Desde pequenininha, já era a pessoa mais especial desse mundo. Seus olhos brilhavam com a mesma luz que ilumina minha vida até hoje. 💛'},b:{p:['fotos/foto (3).jpg','fotos/foto (4).jpg'],ly:'b',m:'Cada sorriso seu de criança já prometia a mulher incrível que você se tornaria. ✨'}},
+{t:'Adolescência 🌸',r:0,f:{p:['fotos/foto (5).jpg','fotos/foto (6).jpg'],ly:'g',m:'Crescendo, sonhando, se descobrindo... Cada fase sua foi linda de se ver. Você sempre foi cheia de luz e coragem. 🌟'},b:{p:['fotos/foto (7).jpg','fotos/foto (8).jpg'],ly:'d',m:'Seus sonhos de adolescente se transformaram em realidade. E eu tenho a sorte de fazer parte dessa história. 💫'}},
+{t:'Juventude 🌻',r:0,f:{p:['fotos/foto (9).jpg','fotos/foto (10).jpg'],ly:'k',m:'Momentos que marcaram, conquistas que inspiraram. Você sempre foi forte, determinada e linda em tudo que faz. 🔥'},b:{p:['fotos/foto (11).JPG','fotos/foto (12).jpg'],ly:'e',m:'A vida te preparou para ser essa pessoa maravilhosa. E o melhor ainda estava por vir... 💕'}},
+{t:'Nosso Encontro 💘',r:1,f:{p:['fotos/foto (13).jpg','fotos/foto (14).jpg'],ly:'c',m:'O dia em que nossos caminhos se cruzaram foi o dia mais especial da minha vida. Desde o primeiro olhar, eu soube que era você. 💗'},b:{p:['fotos/foto (15).jpg','fotos/foto (16).jpg'],ly:'i',m:'Você chegou e coloriu meu mundo inteiro. Obrigado por escolher caminhar ao meu lado. ❤️'}},
+{t:'Nossa História 📖',r:0,f:{p:['fotos/foto (17).jpg','fotos/foto (18).JPG'],ly:'f',m:'Cada momento juntos é um tesouro. Risadas, abraços, viagens, e até as dificuldades nos fizeram mais fortes. 🌈'},b:{p:['fotos/foto (19).jpg','fotos/foto (20).JPG'],ly:'j',m:'8 anos de memórias que cabem no coração mas não cabem em palavras. Cada dia com você é uma nova aventura. 💞'}},
+{t:'Nossos Momentos 🎬',r:1,f:{p:['videos/video1.mp4'],ly:'g',m:'Alguns momentos são tão especiais que merecem ser guardados em movimento. Cada segundo ao seu lado é um filme que eu nunca canso de assistir. 🎥'},b:{p:['videos/video2.mp4'],ly:'g',m:'O melhor da nossa história é que ela continua sendo escrita, frame por frame, dia após dia. 💫'}},
+{t:'Feliz Aniversário! 🎂',r:1,fin:1,f:{p:['fotos/foto (22).jpg','fotos/foto (23).jpg'],ly:'h',m:'Meu amor, hoje é o seu dia e eu queria te dizer tudo que sinto. Nesses 8 anos juntos, você me ensinou o que é amar de verdade. Você é minha melhor amiga, minha companheira, minha paz. Cada dia ao seu lado é um presente. Obrigado por ser quem você é, por me fazer sorrir, por me fazer querer ser alguém melhor. Que esse novo ano da sua vida seja cheio de realizações, saúde e muito amor. Eu te amo mais do que palavras podem dizer. Feliz aniversário, meu amor! Pra sempre nós. ❤️🥂'},b:{end:1}}
+];
+
+var N=D.length+1;
+var cur=0,mp=0,actx=null,animating=0,closing=0;
+var $=function(i){return document.getElementById(i)};
+var aud=$('aud');
+var PW; // single page width
+
+function sz(){
+  var vw=window.innerWidth,vh=window.innerHeight;
+  PW=Math.min(vw*.46,450);
+  var bh=vh-90;
+  if(bh>600)bh=600;
+  if(bh<150)bh=150;
+  var maxW=Math.round(bh/1.33);
+  if(PW>maxW)PW=maxW;
+  var w=$('wrap');
+  w.style.height=bh+'px';
+  if(cur===0){
+    w.style.width=PW+'px';
+    w.classList.add('closed');
+  } else {
+    w.style.width=(PW*2)+'px';
+    setTimeout(function(){w.classList.remove('closed')},800);
   }
 }
-</script>
-<link rel="stylesheet" href="/index.css">
-</head>
-<body class="bg-gradient-to-br from-rose-100 via-white to-rose-100 text-rose-800 flex flex-col antialiased overflow-y-hidden">
 
-  <!-- Splash Screen -->
-  <div id="splash-screen" class="fixed inset-0 bg-rose-50 z-50 flex flex-col items-center justify-center text-center p-8">
-      <div class="relative">
-          <h1 class="font-dancing-script text-5xl md:text-7xl text-rose-600 mb-8" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.1)">Uma história de amor...</h1>
-          <button id="start-button" class="group relative flex items-center justify-center w-24 h-24 bg-white rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110">
-              <span class="absolute inline-flex h-full w-full rounded-full bg-rose-300 opacity-75 animate-ping"></span>
-              <div class="relative w-20 h-20 bg-rose-500 rounded-full flex items-center justify-center text-white">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                  </svg>
-              </div>
-          </button>
-          <p class="mt-8 text-rose-500 text-sm animate-pulse">Clique para começar</p>
-      </div>
-  </div>
+function isVid(s){return/\.(mp4|webm|ogg|mov)$/i.test(s)}
 
-  <div id="app-container" class="flex-grow flex flex-col w-full h-full hidden">
-    <!-- Main Content Area -->
-    <main id="main-content" class="flex-grow flex flex-col relative">
-      <!-- Page 1: Time Counter -->
-      <div id="page-counter" class="page active flex-col items-center justify-center text-center p-6 bg-cover bg-center" style="background-image: url('https://picsum.photos/1080/1920?grayscale&blur=2')">
-        <div class="absolute inset-0 bg-black/30"></div>
-        <div class="relative z-10 text-white">
-          <h1 class="font-dancing-script text-4xl md:text-6xl animate-float" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.5)">
-            "Desde aquele sim, tudo mudou pra melhor..."
-          </h1>
-          <div class="mt-8 md:mt-12 bg-white/20 backdrop-blur-md p-6 rounded-2xl shadow-lg border border-white/30">
-            <h2 class="text-lg md:text-2xl font-light mb-4">Estamos juntos há:</h2>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-4 text-center">
-              <div class="p-2"><p id="years" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Anos</p></div>
-              <div class="p-2"><p id="months" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Meses</p></div>
-              <div class="p-2"><p id="days" class="text-3xl md:text-5xl font-bold">0</p><p class="text-xs uppercase tracking-wider">Dias</p></div>
-              <div class="p-2"><p id="hours" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Horas</p></div>
-              <div class="p-2"><p id="minutes" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Minutos</p></div>
-              <div class="p-2"><p id="seconds" class="text-3xl md:text-5xl font-bold">00</p><p class="text-xs uppercase tracking-wider">Segundos</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
+function ph(a,ly){
+  return '<div class="pg-grid">'+a.map(function(s,j){
+    if(isVid(s)) return '<div class="fr"><video src="'+s+'" playsinline muted preload="auto"></video></div>';
+    return '<div class="fr" style="background-image:url(\''+s+'\');"><img src="'+s+'" alt="" loading="lazy"></div>';
+  }).join('')+'</div>';
+}
 
-      <!-- Page 2: Photo Gallery -->
-      <div id="page-gallery" class="page flex-col items-center justify-center w-full bg-rose-50 overflow-hidden p-4 pb-20">
-          <div class="w-full max-w-2xl aspect-[4/3] relative shadow-2xl rounded-lg overflow-hidden bg-rose-200">
-              <img id="gallery-image" src="" alt="Lembrança" class="w-full h-full object-cover"/>
-              <button id="prev-photo" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/50 text-rose-800 p-2 rounded-full hover:bg-white/80 transition-colors z-10" aria-label="Foto anterior">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-              </button>
-              <button id="next-photo" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/50 text-rose-800 p-2 rounded-full hover:bg-white/80 transition-colors z-10" aria-label="Próxima foto">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-              </button>
-              <div id="gallery-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-10"></div>
-          </div>
-          <p id="gallery-counter" class="mt-4 text-rose-700 font-semibold"></p>
-      </div>
+function mkPage(d,id,title,rom,fin,side){
+  var ly=d.ly||'a';
+  var cls='page page-'+side+(rom?' romantic':'')+' ly-'+ly;
+  var h='<div class="'+cls+'">';
+  h+='<div class="tape t1"></div><div class="tape t2"></div>';
+  if(title) h+='<h2 class="pt">'+title+'</h2>';
+  else h+='<h2 class="pt" style="visibility:hidden">&nbsp;</h2>';
+  h+=ph(d.p,d.ly);
+  if(fin) h+='<div class="ltr"><p class="pm" id="'+id+'" data-m="'+encodeURIComponent(d.m)+'"></p></div>';
+  else h+='<p class="pm" id="'+id+'" data-m="'+encodeURIComponent(d.m)+'"></p>';
+  h+='</div>';
+  return h;
+}
 
-      <!-- Page 3: Love Message -->
-      <div id="page-message" class="page flex-col items-center justify-center text-center p-8 bg-rose-100 overflow-hidden pb-24">
-         <div id="hearts-container" class="absolute inset-0 z-0 opacity-20"></div>
-        <div class="relative z-10 max-w-2xl bg-white/70 backdrop-blur-md p-8 rounded-xl shadow-lg">
-          <h2 class="font-dancing-script text-4xl md:text-5xl text-rose-700 mb-6">Para o Amor da Minha Vida</h2>
-          <p id="typed-message" class="text-left text-base sm:text-lg md:text-xl text-rose-800 leading-relaxed min-h-[280px] sm:min-h-[200px] md:min-h-[280px]"></p>
-        </div>
-        <button class="relative z-10 mt-10 flex items-center justify-center px-8 py-4 bg-rose-500 text-white font-bold rounded-full shadow-lg transform hover:scale-105 transition-transform animate-pulse">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" /></svg>
-          <span class="ml-3 text-lg">Te amo para sempre</span>
-        </button>
-      </div>
-    </main>
-    
-    <!-- Music Control -->
-    <button id="play-pause-music" class="fixed top-4 right-4 z-50 bg-rose-200 text-rose-700 p-3 rounded-full shadow-lg hover:bg-rose-300 transition-colors focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-50" aria-label="Tocar música">
-    </button>
-
-    <!-- Footer Navigation -->
-    <footer class="fixed bottom-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-sm border-t border-rose-200 shadow-[0_-5px_20px_-5px_rgba(0,0,0,0.05)] z-40">
-      <div class="flex justify-around items-center h-full max-w-md mx-auto">
-          <button data-page="counter" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              <span class="text-xs font-medium mt-1">Nossa História</span>
-          </button>
-          <button data-page="gallery" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              <span class="text-xs font-medium mt-1">Galeria</span>
-          </button>
-          <button data-page="message" class="nav-button flex flex-col items-center justify-center w-full pt-3 pb-2 transition-all duration-300 transform">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" /></svg>
-              <span class="text-xs font-medium mt-1">Mensagem</span>
-          </button>
-      </div>
-    </footer>
-  </div>
-
-  <audio id="background-music" loop>
-    <source src="musica/musica.mp3" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-  </audio>
-  
-  <div id="root"></div>
-
-  <script type="module">
-    document.addEventListener('DOMContentLoaded', () => {
-      const splashScreen = document.getElementById('splash-screen');
-      const startButton = document.getElementById('start-button');
-      const appContainer = document.getElementById('app-container');
-      const audio = document.getElementById('background-music');
-
-      startButton.addEventListener('click', () => {
-        // Tenta tocar a música
-        audio.play().catch(e => console.error("Erro ao tocar música:", e));
-
-        // Inicia a transição
-        splashScreen.style.opacity = '0';
-        appContainer.classList.remove('hidden');
-        setTimeout(() => {
-          appContainer.style.opacity = '1';
-        }, 50); // Pequeno delay para garantir que a classe 'hidden' foi removida
-        
-        // Esconde a splash screen após a transição
-        setTimeout(() => {
-          splashScreen.style.display = 'none';
-        }, 800);
-      });
-
-      const pages = document.querySelectorAll('.page');
-      const navButtons = document.querySelectorAll('.nav-button');
-      let currentTypingInterval = null;
-
-      function showPage(pageId) {
-        pages.forEach(page => {
-          page.classList.toggle('active', page.id === `page-${pageId}`);
-        });
-
-        navButtons.forEach(button => {
-          const isActive = button.dataset.page === pageId;
-          button.classList.toggle('text-rose-600', isActive);
-          button.classList.toggle('scale-110', isActive);
-          button.classList.toggle('text-rose-400', !isActive);
-          button.classList.toggle('hover:text-rose-500', !isActive);
-          button.querySelector('span').classList.toggle('font-bold', isActive);
-        });
-        
-        if (currentTypingInterval) {
-            clearInterval(currentTypingInterval);
-            currentTypingInterval = null;
-        }
-
-        if (pageId === 'message') {
-          startTypingEffect();
-        }
+function build(){
+  var book=$('book');
+  book.querySelectorAll('.spread').forEach(function(e){book.removeChild(e)});
+  for(var i=0;i<N;i++){
+    var s=document.createElement('div');
+    s.className='spread';s.id='s'+i;
+    var fH='',bH='';
+    if(i===0){
+      fH='<div class="sf"><div class="cover-pg front-c"><div class="co">✦</div><h1 class="cn">Meu Amor</h1><div class="cd"></div><h2 class="ct">Nossa História</h2><p class="cs">8 anos de amor</p><button class="bo" id="bo">Abrir Álbum</button></div></div>';
+      bH='<div class="sb">'+mkPage(D[0].f,'m-0-f',D[0].t,D[0].r,0,'l')+'</div>';
+    } else if(i<N-1){
+      fH='<div class="sf">'+mkPage(D[i-1].b,'m-'+(i-1)+'-b',null,D[i-1].r,0,'r')+'</div>';
+      bH='<div class="sb">'+mkPage(D[i].f,'m-'+i+'-f',D[i].t,D[i].r,D[i].fin,'l')+'</div>';
+    } else {
+      var li=D.length-1;
+      if(D[li].b.end){
+        fH='<div class="sf"><div class="page page-r" style="justify-content:center"><p style="font-family:Dancing Script,cursive;font-size:1.3rem;color:#8b5e3c">Feito com todo amor do mundo 💕</p><p style="font-size:1.6rem;margin-top:.6rem">🎂🥂💘</p></div></div>';
+      } else {
+        fH='<div class="sf">'+mkPage(D[li].b,'m-'+li+'-b',null,D[li].r,0,'r')+'</div>';
       }
+      bH='<div class="sb"><div class="cover-pg back-c"><p class="et">Nossa História</p><p class="ee">💕</p><div style="margin-top:1.3rem;padding:.6rem 1.5rem;font-size:.85rem;visibility:hidden;border:2px solid transparent">Voltar ao início</div></div></div>';
+    }
+    s.innerHTML=fH+bH;
+    book.appendChild(s);
+  }
+}
 
-      navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const pageId = button.dataset.page;
-          showPage(pageId);
-        });
-      });
+function fixZ(){
+  for(var i=0;i<N;i++){
+    var s=$('s'+i);
+    if(i<cur) s.style.zIndex=i+1;
+    else if(i===cur) s.style.zIndex=N;
+    else s.style.zIndex=N-i;
+  }
+}
 
-      // --- Music Player ---
-      const playPauseBtn = document.getElementById('play-pause-music');
-      let isPlaying = false;
-      
-      const playIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" /></svg>`;
-      const pauseIcon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1H8zm3 0a1 1 0 00-1 1v4a1 1 0 001 1h1a1 1 0 001-1V8a1 1 0 00-1-1h-1z" /></svg>`;
-      
-      function setPlayingState(playing) {
-        isPlaying = playing;
-        if (playing) {
-          playPauseBtn.innerHTML = pauseIcon;
-          playPauseBtn.setAttribute('aria-label', 'Pausar música');
-        } else {
-          playPauseBtn.innerHTML = playIcon;
-          playPauseBtn.setAttribute('aria-label', 'Tocar música');
-        }
-      }
+function tw(el){
+  if(!el||!el.dataset.m||el._done)return;
+  if(el._i)clearInterval(el._i);
+  var t=decodeURIComponent(el.dataset.m),n=0;
+  el.innerHTML='<span class="cur"></span>';
+  el._i=setInterval(function(){
+    n++;
+    if(n>=t.length){el.textContent=t;clearInterval(el._i);el._i=null;el._done=1}
+    else el.innerHTML=t.slice(0,n)+'<span class="cur"></span>';
+  },25);
+}
+function fi(el){
+  if(!el||!el.dataset.m)return;
+  if(el._i)clearInterval(el._i);
+  el.textContent=decodeURIComponent(el.dataset.m);
+  el._done=1;
+}
 
-      function togglePlayPause() {
-        if (isPlaying) {
-          audio.pause();
-        } else {
-          audio.play().catch(error => {
-            console.log("A reprodução falhou.", error);
-            setPlayingState(false);
-          });
-        }
-      }
+function snd(){
+  try{
+    if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
+    var sr=actx.sampleRate,len=sr*.14,buf=actx.createBuffer(1,len,sr),ch=buf.getChannelData(0);
+    for(var i=0;i<len;i++)ch[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)*.18;
+    var s=actx.createBufferSource();s.buffer=buf;
+    var f=actx.createBiquadFilter();f.type='lowpass';f.frequency.value=900;
+    s.connect(f).connect(actx.destination);s.start();
+  }catch(e){}
+}
 
-      audio.onplay = () => setPlayingState(true);
-      audio.onpause = () => setPlayingState(false);
-      
-      playPauseBtn.addEventListener('click', togglePlayPause);
-      
-      setPlayingState(false); // Inicia com ícone de play
+function closeBook(){
+  $('spine').classList.remove('show');
+  $('nav').style.visibility='hidden';
+  $('ctrl').style.visibility='hidden';
+  var bc=$('bc');
+  $('bReopen').style.transition='none';
+  $('bReopen').style.opacity='0';
+  $('bReopen').style.transition='none';
+  $('bReopen').style.opacity='0';
+  // After flip finishes, hide spreads and show bc overlay for slide animation
+  setTimeout(function(){
+    var bc=$('bc');
+    bc.style.transition='none';
+    bc.style.left='0';
+    bc.classList.add('show');
+    for(var i=0;i<N;i++){
+      $('s'+i).style.transition='none';
+      $('s'+i).style.display='none';
+      $('s'+i).classList.remove('flip');
+    }
+    fixZ();
+    bc.offsetHeight;
+    bc.style.transition='left 1s cubic-bezier(.4,0,.2,1)';
+    bc.style.left='25%';
+    setTimeout(function(){
+      $('bReopen').style.transition='opacity .5s';
+      $('bReopen').style.opacity='1';
+      cur=0;closing=0;animating=0;
+    },1100);
+  },1300);
+}
 
-      // --- Time Counter ---
-      const startDate = new Date('2011-12-21T00:00:00');
-      const elements = {
-          years: document.getElementById('years'),
-          months: document.getElementById('months'),
-          days: document.getElementById('days'),
-          hours: document.getElementById('hours'),
-          minutes: document.getElementById('minutes'),
-          seconds: document.getElementById('seconds'),
-      };
+function upd(){
+  for(var i=0;i<N;i++){
+    if(i<cur)$('s'+i).classList.add('flip');
+    else $('s'+i).classList.remove('flip');
+  }
+  fixZ();
 
-      function updateCounter() {
-        const now = new Date();
-        let years = now.getFullYear() - startDate.getFullYear();
-        let months = now.getMonth() - startDate.getMonth();
-        let days = now.getDate() - startDate.getDate();
-        let hours = now.getHours() - startDate.getHours();
-        let minutes = now.getMinutes() - startDate.getMinutes();
-        let seconds = now.getSeconds() - startDate.getSeconds();
+  // Don't call sz() when closing (handled by closeBook)
+  if(cur<N) sz();
 
-        if (seconds < 0) { seconds += 60; minutes--; }
-        if (minutes < 0) { minutes += 60; hours--; }
-        if (hours < 0) { hours += 24; days--; }
-        if (days < 0) {
-          const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-          days += prevMonth.getDate();
-          months--;
-        }
-        if (months < 0) { months += 12; years--; }
+  if(cur>0&&cur<N){
+    setTimeout(function(){$('spine').classList.add('show')},850);
+  } else if(cur===0){
+    $('spine').classList.remove('show');
+  }
 
-        elements.years.textContent = years;
-        elements.months.textContent = months;
-        elements.days.textContent = days;
-        elements.hours.textContent = String(hours).padStart(2, '0');
-        elements.minutes.textContent = String(minutes).padStart(2, '0');
-        elements.seconds.textContent = String(seconds).padStart(2, '0');
-      }
-      setInterval(updateCounter, 1000);
-      updateCounter();
+  $('nav').style.visibility=cur>0?'visible':'hidden';
+  $('ctrl').style.visibility=cur>0?'visible':'hidden';
+  $('bp').disabled=cur<=0;
+  $('bn').disabled=cur>=N;
 
-      // --- Photo Gallery ---
-      const photos = Array.from({ length: 23 }, (_, i) => `fotos/foto (${i + 1}).jpg`);
-      let currentIndex = 0;
-      const galleryImage = document.getElementById('gallery-image');
-      const galleryCounter = document.getElementById('gallery-counter');
-      const dotsContainer = document.getElementById('gallery-dots');
-      let galleryInterval = null;
+  if(cur<=0)$('pi').textContent='';
+  else if(cur>=N)$('pi').textContent='Fim';
+  else $('pi').textContent='Página '+cur+' de '+(N-1);
+}
 
-      function updateGallery(isNext = true) {
-        if (isNext) {
-            currentIndex = (currentIndex === photos.length - 1) ? 0 : currentIndex + 1;
-        } else {
-            currentIndex = (currentIndex === 0) ? photos.length - 1 : currentIndex - 1;
-        }
-        
-        galleryImage.style.opacity = 0;
-        setTimeout(() => {
-            galleryImage.src = photos[currentIndex];
-            galleryImage.style.opacity = 1;
-        }, 300);
+function fillPast(skipEl){
+  for(var i=0;i<N;i++){
+    var s=$('s'+i);
+    if(i<cur) s.querySelectorAll('.pm').forEach(function(el){if(el!==skipEl||el._done)fi(el)});
+  }
+}
 
-        galleryCounter.textContent = `Foto ${currentIndex + 1} de ${photos.length}`;
-        dotsContainer.innerHTML = photos.map((_, index) => 
-            `<div class="w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-rose-500 scale-125 shadow-md' : 'bg-rose-500/50'}"></div>`
-        ).join('');
-      }
+function fadeAudio(target,duration,cb){
+  var start=aud.volume,diff=target-start,steps=20,step=0;
+  var iv=setInterval(function(){
+    step++;
+    aud.volume=Math.max(0,Math.min(1,start+diff*(step/steps)));
+    if(step>=steps){aud.volume=target;clearInterval(iv);if(cb)cb()}
+  },duration/steps);
+}
 
-      function resetGalleryInterval() {
-        clearInterval(galleryInterval);
-        galleryInterval = setInterval(() => updateGallery(true), 5000);
-      }
-      
-      document.getElementById('next-photo').addEventListener('click', () => {
-        updateGallery(true);
-        resetGalleryInterval();
-      });
-
-      document.getElementById('prev-photo').addEventListener('click', () => {
-        updateGallery(false);
-        resetGalleryInterval();
-      });
-      
-      currentIndex = photos.length - 1;
-      updateGallery(true); 
-      resetGalleryInterval();
-
-      // --- Love Message ---
-      const fullMessage = "Meu amor, 8 anos se passaram desde que dissemos 'sim'. Olhar para trás e ver tudo que construímos juntos enche meu coração de uma alegria que mal cabe em mim. Cada risada, cada desafio superado, cada sonho compartilhado... tudo valeu a pena ao seu lado. Você é meu porto seguro, minha inspiração e a razão do meu sorriso mais sincero. Que venham mais 100 anos de nós. Eu te amo, hoje e para todo o sempre.";
-      const typedMessageEl = document.getElementById('typed-message');
-
-      function startTypingEffect() {
-        typedMessageEl.innerHTML = '';
-        let i = 0;
-        const typingCursor = '<span class="inline-block w-0.5 h-6 bg-rose-500 animate-pulse ml-1"></span>';
-        
-        currentTypingInterval = setInterval(() => {
-          if (i < fullMessage.length) {
-            typedMessageEl.innerHTML = fullMessage.substring(0, i + 1) + typingCursor;
-            i++;
-          } else {
-            clearInterval(currentTypingInterval);
-            currentTypingInterval = null;
-            typedMessageEl.innerHTML = fullMessage;
-          }
-        }, 50);
-      }
-      
-      const heartsContainer = document.getElementById('hearts-container');
-      if(heartsContainer.children.length === 0){
-        for (let i = 0; i < 20; i++) {
-            const heart = document.createElement('div');
-            heart.innerHTML = '♡';
-            heart.className = 'absolute text-rose-300 text-3xl animate-pulse';
-            heart.style.left = `${Math.random() * 100}%`;
-            heart.style.top = `${Math.random() * 100}%`;
-            heart.style.animationDelay = `${Math.random() * 5}s`;
-            heart.style.animationDuration = `${2 + Math.random() * 3}s`;
-            heartsContainer.appendChild(heart);
-        }
-      }
-
-      // --- Initial setup ---
-      showPage('counter');
+function playVisibleVideos(){
+  for(var i=0;i<N;i++){
+    var s=$('s'+i);
+    s.querySelectorAll('video').forEach(function(v){
+      var isSF=v.closest('.sf');
+      var isSB=v.closest('.sb');
+      var visible=false;
+      if(isSF&&i===cur) visible=true;
+      if(isSB&&i===cur-1) visible=true;
+      if(!visible){v.pause();v.currentTime=0;v.classList.remove('playing');v.onended=null;v.volume=0}
     });
-  </script>
-<script type="module" src="/index.tsx"></script>
+  }
+  var visVids=[];
+  if(cur>0) $('s'+(cur-1)).querySelectorAll('.sb video').forEach(function(v){visVids.push(v)});
+  if(cur<N) $('s'+cur).querySelectorAll('.sf video').forEach(function(v){visVids.push(v)});
+  function playSeq(idx){
+    if(idx>=visVids.length){fadeAudio(1,800);animating=0;return}
+    var v=visVids[idx];
+    v.currentTime=0;
+    v.volume=0;
+    v.classList.add('playing');
+    fadeAudio(0.15,600);
+    v.muted=false;
+    v.play().catch(function(){v.muted=true;v.play().catch(function(){})});
+    // Limit video to 15 seconds
+    var maxTime=15;
+    var timeCheck=setInterval(function(){if(v.currentTime>=maxTime){clearInterval(timeCheck);v.dispatchEvent(new Event('ended'))}},200);
+    // Fade in video volume
+    var vs=0,viv=setInterval(function(){vs++;v.volume=Math.min(1,vs/20);if(vs>=20)clearInterval(viv)},30);
+    if(idx>0){
+      var elR=cur<N?$('s'+cur).querySelector('.sf .pm'):null;
+      if(elR&&!elR._done)tw(elR);
+    }
+    v.onended=function(){
+      clearInterval(timeCheck);
+      // Fade out video volume
+      var vo=20,vov=setInterval(function(){vo--;v.volume=Math.max(0,vo/20);if(vo<=0){clearInterval(vov);v.classList.remove('playing');playSeq(idx+1)}},30);
+    };
+  }
+  if(visVids.length>0) playSeq(0);
+  else fadeAudio(1,600);
+}
+
+function pageHasVideos(){
+  var has=false;
+  if(cur>0) {var s=$('s'+(cur-1));if(s.querySelector('.sb video'))has=true}
+  if(cur<N) {var s=$('s'+cur);if(s.querySelector('.sf video'))has=true}
+  return has;
+}
+
+function doTW(){
+  var elL=cur>0?$('s'+(cur-1)).querySelector('.sb .pm'):null;
+  var hasVid=pageHasVideos();
+  fillPast(elL);
+  setTimeout(function(){
+    if(cur>0&&cur<N){
+      var elR=$('s'+cur).querySelector('.sf .pm');
+      if(elL&&!elL._done){
+        tw(elL);
+        if(hasVid){
+          // keep animating=1, playVisibleVideos releases it
+        } else {
+          var tL=decodeURIComponent(elL.dataset.m);
+          var waitL=tL.length*25+200;
+          setTimeout(function(){
+            if(elR&&!elR._done){
+              tw(elR);
+              var tR=decodeURIComponent(elR.dataset.m);
+              setTimeout(function(){animating=0},tR.length*25+200);
+            } else {
+              if(elR)fi(elR);
+              animating=0;
+            }
+          },waitL);
+        }
+      } else {
+        if(elL)fi(elL);
+        if(hasVid){
+          // keep animating=1, playVisibleVideos releases it
+        } else {
+          if(elR&&!elR._done){
+            tw(elR);
+            var tR=decodeURIComponent(elR.dataset.m);
+            setTimeout(function(){animating=0},tR.length*25+200);
+          } else {
+            if(elR)fi(elR);
+            animating=0;
+          }
+        }
+      }
+    } else {
+      animating=0;
+    }
+  },650);
+}
+
+function next(){
+  if(cur>=N||animating||closing)return;
+  animating=1;snd();cur++;
+  if(cur>=N){
+    closing=1;
+    upd();
+    fillPast();
+    closeBook();
+  } else {
+    // Flip the spread first with high z-index, then fix z after animation starts
+    var flipping=$('s'+(cur-1));
+    flipping.style.zIndex=N+1;
+    flipping.classList.add('flip');
+    // Update the rest without touching the flipping spread's z
+    for(var i=0;i<N;i++){
+      if(i===cur-1)continue;
+      if(i<cur)$('s'+i).classList.add('flip');
+      else $('s'+i).classList.remove('flip');
+    }
+    fixZ();
+    flipping.style.zIndex=N+1;
+    if(cur<N)sz();
+    if(cur>0&&cur<N)setTimeout(function(){$('spine').classList.add('show')},850);
+    $('nav').style.visibility='visible';
+    $('ctrl').style.visibility='visible';
+    $('bp').disabled=cur<=0;
+    $('bn').disabled=cur>=N;
+    $('pi').textContent='Página '+cur+' de '+(N-1);
+    setTimeout(function(){flipping.style.zIndex=cur-1+1;},600);
+    doTW();
+    playVisibleVideos();
+  }
+}
+
+function prev(){
+  if(cur<=0||animating||closing)return;
+  animating=1;snd();cur--;
+  if(cur===0){
+    // Reverse of openBook: flip cover back and slide closed
+    var w=$('wrap');
+    // Step 1: Unflip cover and slide right
+    for(var i=0;i<N;i++){
+      if(i<cur)$('s'+i).classList.add('flip');
+      else $('s'+i).classList.remove('flip');
+    }
+    fixZ();
+    $('spine').classList.remove('show');
+    $('nav').style.visibility='hidden';
+    $('ctrl').style.visibility='hidden';
+    w.style.transition='transform .8s cubic-bezier(.4,0,.2,1)';
+    w.style.transform='translateX('+(20*window.innerWidth/100 - PW/2)+'px)';
+    setTimeout(function(){
+      // Step 2: Hide inner spreads, snap width to single page
+      for(var i=1;i<N;i++)$('s'+i).style.visibility='hidden';
+      w.style.transition='none';
+      w.style.width=PW+'px';
+      w.classList.add('closed');
+      w.style.transform='translateX(20vw)';
+      w.offsetHeight;
+      // Step 3: Slide back to center
+      w.style.transition='transform 1s cubic-bezier(.4,0,.2,1)';
+      w.style.transform='translateX(0)';
+      setTimeout(function(){
+        for(var i=1;i<N;i++)$('s'+i).style.visibility='';
+        $('pi').textContent='';
+        $('bp').disabled=true;
+        animating=0;
+      },1000);
+    },900);
+  } else {
+    upd();
+    fillPast();
+    if(cur>0&&cur<N){
+      var elL=$('s'+(cur-1)).querySelector('.sb .pm');
+      if(elL)fi(elL);
+      var elR=$('s'+cur).querySelector('.sf .pm');
+      if(elR)fi(elR);
+    }
+    setTimeout(function(){animating=0},1300);
+    playVisibleVideos();
+  }
+}
+
+function openBook(){
+  if(animating)return;
+  animating=1;
+  var w=$('wrap');
+  // Step 1: Slide to the right
+  w.style.transition='none';
+  w.style.transform='translateX(0)';
+  w.offsetHeight;
+  w.style.transition='transform 1s cubic-bezier(.4,0,.2,1)';
+  w.style.transform='translateX(20vw)';
+  setTimeout(function(){
+    // Step 2: Snap width (no transition), keep position stable
+    w.style.transition='none';
+    w.style.width=(PW*2)+'px';
+    w.style.transform='translateX('+(20*window.innerWidth/100 - PW/2)+'px)';
+    w.classList.remove('closed');
+    for(var i=1;i<N;i++)$('s'+i).style.visibility='hidden';
+    w.offsetHeight; // force reflow
+    // Step 3: Slide back to center while flipping cover
+    w.style.transition='transform .8s cubic-bezier(.4,0,.2,1)';
+    w.style.transform='translateX(0)';
+    snd();cur++;
+    for(var i=0;i<N;i++){
+      if(i<cur)$('s'+i).classList.add('flip');
+      else $('s'+i).classList.remove('flip');
+    }
+    fixZ();
+    // Show inner spreads after cover starts flipping
+    setTimeout(function(){
+      for(var i=1;i<N;i++)$('s'+i).style.visibility='';
+    },300);
+    $('spine').classList.add('show');
+    $('nav').style.visibility='visible';
+    $('ctrl').style.visibility='visible';
+    $('bp').disabled=cur<=0;
+    $('bn').disabled=cur>=N;
+    $('pi').textContent='P\u00e1gina '+cur+' de '+(N-1);
+    fillPast($('s0').querySelector('.sb .pm'));
+    playVisibleVideos();
+    setTimeout(function(){
+      var elL=$('s0').querySelector('.sb .pm');
+      var elR=$('s'+cur).querySelector('.sf .pm');
+      if(elL&&!elL._done){
+        tw(elL);
+        var tL=decodeURIComponent(elL.dataset.m);
+        var waitL=tL.length*25+200;
+        setTimeout(function(){
+          if(elR&&!elR._done){
+            tw(elR);
+            var tR=decodeURIComponent(elR.dataset.m);
+            setTimeout(function(){animating=0},tR.length*25+200);
+          } else {
+            if(elR)fi(elR);
+            animating=0;
+          }
+        },waitL);
+      } else {
+        if(elL)fi(elL);
+        if(elR&&!elR._done){
+          tw(elR);
+          var tR=decodeURIComponent(elR.dataset.m);
+          setTimeout(function(){animating=0},tR.length*25+200);
+        } else {
+          if(elR)fi(elR);
+          animating=0;
+        }
+      }
+    },1400);
+  },1000);
+  aud.play().then(function(){mp=1;$('bm').textContent='\ud83d\udd0a';$('bm').classList.add('on')}).catch(function(){});
+}
+
+function restart(){
+  document.querySelectorAll('.pm').forEach(function(el){if(el._i)clearInterval(el._i);el.textContent='';el._done=0});
+  $('spine').classList.remove('show');
+  $('bc').classList.remove('show');
+  $('bc').style.transition='';
+  $('bc').style.left='';
+  $('bReopen').style.opacity='';
+  $('bReopen').style.transition='';
+  $('wrap').style.transform='';
+  $('wrap').classList.add('closed');
+  $('wrap').style.width=PW+'px';
+  cur=0;animating=0;closing=0;
+  for(var i=0;i<N;i++){
+    $('s'+i).classList.remove('flip');
+    $('s'+i).style.visibility='';
+    $('s'+i).style.display='';
+    $('s'+i).style.transition='';
+  }
+  fixZ();
+  $('nav').style.visibility='hidden';
+  $('ctrl').style.visibility='hidden';
+}
+
+function togM(){
+  if(mp){aud.pause();$('bm').textContent='🎵';$('bm').classList.remove('on')}
+  else{aud.play().catch(function(){});$('bm').textContent='🔊';$('bm').classList.add('on')}
+  mp=!mp;
+}
+
+build();upd();
+
+document.addEventListener('click',function(e){if(e.target.closest('#bo'))openBook()});
+$('bn').addEventListener('click',next);
+$('bp').addEventListener('click',prev);
+$('bm').addEventListener('click',togM);
+$('br').addEventListener('click',restart);
+$('bReopen').addEventListener('click',restart);
+window.addEventListener('resize',function(){if(cur<N)sz()});
+
+var sx=0;
+document.addEventListener('touchstart',function(e){sx=e.changedTouches[0].screenX},{passive:1});
+document.addEventListener('touchend',function(e){if(cur<1)return;var d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>50){if(d<0)next();else prev()}},{passive:1});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){if(cur===0)openBook();else next()}if(e.key==='ArrowLeft')prev()});
+</script>
 </body>
 </html>

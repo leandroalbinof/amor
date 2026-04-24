@@ -1,0 +1,295 @@
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fdf6ee;
+  color: #5b3a6b;
+}
+
+/* ===== CAPA ===== */
+.cover {
+  position: fixed; inset: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #8b5e3c 0%, #a0714f 30%, #6b3a2a 100%);
+  transition: opacity 0.8s, transform 0.8s;
+}
+.cover.hide {
+  opacity: 0; transform: scale(1.1); pointer-events: none;
+}
+.cover-texture {
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cover-content {
+  position: relative; text-align: center; color: #fdf6ee;
+  padding: 3rem 2rem;
+}
+.cover-ornament {
+  font-size: 2rem; opacity: 0.6; letter-spacing: 1rem;
+  margin-bottom: 1rem;
+}
+.cover-ornament.bottom { margin-top: 1.5rem; margin-bottom: 0; }
+.cover-name {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 700;
+  text-shadow: 2px 3px 6px rgba(0,0,0,0.4);
+  line-height: 1.2;
+}
+.cover-divider {
+  width: 120px; height: 2px; margin: 1rem auto;
+  background: linear-gradient(90deg, transparent, #fdf6ee, transparent);
+}
+.cover-title {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 400; opacity: 0.9;
+}
+.cover-subtitle {
+  font-size: 1rem; opacity: 0.7; margin-top: 0.5rem;
+  font-style: italic;
+}
+.btn-open {
+  margin-top: 2rem;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.5);
+  color: #fdf6ee; font-family: 'Poppins', sans-serif;
+  font-size: 1rem; border-radius: 50px; cursor: pointer;
+  transition: all 0.3s;
+  animation: pulse-glow 2s infinite;
+}
+.btn-open:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+  50% { box-shadow: 0 0 25px rgba(255,255,255,0.4); }
+}
+
+/* ===== ALBUM WRAPPER ===== */
+.album-wrapper {
+  height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #fdf6ee 0%, #f5e6d3 50%, #fdf6ee 100%);
+  padding: 1rem;
+  opacity: 0; transition: opacity 0.6s;
+}
+.album-wrapper.show { opacity: 1; }
+.album-wrapper.hidden { display: none; }
+
+/* ===== CONTROLES ===== */
+.album-controls {
+  position: fixed; top: 1rem; right: 1rem; z-index: 50;
+  display: flex; gap: 0.5rem;
+}
+.ctrl-btn {
+  width: 44px; height: 44px;
+  background: rgba(255,255,255,0.8); border: 1px solid #e0c9b5;
+  border-radius: 50%; font-size: 1.2rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; backdrop-filter: blur(4px);
+}
+.ctrl-btn:hover { background: #fff; transform: scale(1.1); }
+.ctrl-btn.playing { background: #d4a0c0; border-color: #c084a0; }
+
+/* ===== ALBUM CONTAINER ===== */
+.album-container {
+  perspective: 1800px;
+  width: min(90vw, 700px);
+  height: min(75vh, 520px);
+}
+.album {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+}
+
+/* ===== PAGES ===== */
+.page {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.645, 0.045, 0.355, 1);
+  z-index: 1;
+  cursor: pointer;
+}
+.page.flipped { transform: rotateY(-180deg); }
+.page-front, .page-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: 4px 12px 12px 4px;
+  overflow: hidden;
+  box-shadow: 2px 2px 15px rgba(0,0,0,0.15);
+}
+.page-front { z-index: 2; }
+.page-back {
+  transform: rotateY(180deg);
+  border-radius: 12px 4px 4px 12px;
+}
+
+/* ===== PAGE INNER (SCRAPBOOK) ===== */
+.page-inner {
+  width: 100%; height: 100%;
+  padding: 1.5rem;
+  display: flex; flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(200,180,160,0.1) 28px, rgba(200,180,160,0.1) 29px),
+    linear-gradient(135deg, #fefcf8 0%, #f9f0e3 100%);
+}
+.page-inner.romantic {
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(200,150,170,0.1) 28px, rgba(200,150,170,0.1) 29px),
+    linear-gradient(135deg, #fff5f8 0%, #fce8ef 100%);
+}
+.page-inner.end-page {
+  justify-content: center;
+  background: linear-gradient(135deg, #fefcf8 0%, #f9f0e3 100%);
+}
+
+/* ===== TAPE ===== */
+.tape {
+  position: absolute; width: 60px; height: 22px;
+  background: rgba(255, 230, 150, 0.6);
+  z-index: 5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.tape-top-left { top: 8px; left: 10px; transform: rotate(-25deg); }
+.tape-top-right { top: 8px; right: 10px; transform: rotate(25deg); }
+
+/* ===== PAGE TITLE ===== */
+.page-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  color: #8b5e3c;
+  margin-bottom: 0.8rem;
+  text-align: center;
+}
+
+/* ===== PHOTO GRID ===== */
+.photo-grid {
+  display: grid; gap: 0.8rem;
+  width: 100%; max-width: 100%;
+  margin-bottom: 0.8rem;
+}
+.photo-grid.grid-2 { grid-template-columns: 1fr 1fr; }
+.photo-grid.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* ===== PHOTO FRAME ===== */
+.photo-frame {
+  background: #fff;
+  padding: 6px; padding-bottom: 20px;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.15);
+  transition: transform 0.5s;
+  overflow: hidden;
+}
+.photo-frame:hover { transform: scale(1.03); z-index: 2; }
+.photo-frame img {
+  width: 100%; aspect-ratio: 4/3;
+  object-fit: cover; display: block;
+  transition: transform 3s;
+}
+.photo-frame:hover img { transform: scale(1.08); }
+.tilted-left { transform: rotate(-2deg); }
+.tilted-right { transform: rotate(2deg); }
+.tilted-left:hover { transform: rotate(-2deg) scale(1.03); }
+.tilted-right:hover { transform: rotate(2deg) scale(1.03); }
+.straight { transform: rotate(0deg); }
+
+/* ===== PAGE MESSAGE ===== */
+.page-message {
+  font-family: 'Caveat', cursive;
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+  color: #6b4c3b;
+  text-align: center;
+  line-height: 1.5;
+  min-height: 2.5rem;
+  flex-shrink: 0;
+}
+.page-message .cursor {
+  display: inline-block;
+  width: 2px; height: 1em;
+  background: #8b5e3c;
+  margin-left: 2px;
+  animation: blink 0.7s infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ===== PAGE NUMBER ===== */
+.page-number {
+  margin-top: auto; padding-top: 0.5rem;
+  font-size: 0.75rem; color: #b8a090;
+  font-style: italic;
+}
+
+/* ===== LETTER (final page) ===== */
+.letter {
+  background: rgba(255,255,255,0.5);
+  border: 1px dashed #d4a0c0;
+  border-radius: 8px;
+  padding: 0.8rem;
+  width: 100%;
+}
+.final-page .page-message {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  text-align: left;
+}
+
+/* ===== END PAGE ===== */
+.end-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.5rem; color: #8b5e3c;
+  text-align: center;
+}
+.end-emoji { font-size: 2rem; text-align: center; margin-top: 1rem; }
+
+/* ===== NAVIGATION ===== */
+.album-nav {
+  display: flex; align-items: center; gap: 1rem;
+  margin-top: 1rem;
+}
+.nav-btn {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.8); border: 1px solid #e0c9b5;
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s; color: #8b5e3c;
+}
+.nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.1); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.page-indicator {
+  font-family: 'Caveat', cursive;
+  font-size: 1rem; color: #8b5e3c;
+  min-width: 130px; text-align: center;
+}
+
+/* ===== Z-INDEX STACKING (pages stack right to left) ===== */
+#page-1 { z-index: 6; }
+#page-2 { z-index: 5; }
+#page-3 { z-index: 4; }
+#page-4 { z-index: 3; }
+#page-5 { z-index: 2; }
+#page-6 { z-index: 1; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .album-container {
+    width: 95vw;
+    height: 68vh;
+  }
+  .page-inner { padding: 1rem 0.8rem; }
+  .tape { width: 40px; height: 16px; }
+  .photo-frame { padding: 4px; padding-bottom: 14px; }
+  .photo-grid { gap: 0.5rem; }
+  .photo-grid.grid-3 { grid-template-columns: 1fr 1fr; }
+  .letter { padding: 0.5rem; }
+  .album-nav { margin-top: 0.5rem; }
+}
+
+/* ===== SCROLLBAR ===== */
+.page-inner::-webkit-scrollbar { width: 4px; }
+.page-inner::-webkit-scrollbar-track { background: transparent; }
+.page-inner::-webkit-scrollbar-thumb { background: #d4c0a8; border-radius: 4px; }
