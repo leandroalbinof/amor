@@ -137,11 +137,7 @@ display:flex;flex-direction:column;align-items:center;justify-content:center}
 .et{font-family:'Dancing Script',cursive;font-size:1.3rem;color:#fdf6ee;position:relative}
 .ee{font-size:1.6rem;margin-top:.6rem;position:relative}
 
-.nav{display:flex;align-items:center;gap:.7rem;margin-top:6px;z-index:200}
-.nb{width:44px;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;color:#ccc}
-.nb:hover:not(:disabled){background:rgba(255,255,255,.2);color:#fff;transform:scale(1.1)}
-.nb:disabled{opacity:.15;cursor:default}
-.pi{font-family:'Caveat',cursive;font-size:1rem;color:rgba(255,255,255,.6);min-width:100px;text-align:center}
+.swipe-hint{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);font-family:'Caveat',cursive;font-size:.85rem;color:rgba(255,255,255,.4);z-index:200;pointer-events:none;white-space:nowrap}
 
 .ctrl{position:fixed;top:.7rem;right:.7rem;z-index:200;display:flex;gap:.4rem}
 .cb{width:38px;height:38px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s;color:#fff}
@@ -154,12 +150,19 @@ display:flex;flex-direction:column;align-items:center;justify-content:center}
 .page::-webkit-scrollbar-thumb{background:#d4c0a8;border-radius:3px}
 
 @media(max-width:600px){
-  .page{padding:.8rem .5rem}
-  .tape{width:34px;height:12px}
-  .fr{padding:3px;padding-bottom:8px}
+  .page{padding:.6rem .4rem}
+  .tape{width:30px;height:10px}
   .pg-grid{gap:.3rem}
-  .g3{grid-template-columns:1fr 1fr}
 }
+@media(orientation:portrait){
+  .fr::before{filter:blur(8px) brightness(.85)}
+  .pg-grid{grid-template-columns:1fr!important}
+  .ly-d .fr:nth-child(2){margin-top:0}
+  .ly-g .fr:nth-child(2){margin-top:0;margin-left:0}
+  .bsh{display:none}
+  .wrap{margin:auto 0}
+}
+.swipe-hint{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);font-family:'Caveat',cursive;font-size:.85rem;color:rgba(255,255,255,.4);z-index:200;pointer-events:none;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -176,11 +179,7 @@ display:flex;flex-direction:column;align-items:center;justify-content:center}
   <div class="book" id="book"></div>
 </div>
 <div class="bsh"></div>
-<div class="nav" id="nav" style="visibility:hidden">
-  <button id="bp" class="nb" disabled><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
-  <span id="pi" class="pi"></span>
-  <button id="bn" class="nb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-</div>
+<div class="swipe-hint" id="swHint" style="display:none">← deslize para navegar →</div>
 <div class="ctrl" id="ctrl" style="visibility:hidden">
   <button id="bm" class="cb" title="Música">🎵</button>
   <button id="br" class="cb" title="Reiniciar">🔄</button>
@@ -206,12 +205,13 @@ var PW; // single page width
 
 function sz(){
   var vw=window.innerWidth,vh=window.innerHeight;
-  PW=Math.min(vw*.46,450);
-  var bh=vh-90;
+  var portrait=vh>vw;
+  PW=portrait?Math.min(vw*.44,400):Math.min(vw*.46,450);
+  var reserve=portrait?40:40;
+  var bh=vh-reserve;
   if(bh>600)bh=600;
   if(bh<150)bh=150;
-  var maxW=Math.round(bh/1.33);
-  if(PW>maxW)PW=maxW;
+  if(!portrait){var maxW=Math.round(bh/1.33);if(PW>maxW)PW=maxW}
   var w=$('wrap');
   w.style.height=bh+'px';
   if(cur===0){
@@ -313,7 +313,6 @@ function snd(){
 
 function closeBook(){
   $('spine').classList.remove('show');
-  $('nav').style.visibility='hidden';
   $('ctrl').style.visibility='hidden';
   var bc=$('bc');
   $('bReopen').style.transition='none';
@@ -359,14 +358,7 @@ function upd(){
     $('spine').classList.remove('show');
   }
 
-  $('nav').style.visibility=cur>0?'visible':'hidden';
   $('ctrl').style.visibility=cur>0?'visible':'hidden';
-  $('bp').disabled=cur<=0;
-  $('bn').disabled=cur>=N;
-
-  if(cur<=0)$('pi').textContent='';
-  else if(cur>=N)$('pi').textContent='Fim';
-  else $('pi').textContent='Página '+cur+' de '+(N-1);
 }
 
 function fillPast(skipEl){
@@ -504,11 +496,7 @@ function next(){
     flipping.style.zIndex=N+1;
     if(cur<N)sz();
     if(cur>0&&cur<N)setTimeout(function(){$('spine').classList.add('show')},850);
-    $('nav').style.visibility='visible';
     $('ctrl').style.visibility='visible';
-    $('bp').disabled=cur<=0;
-    $('bn').disabled=cur>=N;
-    $('pi').textContent='Página '+cur+' de '+(N-1);
     setTimeout(function(){flipping.style.zIndex=cur-1+1;},600);
     doTW();
     playVisibleVideos();
@@ -528,7 +516,6 @@ function prev(){
     }
     fixZ();
     $('spine').classList.remove('show');
-    $('nav').style.visibility='hidden';
     $('ctrl').style.visibility='hidden';
     w.style.transition='transform .8s cubic-bezier(.4,0,.2,1)';
     w.style.transform='translateX('+(20*window.innerWidth/100 - PW/2)+'px)';
@@ -545,8 +532,6 @@ function prev(){
       w.style.transform='translateX(0)';
       setTimeout(function(){
         for(var i=1;i<N;i++)$('s'+i).style.visibility='';
-        $('pi').textContent='';
-        $('bp').disabled=true;
         animating=0;
       },1000);
     },900);
@@ -596,11 +581,8 @@ function openBook(){
       for(var i=1;i<N;i++)$('s'+i).style.visibility='';
     },300);
     $('spine').classList.add('show');
-    $('nav').style.visibility='visible';
     $('ctrl').style.visibility='visible';
-    $('bp').disabled=cur<=0;
-    $('bn').disabled=cur>=N;
-    $('pi').textContent='P\u00e1gina '+cur+' de '+(N-1);
+    $('swHint').style.display='block';
     fillPast($('s0').querySelector('.sb .pm'));
     playVisibleVideos();
     setTimeout(function(){
@@ -655,7 +637,6 @@ function restart(){
     $('s'+i).style.transition='';
   }
   fixZ();
-  $('nav').style.visibility='hidden';
   $('ctrl').style.visibility='hidden';
 }
 
@@ -668,16 +649,36 @@ function togM(){
 build();upd();
 
 document.addEventListener('click',function(e){if(e.target.closest('#bo'))openBook()});
-$('bn').addEventListener('click',next);
-$('bp').addEventListener('click',prev);
 $('bm').addEventListener('click',togM);
 $('br').addEventListener('click',restart);
 $('bReopen').addEventListener('click',restart);
 window.addEventListener('resize',function(){if(cur<N)sz()});
 
-var sx=0;
-document.addEventListener('touchstart',function(e){sx=e.changedTouches[0].screenX},{passive:1});
-document.addEventListener('touchend',function(e){if(cur<1)return;var d=e.changedTouches[0].screenX-sx;if(Math.abs(d)>50){if(d<0)next();else prev()}},{passive:1});
+var sx=0,sy=0,swiping=0;
+var bookEl=$('wrap');
+bookEl.addEventListener('touchstart',function(e){sx=e.changedTouches[0].clientX;sy=e.changedTouches[0].clientY;swiping=1},{passive:1});
+bookEl.addEventListener('touchmove',function(e){if(!swiping)return;var dx=e.changedTouches[0].clientX-sx;var dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>10)e.preventDefault()},{passive:false});
+bookEl.addEventListener('touchend',function(e){
+  if(!swiping)return;swiping=0;
+  var dx=e.changedTouches[0].clientX-sx;
+  var dy=e.changedTouches[0].clientY-sy;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){
+    if(dx<0){if(cur===0)openBook();else next()}
+    else prev();
+    var h=$('swHint');if(h)h.style.display='none';
+  }
+},{passive:1});
+bookEl.addEventListener('mousedown',function(e){sx=e.clientX;sy=e.clientY;swiping=1;e.preventDefault()});
+document.addEventListener('mousemove',function(e){if(!swiping)return;e.preventDefault()});
+document.addEventListener('mouseup',function(e){
+  if(!swiping)return;swiping=0;
+  var dx=e.clientX-sx,dy=e.clientY-sy;
+  if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)){
+    if(dx<0){if(cur===0)openBook();else next()}
+    else prev();
+    var h=$('swHint');if(h)h.style.display='none';
+  }
+});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){if(cur===0)openBook();else next()}if(e.key==='ArrowLeft')prev()});
 </script>
 </body>
