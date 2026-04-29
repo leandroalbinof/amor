@@ -1,0 +1,9 @@
+{
+  "name": "Nossa História",
+  "short_name": "Nossa História",
+  "start_url": "index.html",
+  "display": "fullscreen",
+  "background_color": "#1a0f08",
+  "theme_color": "#8b5e3c",
+  "orientation": "any"
+}
