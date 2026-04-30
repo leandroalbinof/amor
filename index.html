@@ -1469,12 +1469,14 @@
         w.style.width = (PW * 2) + 'px';
         w.style.transform = 'translateX(' + (20 * window.innerWidth / 100 - PW / 2) + 'px)';
         w.classList.remove('closed');
+        cur++; // Update state early
+        sz();  // Recalculate dimensions for fluid expansion
         for (var i = 1; i < N; i++)$('s' + i).style.visibility = 'hidden';
         w.offsetHeight; // force reflow
         // Step 3: Slide back to center while flipping cover
         w.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
         w.style.transform = 'translateX(0)';
-        snd(); cur++;
+        snd(); 
 
         var flipping = $('s0');
         flipping.classList.add('flip');
@@ -1721,7 +1723,12 @@
     if ($('bm')) $('bm').addEventListener('click', togM);
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); } });
-    document.addEventListener('fullscreenchange', function () { setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, 150) });
+    document.addEventListener('fullscreenchange', function () {
+      // Multi-step check to catch the final viewport size on mobile
+      [100, 300, 600, 1000].forEach(function (d) {
+        setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, d);
+      });
+    });
 
     var sx = 0, sy = 0, dragging = false;
     document.addEventListener('touchstart', function (e) { sx = e.changedTouches[0].screenX; sy = e.changedTouches[0].screenY }, { passive: 1 });
