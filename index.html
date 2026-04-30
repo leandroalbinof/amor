@@ -1038,7 +1038,7 @@
     function ph(a, ly) {
       return '<div class="pg-grid">' + a.map(function (s, j) {
         if (isVid(s)) return '<div class="fr"><video src="' + s + '" playsinline muted preload="auto"></video></div>';
-        return '<div class="fr"><div class="bb b1"><img src="' + s + '"></div><div class="bb b2"><img src="' + s + '"></div><img src="' + s + '" alt="" loading="lazy"></div>';
+        return '<div class="fr"><div class="bb b1"><img src="' + s + '"></div><div class="bb b2"><img src="' + s + '"></div><img src="' + s + '" alt="" loading="eager"></div>';
       }).join('') + '</div>';
     }
 
@@ -1651,9 +1651,26 @@
         }
       }
       assets.forEach(function (a) {
-        if (a.t === 'i') { var img = new Image(); img.onload = update; img.onerror = update; img.src = a.u; }
-        else if (a.t === 'v') { var v = document.createElement('video'); v.oncanplaythrough = update; v.onerror = update; v.src = a.u; v.load(); }
-        else if (a.t === 'a') { var au = new Audio(); au.oncanplaythrough = update; au.onerror = update; au.src = a.u; au.load(); }
+        if (a.t === 'i') { 
+          var img = new Image(); 
+          img.onload = update; 
+          img.onerror = update; 
+          img.src = a.u; 
+        } else if (a.t === 'v') { 
+          var v = document.createElement('video'); 
+          v.preload = 'auto';
+          v.oncanplaythrough = update; 
+          v.onerror = update; 
+          v.src = a.u; 
+          v.load(); 
+        } else if (a.t === 'a') { 
+          var au = new Audio(); 
+          au.preload = 'auto';
+          au.oncanplaythrough = update; 
+          au.onerror = update; 
+          au.src = a.u; 
+          au.load(); 
+        }
       });
       setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
     }
