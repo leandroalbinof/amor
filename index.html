@@ -175,7 +175,7 @@
       justify-content: center;
       text-align: center;
       color: #fdf6ee;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
       background: url('assets/leather.png') center/cover;
       position: relative;
       overflow: hidden;
@@ -298,9 +298,9 @@
 
     .bo {
       margin-top: 1.3rem;
-      padding: .6rem 1.5rem;
-      background: rgba(255, 255, 255, .15);
-      border: 2px solid rgba(255, 255, 255, .4);
+      padding: .6rem 1.8rem;
+      background: rgba(255, 255, 255, .1);
+      border: 2px solid rgba(255, 255, 255, .3);
       color: #fdf6ee;
       font-family: 'Poppins', sans-serif;
       font-size: .85rem;
@@ -310,11 +310,36 @@
       position: relative;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: .4rem;
-      animation: gl 2s infinite
+      overflow: hidden;
+      max-width: 90%;
+      white-space: nowrap;
     }
 
-    .bo:hover {
+    .bo:disabled {
+      cursor: wait;
+      opacity: 0.8;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .bo .progress {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: width 0.3s;
+      z-index: 0;
+    }
+
+    .bo span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .bo:hover:not(:disabled) {
       background: rgba(255, 255, 255, .3);
       transform: scale(1.05)
     }
@@ -924,6 +949,16 @@
       .pg-grid {
         gap: .2rem;
       }
+      .bo {
+        padding: .5rem 1rem;
+        font-size: .75rem;
+      }
+      .cn {
+        font-size: 1.8rem;
+      }
+      .ct {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
@@ -994,6 +1029,8 @@
         w.style.width = (PW * 2) + 'px';
         setTimeout(function () { w.classList.remove('closed') }, 800);
       }
+      // Re-calculate circular photos whenever the book size changes
+      setTimeout(fixCirc, 50);
     }
 
     function isVid(s) { return /\.(mp4|webm|ogg|mov)$/i.test(s) }
@@ -1031,7 +1068,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><h1 class="cn">Meu Amor</h1><div class="cd"></div><h2 class="ct">Nossa História</h2><p class="cs">8 anos de amor</p><button class="bo" id="bo">Abrir Álbum</button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><h1 class="cn">Meu Amor</h1><div class="cd"></div><h2 class="ct">Nossa História</h2><p class="cs">8 anos de amor</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1569,10 +1606,9 @@
         if (!p) return;
         var pw = p.offsetWidth, ph = p.offsetHeight;
         if (!pw || !ph) return;
-        // Calculate max size that fits both height and width
-        // For ly-e we usually have 2 photos, so height is limited to ~42%
-        var size = Math.min(pw * 0.85, ph * 0.42);
-        if (window.innerWidth < 500) size = Math.min(pw * 0.92, ph * 0.40);
+        // More aggressive sizing: use up to 98% of width or 48% of height
+        var size = Math.min(pw * 0.95, ph * 0.47);
+        if (window.innerWidth < 500) size = Math.min(pw * 0.98, ph * 0.48);
         fr.style.width = Math.floor(size) + 'px';
         fr.style.height = Math.floor(size) + 'px';
       });
@@ -1587,9 +1623,46 @@
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
     $('bm').addEventListener('click', togM);
     $('br').addEventListener('click', restart);
-    $('bReopen').addEventListener('click', restart);
-    window.addEventListener('resize', function () { if (cur < N) sz() });
-    document.addEventListener('fullscreenchange', function () { setTimeout(function () { if (cur < N) sz() }, 100) });
+    function loadAssets() {
+      var assets = [];
+      D.forEach(function (p) {
+        if (p.f && p.f.p) p.f.p.forEach(function (u) { assets.push({ u: u, t: isVid(u) ? 'v' : 'i' }) });
+        if (p.b && p.b.p) p.b.p.forEach(function (u) { assets.push({ u: u, t: isVid(u) ? 'v' : 'i' }) });
+      });
+      assets.push({ u: 'musica/musica.mp3', t: 'a' });
+      assets.push({ u: 'assets/leather.png', t: 'i' });
+      assets.push({ u: 'assets/paper.png', t: 'i' });
+      assets.push({ u: 'assets/gold.png', t: 'i' });
+
+      var total = assets.length, loaded = 0, btn = $('bo'), lp = $('lp');
+      function update() {
+        loaded++;
+        var pct = Math.floor((loaded / total) * 100);
+        if (lp) lp.style.width = pct + '%';
+        if (btn) btn.querySelector('span').textContent = 'Carregando ' + pct + '%';
+        if (loaded >= total) {
+          setTimeout(function () {
+            if (btn) {
+              btn.querySelector('span').textContent = 'Abrir Álbum';
+              btn.disabled = false;
+              btn.style.animation = 'gl 2s infinite';
+            }
+          }, 500);
+        }
+      }
+      assets.forEach(function (a) {
+        if (a.t === 'i') { var img = new Image(); img.onload = update; img.onerror = update; img.src = a.u; }
+        else if (a.t === 'v') { var v = document.createElement('video'); v.oncanplaythrough = update; v.onerror = update; v.src = a.u; v.load(); }
+        else if (a.t === 'a') { var au = new Audio(); au.oncanplaythrough = update; au.onerror = update; au.src = a.u; au.load(); }
+      });
+      setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
+    }
+
+    build();
+    loadAssets();
+    fixZ();
+    window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); } });
+    document.addEventListener('fullscreenchange', function () { setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, 150) });
 
     var sx = 0, sy = 0, dragging = false;
     document.addEventListener('touchstart', function (e) { sx = e.changedTouches[0].screenX; sy = e.changedTouches[0].screenY }, { passive: 1 });
