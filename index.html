@@ -563,10 +563,7 @@
     }
 
     .ly-e .fr {
-      flex: 0 0 42%;
-      aspect-ratio: 1 / 1;
-      width: auto;
-      height: 42%;
+      flex: 0 0 auto;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -574,6 +571,9 @@
       background: none;
       box-shadow: none;
       border: none;
+      overflow: hidden;
+      width: 200px; /* JS will override this */
+      height: 200px;
     }
 
     .ly-e .fr:nth-child(2) {
@@ -582,8 +582,7 @@
 
     @media(max-width:500px) {
       .ly-e .fr {
-        flex: 0 0 38%;
-        height: 38%;
+        gap: 0.8rem;
       }
     }
 
@@ -1564,13 +1563,28 @@
         }
       });
     }
-    document.querySelectorAll('.fr>img').forEach(function (img) {
-      img.addEventListener('load', applyBlur);
-      if (img.complete) setTimeout(applyBlur, 50);
-    });
-    window.addEventListener('resize', applyBlur);
+    function fixCirc() {
+      document.querySelectorAll('.ly-e .fr').forEach(function (fr) {
+        var p = fr.parentElement;
+        if (!p) return;
+        var pw = p.offsetWidth, ph = p.offsetHeight;
+        if (!pw || !ph) return;
+        // Calculate max size that fits both height and width
+        // For ly-e we usually have 2 photos, so height is limited to ~42%
+        var size = Math.min(pw * 0.85, ph * 0.42);
+        if (window.innerWidth < 500) size = Math.min(pw * 0.92, ph * 0.40);
+        fr.style.width = Math.floor(size) + 'px';
+        fr.style.height = Math.floor(size) + 'px';
+      });
+    }
 
-    document.addEventListener('click', function (e) { if (e.target.closest('#bo')) openBook() });
+    document.querySelectorAll('.fr>img').forEach(function (img) {
+      img.addEventListener('load', function() { applyBlur(); fixCirc(); });
+      if (img.complete) setTimeout(function() { applyBlur(); fixCirc(); }, 50);
+    });
+    window.addEventListener('resize', function() { applyBlur(); fixCirc(); });
+
+    document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
     $('bm').addEventListener('click', togM);
     $('br').addEventListener('click', restart);
     $('bReopen').addEventListener('click', restart);
