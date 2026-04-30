@@ -502,18 +502,23 @@
       justify-content: center;
     }
 
-    .pg-grid > .fr {
+    .pg-grid>.fr {
       flex: 1;
       min-height: 0;
     }
 
     /* Layout override: use flex rows/cols instead of rigid grid */
-    .ly-b .pg-grid, .ly-d .pg-grid, .ly-i .pg-grid {
+    .ly-b .pg-grid,
+    .ly-d .pg-grid,
+    .ly-i .pg-grid {
       flex-direction: row;
     }
-    
+
     @media(max-width:800px) {
-      .ly-b .pg-grid, .ly-d .pg-grid, .ly-i .pg-grid {
+
+      .ly-b .pg-grid,
+      .ly-d .pg-grid,
+      .ly-i .pg-grid {
         flex-direction: column;
       }
     }
@@ -881,19 +886,24 @@
       .page {
         padding: 0.5rem 0.4rem;
       }
+
       .pt {
         font-size: 1.1rem;
         margin-bottom: 0.2rem;
       }
+
       .pm {
         font-size: 0.9rem;
         line-height: 1.3;
       }
-      .ly-b .pg-grid, .ly-d .pg-grid, .ly-i .pg-grid {
+
+      .ly-b .pg-grid,
+      .ly-d .pg-grid,
+      .ly-i .pg-grid {
         grid-template-columns: 1fr;
       }
     }
-    
+
     @media(max-width:500px) {
       .page {
         padding: 0.3rem 0.2rem;
@@ -901,10 +911,12 @@
         width: 99%;
         top: 1%;
       }
+
       .tape {
         width: 25px;
         height: 8px;
       }
+
       .pg-grid {
         gap: .2rem;
       }
@@ -958,20 +970,23 @@
 
     function sz() {
       var vw = window.innerWidth, vh = window.innerHeight;
-      // Very tight margins (10px) to maximize screen usage while keeping shadows visible
-      var bh = vh - 20; 
-      var maxW = vw - 20;
+      // Height logic: preserve user's bh = vh - 60
+      var bh = vh - 60;
+      // Width logic: use full width minus a small margin (40px total) 
+      // to ensure the "stacked pages" shadows on the sides are visible and not clipped.
+      var maxW = vw - 40;
       
+      // Page width is half the available width
       PW = Math.floor(maxW / 2);
-      // More flexible aspect ratio (0.85) to allow book to fill more width
-      if (PW > bh * 0.85) { PW = Math.floor(bh * 0.85) }
       
       var w = $('wrap');
       w.style.height = bh + 'px';
       if (cur === 0) {
+        // Closed cover is half the available width
         w.style.width = PW + 'px';
         w.classList.add('closed');
       } else {
+        // Open book fills the available width
         w.style.width = (PW * 2) + 'px';
         setTimeout(function () { w.classList.remove('closed') }, 800);
       }
