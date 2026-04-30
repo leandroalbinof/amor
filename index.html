@@ -1675,7 +1675,37 @@
       setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
     }
 
-    function restart() { location.reload(); }
+    function restart() {
+      if (animating) return;
+      cur = 0; animating = 0; closing = 0;
+      var w = $('wrap');
+      w.style.transition = 'none';
+      w.style.transform = 'translateX(0)';
+      w.style.width = PW + 'px';
+      w.classList.add('closed');
+      
+      for (var i = 0; i < N; i++) {
+        var s = $('s' + i);
+        s.style.display = '';
+        s.style.transition = 'none';
+        s.style.transform = '';
+        s.style.visibility = '';
+        s.classList.remove('flip');
+      }
+      $('bc').classList.remove('show');
+      $('spine').classList.remove('show');
+      $('ctrl').style.visibility = 'hidden';
+      if (aud) { aud.pause(); aud.currentTime = 0; $('bm').classList.remove('on'); }
+      sz();
+      fixZ();
+      // Restore cover button to "Abrir" state if needed
+      var btn = $('bo');
+      if (btn) {
+        btn.disabled = false;
+        btn.querySelector('span').textContent = 'Abrir Álbum';
+        btn.style.animation = 'gl 2s infinite';
+      }
+    }
     function togM() {
       if (aud.paused) { aud.play().catch(function(){}); $('bm').classList.add('on'); }
       else { aud.pause(); $('bm').classList.remove('on'); }
