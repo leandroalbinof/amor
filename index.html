@@ -984,7 +984,6 @@
   <button id="bn" style="display:none"></button>
   <div class="ctrl" id="ctrl" style="visibility:hidden">
     <button id="bm" class="cb" title="Música">🎵</button>
-    <button id="br" class="cb" title="Reiniciar">🔄</button>
   </div>
   <audio id="aud" loop preload="auto">
     <source src="musica/musica.mp3" type="audio/mpeg">
@@ -1620,9 +1619,12 @@
     });
     window.addEventListener('resize', function() { applyBlur(); fixCirc(); });
 
+    build();
+    
+    // Attach listeners only AFTER build() has created the buttons
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
-    $('bm').addEventListener('click', togM);
-    $('br').addEventListener('click', restart);
+    if ($('bm')) $('bm').addEventListener('click', togM);
+    if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     function loadAssets() {
       var assets = [];
       D.forEach(function (p) {
@@ -1711,7 +1713,6 @@
       else { aud.pause(); $('bm').classList.remove('on'); }
     }
 
-    build();
     loadAssets();
     fixZ();
     $('bm').addEventListener('click', togM);
