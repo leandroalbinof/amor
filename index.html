@@ -1008,11 +1008,14 @@
 
     function sz() {
       var vw = window.innerWidth, vh = window.innerHeight;
-      // Height logic: preserve user's bh = vh - 60
-      var bh = vh - 60;
-      // Width logic: use full width minus a small margin (40px total) 
-      // to ensure the "stacked pages" shadows on the sides are visible and not clipped.
-      var maxW = vw - 40;
+      // On mobile, use less margin to fill the screen. 
+      // We need at least 20px (10px top/bottom) for the shadows.
+      var marginV = (vw < 500) ? 20 : 40;
+      var bh = vh - marginV;
+      
+      // Horizontal margin: 10px each side on mobile, 20px on desktop
+      var marginH = (vw < 500) ? 20 : 40;
+      var maxW = vw - marginH;
       
       // Page width is half the available width
       PW = Math.floor(maxW / 2);
