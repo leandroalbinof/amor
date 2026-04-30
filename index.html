@@ -1718,9 +1718,8 @@
 
     loadAssets();
     fixZ();
-    $('bm').addEventListener('click', togM);
-    $('br').addEventListener('click', restart);
-    $('bReopen').addEventListener('click', restart);
+    if ($('bm')) $('bm').addEventListener('click', togM);
+    if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); } });
     document.addEventListener('fullscreenchange', function () { setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, 150) });
 
