@@ -298,12 +298,12 @@
 
     .bo {
       margin-top: 1.3rem;
-      padding: .6rem 1.8rem;
+      padding: .6rem 1.2rem;
       background: rgba(255, 255, 255, .1);
       border: 2px solid rgba(255, 255, 255, .3);
       color: #fdf6ee;
       font-family: 'Poppins', sans-serif;
-      font-size: .85rem;
+      font-size: .8rem;
       border-radius: 50px;
       cursor: pointer;
       transition: all .3s;
@@ -315,6 +315,7 @@
       overflow: hidden;
       max-width: 90%;
       white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     .bo:disabled {
@@ -450,7 +451,7 @@
       justify-content: center;
       text-align: center;
       color: #fdf6ee;
-      padding: 2rem;
+      padding: 1.5rem 1rem;
       background: url('assets/leather.png') center/cover;
       border-radius: 4px 0 0 4px;
       z-index: 10000;
@@ -973,8 +974,7 @@
         <p class="et">Nossa História</p>
         <p class="ee">💕</p>
       </div>
-      <button class="bo" style="animation:none;position:relative;margin-top:1.3rem" id="bReopen">Voltar ao
-        início</button>
+      <button class="bo" style="animation:none;position:relative;margin-top:1.3rem" id="bReopen">Reiniciar</button>
     </div>
     <div class="spine" id="spine"></div>
     <div class="book" id="book"></div>
@@ -1080,7 +1080,7 @@
           } else {
             fH = '<div class="sf"><div class="cover-inside ci-r">' + cornersR + '</div>' + mkPage(D[li].b, 'm-' + li + '-b', null, D[li].r, 0, 'r') + '</div>';
           }
-          bH = '<div class="sb"><div class="cover-pg back-c">' + cornersL + '<p class="et">Nossa História</p><p class="ee">💕</p><div style="margin-top:1.3rem;padding:.6rem 1.5rem;font-size:.85rem;visibility:hidden;border:2px solid transparent">Voltar ao início</div></div></div>';
+          bH = '<div class="sb"><div class="cover-pg back-c">' + cornersL + '<div style="position:relative"><p class="et">Nossa História</p><p class="ee">💕</p></div><button class="bo" style="animation:none;position:relative;margin-top:1.3rem;visibility:hidden">Reiniciar</button></div></div>';
         }
         s.innerHTML = fH + bH;
         book.appendChild(s);
@@ -1675,9 +1675,18 @@
       setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
     }
 
+    function restart() { location.reload(); }
+    function togM() {
+      if (aud.paused) { aud.play().catch(function(){}); $('bm').classList.add('on'); }
+      else { aud.pause(); $('bm').classList.remove('on'); }
+    }
+
     build();
     loadAssets();
     fixZ();
+    $('bm').addEventListener('click', togM);
+    $('br').addEventListener('click', restart);
+    $('bReopen').addEventListener('click', restart);
     window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); } });
     document.addEventListener('fullscreenchange', function () { setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, 150) });
 
