@@ -258,7 +258,7 @@
 
     .cn {
       font-family: 'Dancing Script', cursive;
-      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-size: clamp(1.5rem, 8vw, 3.5rem);
       font-weight: 700;
       text-shadow: 2px 3px 6px rgba(0, 0, 0, .4);
       position: relative;
@@ -275,7 +275,7 @@
 
     .ct {
       font-family: 'Caveat', cursive;
-      font-size: clamp(1.2rem, 4vw, 1.8rem);
+      font-size: clamp(1.4rem, 4.5vw, 2.2rem);
       opacity: .9;
       position: relative
     }
@@ -510,7 +510,7 @@
 
     .pt {
       font-family: 'Dancing Script', cursive;
-      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      font-size: clamp(1.3rem, 4vw, 2.2rem);
       color: #2a1b12;
       margin-bottom: .4rem;
       text-align: center;
@@ -749,7 +749,7 @@
 
     .pm {
       font-family: 'Caveat', cursive;
-      font-size: clamp(.9rem, 2.2vw, 1.1rem);
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
       color: #1a0f08;
       text-align: left;
       line-height: 1.4;
@@ -918,12 +918,12 @@
       }
 
       .pt {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         margin-bottom: 0.2rem;
       }
 
       .pm {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
         line-height: 1.3;
       }
 
@@ -955,11 +955,94 @@
         font-size: .75rem;
       }
       .cn {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
       }
       .ct {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
       }
+    }
+
+
+
+
+    .ly-timer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 100%;
+      gap: 0.8rem;
+      text-align: center;
+      padding: 0.5rem 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .t-head {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.4rem;
+      color: #2a170d;
+      opacity: 0.8;
+    }
+
+    .t-row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+    }
+
+    .t-val-m {
+      font-size: 2.4rem; /* Slightly larger */
+      font-family: 'Playfair Display', serif;
+      color: #2a170d;
+      font-weight: 700; /* Bolder for better readability */
+      line-height: 1;
+    }
+
+    .t-lab-m {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #5d3d21;
+      font-weight: 700; /* Bolder label */
+      margin-top: 0.1rem;
+    }
+
+    .t-ss-minimal {
+      margin-top: 0.5rem;
+    }
+
+    .t-val-xl {
+      font-size: 3rem;
+      font-family: 'Playfair Display', serif;
+      color: #2a170d;
+      font-weight: 700;
+    }
+
+    .t-foot {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.1rem;
+      color: #2a170d;
+      opacity: 0.6;
+    }
+    
+    @media (max-width: 500px) {
+      .t-val-m { font-size: 1.8rem; }
+      .t-val-xl { font-size: 2.4rem; }
+      .t-head { font-size: 1.2rem; }
+    }
+    
+    @media (max-width: 500px) {
+      .t-circ { width: 55px; height: 55px; }
+      .t-val { font-size: 1rem; }
+      .t-lab { font-size: 0.8rem; }
+      .t-val-xl { font-size: 2.8rem; }
+    }
+    
+    @media (max-width: 500px) {
+      .t-grid { gap: 0.8rem; }
     }
   </style>
 </head>
@@ -992,8 +1075,8 @@
   <script>
     var D = [
       { t: 'O Início de Tudo 👶', r: 0, f: { p: ['fotos/foto (1).jpg', 'fotos/foto (2).jpg'], ly: 'a', m: 'Em 15/05/1994, o mundo ganhou um brilho novo. Você chegou para iluminar tudo ao seu redor com essa luz que só você tem. ✨' }, b: { p: ['fotos/foto (3).jpg', 'fotos/foto (4).jpg'], ly: 'b', m: 'Desde os primeiros passos, sua essência já era pura doçura e alegria. O começo de uma jornada linda. 💖' } },
-      { t: 'Pura Inocência 🌸', r: 0, f: { p: ['fotos/foto (5).jpg', 'fotos/foto (6).jpg'], ly: 'l', m: 'Uma infância cheia de descobertas e sorrisos. Cada foto guarda o segredo da mulher incrível que você estava se tornando. 🦋' }, b: { p: ['fotos/foto (7).jpg', 'fotos/foto (8).jpg'], ly: 'b', m: 'Crescendo com sonhos nos olhos e um coração que já transbordava amor. Momento de florescer. 🌻' } },
-      { t: 'Sonhos e Descobertas 💫', r: 0, f: { p: ['fotos/foto (9).jpg', 'fotos/foto (10).jpg'], ly: 'k', m: 'A adolescência trouxe os primeiros grandes sonhos e a força de quem sabe que pode conquistar o mundo. 🌟' }, b: { p: ['fotos/foto (11).JPG', 'fotos/foto (12).jpg'], ly: 'e', m: 'Cada fase, cada mudança, só realçava a beleza da sua alma. Você sempre foi única. 💕' } },
+      { t: 'O Valor do seu Tempo ⏳', r: 0, f: { ly: 'timer', m: 'Cada segundo da sua existência é um presente para quem te rodeia. Desde o seu primeiro respiro, você tem transformado o mundo em um lugar mais bonito de se viver.' }, b: { p: ['fotos/foto (5).jpg', 'fotos/foto (6).jpg'], ly: 'l', m: 'Sua jornada é feita de momentos preciosos, e cada um deles construiu a mulher extraordinária que você é hoje. 🌸' } },
+      { t: 'Sonhos e Descobertas 💫', r: 0, f: { p: ['fotos/foto (7).jpg', 'fotos/foto (8).jpg'], ly: 'k', m: 'A adolescência trouxe os primeiros grandes sonhos e a força de quem sabe que pode conquistar o mundo. 🌟' }, b: { p: ['fotos/foto (9).jpg', 'fotos/foto (10).jpg'], ly: 'e', m: 'Cada fase, cada mudança, só realçava a beleza da sua alma. Você sempre foi única. 💕' } },
       { t: 'Nossos Caminhos 💘', r: 1, f: { p: ['fotos/foto (13).jpg', 'fotos/foto (14).jpg'], ly: 'c', m: 'E então, o destino nos uniu. O encontro que mudou o rumo da minha vida e deu um novo sentido ao meu caminhar. 💓' }, b: { p: ['fotos/foto (15).jpg', 'fotos/foto (16).jpg'], ly: 'i', m: 'Do "sim" no altar à construção de cada dia, nosso amor é o meu maior porto seguro. ❤️' } },
       { t: 'Nosso Maior Presente 🍼', r: 1, f: { p: ['fotos/foto (17).jpg', 'fotos/foto (18).JPG'], ly: 'f', m: 'A vida nos deu a dádiva de sermos pais. Ver você como mãe é ver o amor em sua forma mais sublime e divina. 🤱' }, b: { p: ['fotos/foto (19).jpg', 'fotos/foto (20).JPG'], ly: 'j', m: 'Nossa família é o reflexo da sua força e carinho. Você é o coração do nosso lar. 💞' } },
       { t: 'Memórias Eternas 🎬', r: 1, f: { p: ['videos/video1.mp4'], ly: 'g', m: 'Momentos que as fotos não conseguem segurar, mas os vídeos eternizam: seu riso, seu jeito, nossa vida em movimento. 🎥' }, b: { p: ['videos/video2.mp4'], ly: 'g', m: 'Cada frame ao seu lado é uma prova de que a vida vale a pena ser vivida com você. 💫' } },
@@ -1038,6 +1121,17 @@
     function isVid(s) { return /\.(mp4|webm|ogg|mov)$/i.test(s) }
 
     function ph(a, ly) {
+      if (ly === 'timer') {
+        return '<div class="ly-timer">' +
+          '<div class="t-head">Desde o seu primeiro respiro...</div>' +
+          '<div class="t-row"><span class="t-val-m" id="t-yy">-</span><span class="t-lab-m">Anos de vida</span></div>' +
+          '<div class="t-row"><span class="t-val-m" id="t-dd">-</span><span class="t-lab-m">Dias de sorrisos</span></div>' +
+          '<div class="t-row"><span class="t-val-m" id="t-hh">-</span><span class="t-lab-m">Horas de sonhos</span></div>' +
+          '<div class="t-row"><span class="t-val-m" id="t-mm">-</span><span class="t-lab-m">Minutos de luz</span></div>' +
+          '<div class="t-foot">...e o mundo continua melhor.</div>' +
+        '</div>';
+      }
+      if (!a || !Array.isArray(a)) return '<div class="pg-grid"></div>';
       return '<div class="pg-grid">' + a.map(function (s, j) {
         if (isVid(s)) return '<div class="fr"><video src="' + s + '" playsinline muted preload="auto"></video></div>';
         return '<div class="fr"><div class="bb b1"><img src="' + s + '"></div><div class="bb b2"><img src="' + s + '"></div><img src="' + s + '" alt="" loading="eager"></div>';
@@ -1351,6 +1445,7 @@
         setTimeout(function () { flipping.style.zIndex = cur - 1 + 1; animating = 0; }, 1200);
         doTW();
         playVisibleVideos();
+        updateTimer();
       }
     }
 
@@ -1440,7 +1535,12 @@
           var elR = $('s' + cur).querySelector('.sf .pm');
           if (elR) fi(elR);
         }
-        setTimeout(function () { flipping.style.zIndex = N - cur; animating = 0; }, 1200);
+        setTimeout(function () { 
+          flipping.style.zIndex = N - cur; 
+          animating = 0; 
+          updateTimer(); 
+          playVisibleVideos();
+        }, 1200);
         playVisibleVideos();
       }
     }
@@ -1512,6 +1612,7 @@
         playVisibleVideos();
         setTimeout(function () {
           animating = 0;
+          updateTimer();
           var elL = $('s0').querySelector('.sb .pm');
           var elR = $('s' + cur).querySelector('.sf .pm');
           if (elL && !elL._done) {
@@ -1716,6 +1817,28 @@
     function togM() {
       if (aud.paused) { aud.play().catch(function(){}); $('bm').classList.add('on'); }
       else { aud.pause(); $('bm').classList.remove('on'); }
+    }
+
+    var timerIv = null;
+    function updateTimer() {
+      if (timerIv) clearInterval(timerIv);
+      var birth = new Date(1994, 4, 15, 0, 0, 0); // Month is 0-indexed, so 4 = May
+      function calc() {
+        var now = new Date();
+        var diff = now - birth;
+        var yy = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        var dd = Math.floor(diff / (1000 * 60 * 60 * 24));
+        var hh = Math.floor(diff / (1000 * 60 * 60));
+        var mm = Math.floor(diff / (1000 * 60));
+        var ss = Math.floor(diff / 1000);
+
+        if ($('t-yy')) $('t-yy').textContent = yy.toLocaleString();
+        if ($('t-dd')) $('t-dd').textContent = dd.toLocaleString();
+        if ($('t-hh')) $('t-hh').textContent = hh.toLocaleString();
+        if ($('t-mm')) $('t-mm').textContent = mm.toLocaleString();
+      }
+      calc();
+      timerIv = setInterval(calc, 1000);
     }
 
     loadAssets();
