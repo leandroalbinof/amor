@@ -598,7 +598,8 @@
       box-shadow: none;
       border: none;
       overflow: hidden;
-      width: 200px; /* JS will override this */
+      width: 200px;
+      /* JS will override this */
       height: 200px;
     }
 
@@ -725,6 +726,14 @@
       z-index: 1
     }
 
+    .upside-down {
+      transform: rotate(180deg) !important;
+    }
+
+    .reflected {
+      transform: scaleX(-1) !important;
+    }
+
     .fr::after {
       display: none
     }
@@ -794,6 +803,43 @@
       border-radius: 6px;
       padding: .5rem;
       width: 100%
+    }
+
+    .balao {
+      position: absolute;
+      bottom: -100px;
+      width: 40px;
+      height: 50px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      z-index: 100;
+      animation: subir 4s ease-in forwards;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .balao::before {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 18px;
+      width: 4px;
+      height: 10px;
+      background: rgba(0,0,0,0.1);
+    }
+
+    .balao::after {
+      content: "";
+      position: absolute;
+      bottom: -30px;
+      left: 19px;
+      width: 2px;
+      height: 30px;
+      background: #ccc;
+    }
+
+    @keyframes subir {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
     }
 
     .ltr .pm {
@@ -944,13 +990,16 @@
       .pg-grid {
         gap: .2rem;
       }
+
       .bo {
         padding: .5rem 1rem;
         font-size: .75rem;
       }
+
       .cn {
         font-size: 1.4rem;
       }
+
       .ct {
         font-size: 1.3rem;
       }
@@ -988,10 +1037,12 @@
     }
 
     .t-val-m {
-      font-size: 2.4rem; /* Slightly larger */
+      font-size: 2.4rem;
+      /* Slightly larger */
       font-family: 'Playfair Display', serif;
       color: #2a170d;
-      font-weight: 700; /* Bolder for better readability */
+      font-weight: 700;
+      /* Bolder for better readability */
       line-height: 1;
     }
 
@@ -1000,7 +1051,8 @@
       text-transform: uppercase;
       letter-spacing: 2px;
       color: #5d3d21;
-      font-weight: 700; /* Bolder label */
+      font-weight: 700;
+      /* Bolder label */
       margin-top: 0.1rem;
     }
 
@@ -1021,22 +1073,44 @@
       color: #2a170d;
       opacity: 0.6;
     }
-    
+
     @media (max-width: 500px) {
-      .t-val-m { font-size: 1.8rem; }
-      .t-val-xl { font-size: 2.4rem; }
-      .t-head { font-size: 1.2rem; }
+      .t-val-m {
+        font-size: 1.8rem;
+      }
+
+      .t-val-xl {
+        font-size: 2.4rem;
+      }
+
+      .t-head {
+        font-size: 1.2rem;
+      }
     }
-    
+
     @media (max-width: 500px) {
-      .t-circ { width: 55px; height: 55px; }
-      .t-val { font-size: 1rem; }
-      .t-lab { font-size: 0.8rem; }
-      .t-val-xl { font-size: 2.8rem; }
+      .t-circ {
+        width: 55px;
+        height: 55px;
+      }
+
+      .t-val {
+        font-size: 1rem;
+      }
+
+      .t-lab {
+        font-size: 0.8rem;
+      }
+
+      .t-val-xl {
+        font-size: 2.8rem;
+      }
     }
-    
+
     @media (max-width: 500px) {
-      .t-grid { gap: 0.8rem; }
+      .t-grid {
+        gap: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -1065,17 +1139,74 @@
   <audio id="aud" loop preload="auto">
     <source src="musica/musica.mp3" type="audio/mpeg">
   </audio>
-
   <script>
     var D = [
-      { t: 'O Início de Tudo 👶', r: 0, f: { p: ['fotos/foto (1).jpg', 'fotos/foto (2).jpg'], ly: 'a', m: 'Em 15/05/1994, o mundo ganhou um brilho novo. Você chegou para iluminar tudo ao seu redor com essa luz que só você tem. ✨' }, b: { p: ['fotos/foto (3).jpg', 'fotos/foto (4).jpg'], ly: 'b', m: 'Desde os primeiros passos, sua essência já era pura doçura e alegria. O começo de uma jornada linda. 💖' } },
-      { t: 'O Valor do seu Tempo ⏳', r: 0, f: { ly: 'timer', m: 'Cada segundo da sua existência é um presente para quem te rodeia. Desde o seu primeiro respiro, você tem transformado o mundo em um lugar mais bonito de se viver.' }, b: { p: ['fotos/foto (5).jpg', 'fotos/foto (6).jpg'], ly: 'l', m: 'Sua jornada é feita de momentos preciosos, e cada um deles construiu a mulher extraordinária que você é hoje. 🌸' } },
-      { t: 'Sonhos e Descobertas 💫', r: 0, f: { p: ['fotos/foto (7).jpg', 'fotos/foto (8).jpg'], ly: 'k', m: 'A adolescência trouxe os primeiros grandes sonhos e a força de quem sabe que pode conquistar o mundo. 🌟' }, b: { p: ['fotos/foto (9).jpg', 'fotos/foto (10).jpg'], ly: 'e', m: 'Cada fase, cada mudança, só realçava a beleza da sua alma. Você sempre foi única. 💕' } },
-      { t: 'Nossos Caminhos 💘', r: 1, f: { p: ['fotos/foto (13).jpg', 'fotos/foto (14).jpg'], ly: 'c', m: 'E então, o destino nos uniu. O encontro que mudou o rumo da minha vida e deu um novo sentido ao meu caminhar. 💓' }, b: { p: ['fotos/foto (15).jpg', 'fotos/foto (16).jpg'], ly: 'i', m: 'Do "sim" no altar à construção de cada dia, nosso amor é o meu maior porto seguro. ❤️' } },
-      { t: 'Nosso Maior Presente 🍼', r: 1, f: { p: ['fotos/foto (17).jpg', 'fotos/foto (18).JPG'], ly: 'f', m: 'A vida nos deu a dádiva de sermos pais. Ver você como mãe é ver o amor em sua forma mais sublime e divina. 🤱' }, b: { p: ['fotos/foto (19).jpg', 'fotos/foto (20).JPG'], ly: 'j', m: 'Nossa família é o reflexo da sua força e carinho. Você é o coração do nosso lar. 💞' } },
-      { t: 'Memórias Eternas 🎬', r: 1, f: { p: ['fotos/foto (21).jpg', 'videos/video1.mp4'], ly: 'a', m: 'Momentos que as fotos não conseguem segurar, mas os vídeos eternizam: seu riso, seu jeito, nossa vida em movimento. 🎥' }, b: { p: ['videos/video2.mp4'], ly: 'g', m: 'Cada frame ao seu lado é uma prova de que a vida vale a pena ser vivida com você. 💫' } },
-      { t: 'Parabéns, Meu Amor! 🎂', r: 1, fin: 1, f: { p: ['fotos/foto (22).jpg', 'fotos/foto (23).jpg'], ly: 'h', m: 'Hoje celebramos a sua vida, a mulher maravilhosa, esposa dedicada e mãe incrível que você é. Que este novo ano seja tão radiante quanto o seu sorriso. Sou o homem mais sortudo do mundo por caminhar ao seu lado há tanto tempo. Feliz Aniversário! Que Deus te ilumine sempre. Eu te amo além das palavras! ❤️🥂' }, b: { end: 1 } }
+      // INÍCIO (P1: Capa, P2: Timer) -> 2 páginas
+      { t: '', r: 1, f: { p: ['fotos/capa.png'], ly: 'g', m: 'FELIZ ANIVERSÁRIO!' }, b: { p: [], ly: 'timer', m: '' } },
+
+      // BEBÊ (26 fotos -> 13 páginas: P3 a P15)
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (1).jpg', 'fotos/bebe/foto (2).jpg'], ly: 'a', m: 'O início de tudo. 👶💕' }, b: { p: ['fotos/bebe/foto (3).jpg', 'fotos/bebe/foto (4).JPG'], ly: 'a', m: 'Pequenos passos...' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (5).jpg', 'fotos/bebe/foto (6).jpg'], ly: 'a', m: 'A doçura em cada gesto.' }, b: { p: ['fotos/bebe/foto (7).JPG', 'fotos/bebe/foto (8).jpg'], ly: 'a', m: 'Crescendo com alegria.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (9).jpg', 'fotos/bebe/foto (10).jpg'], ly: 'a', m: 'Cada sorriso era um presente.' }, b: { p: ['fotos/bebe/foto (11).jpg', 'fotos/bebe/foto (12).jpg'], ly: 'a', m: 'Explorando o mundo.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (13).jpg', 'fotos/bebe/foto (14).jpg'], ly: 'a', m: 'Olhar de curiosidade.' }, b: { p: ['fotos/bebe/foto (15).jpg', 'fotos/bebe/foto (16).jpg'], ly: 'a', m: 'Felicidade pura.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (17).jpg', 'fotos/bebe/foto (19).png'], ly: 'a', m: 'Um brilho único.' }, b: { p: ['fotos/bebe/foto (20).jpg', 'fotos/bebe/foto (21).JPG'], ly: 'a', m: 'Amor em cada detalhe.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (22).jpg', 'fotos/bebe/foto (23).jpg'], ly: 'a', m: 'Sua essência é luz.' }, b: { p: ['fotos/bebe/foto (24).jpg', 'fotos/bebe/foto (25).jpg'], ly: 'a', m: 'Doces memórias.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (26).jpg', 'fotos/bebe/foto (27).jpg'], ly: 'a', m: 'Linda jornada.' }, b: { p: ['fotos/criança/foto (1).JPG'], ly: 'g', m: 'A pureza da infância. 👧✨' } },
+
+      // CRIANÇA (11 fotos -> 6 páginas: P16 a P21)
+      { t: '', r: 1, f: { p: ['fotos/criança/foto (2).jpg', 'fotos/criança/foto (3).jpg'], ly: 'a', m: 'Brincar e sonhar.' }, b: { p: ['fotos/criança/foto (4).jpg', 'fotos/criança/foto (5).jpg'], ly: 'a', m: 'Momentos mágicos.' } },
+      { t: '', r: 1, f: { p: ['fotos/criança/foto (6).jpg', 'fotos/criança/foto (7).jpg'], ly: 'a', m: 'O brilho no olhar.' }, b: { p: ['fotos/criança/foto (8).JPG', 'fotos/criança/foto (9).JPG'], ly: 'a', m: 'Sempre sorrindo.' } },
+      { t: '', r: 1, f: { p: ['fotos/criança/foto (10).JPG', 'fotos/criança/foto (11).png'], ly: 'a', m: 'Fases felizes.' }, b: { p: ['fotos/adolescente/foto (1).JPG'], ly: 'g', m: 'A fase dos sonhos. 🌟' } },
+
+      // ADOLESCENTE (21 fotos -> 12 páginas: P22 a P33)
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (2).JPG', 'fotos/adolescente/foto (3).JPG'], ly: 'a', m: 'Descobertas.' }, b: { p: ['fotos/adolescente/foto (4).JPG', 'fotos/adolescente/foto (5).JPG'], ly: 'a', m: 'Construindo história.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (6).JPG', 'fotos/adolescente/foto (7).JPG'], ly: 'a', m: 'Atitude e charme.' }, b: { p: ['fotos/adolescente/foto (8).JPG', 'fotos/adolescente/foto (9).JPG'], ly: 'a', m: 'Fases inesquecíveis.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (10).JPG', 'fotos/adolescente/foto (11).JPG'], ly: 'a', m: 'Beleza em transformação.' }, b: { p: ['fotos/adolescente/foto (12).JPG', 'fotos/adolescente/foto (13).JPG'], ly: 'a', m: 'Radiante.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (14).jpg', 'fotos/adolescente/foto (15).JPG'], ly: 'a', m: 'Grandes ambições.' }, b: { p: ['fotos/adolescente/foto (16).JPG', 'fotos/adolescente/foto (17).JPG'], ly: 'a', m: 'Marcando presença.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (18).JPG', 'fotos/adolescente/foto (19).JPG'], ly: 'a', m: 'Anos de ouro.' }, b: { p: ['fotos/adolescente/foto (20).JPG', 'fotos/adolescente/foto (21).JPG'], ly: 'a', m: 'Pronta para o mundo.' } },
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (1).jpg'], ly: 'g', m: 'A força da juventude. 🌸' }, b: { p: ['fotos/jovem/foto (2).jpg'], ly: 'g', m: 'Novos horizontes.' } },
+
+      // JOVEM (9 fotos restantes -> 6 páginas: P34 a P39)
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (3).PNG', 'fotos/jovem/foto (4).png'], ly: 'a', m: 'Energia vibrante.' }, b: { p: ['fotos/jovem/foto (5).png', 'fotos/jovem/foto (6).jpg'], ly: 'a', m: 'Brilhando sempre.' } },
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (7).png', 'fotos/jovem/foto (8).jpg'], ly: 'a', m: 'Mulher decidida.' }, b: { p: ['fotos/jovem/foto (9).jpg', 'fotos/jovem/foto (10).jpg'], ly: 'a', m: 'Conquistando espaço.' } },
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (11).jpg'], ly: 'g', m: 'Sua essência em plenitude.' }, b: { p: ['fotos/sozinha/foto (1).jpg'], ly: 'g', m: 'Beleza única. ✨' } },
+
+      // SOZINHA & FACULDADE (P40 a P45)
+      { t: '', r: 1, f: { p: ['fotos/faculdade/foto (1).JPG'], ly: 'g', m: 'Orgulho da sua jornada! 🎓' }, b: { p: ['fotos/faculdade/foto (2).jpg', 'fotos/faculdade/foto (3).jpg'], ly: 'a', m: 'Estudos e dedicação.' } },
+      { t: '', r: 1, f: { p: ['fotos/faculdade/foto (4).png', 'fotos/faculdade/foto (5).JPG'], ly: 'a', m: 'A vitória do esforço.' }, b: { p: ['fotos/faculdade/foto (6).jpg'], ly: 'g', m: 'Conquista merecida.' } },
+      { t: '', r: 1, f: { p: ['fotos/atual/foto (1).JPG', 'fotos/atual/foto (2).jpg'], ly: 'a', m: 'Sua melhor versão. 😍❤️' }, b: { p: ['fotos/atual/foto (4).JPG', 'fotos/atual/foto (5).JPG'], ly: 'a', m: 'Cada dia mais radiante.' } },
+
+      // COM LEANDRO (21 fotos -> 12 páginas: P46 a P57)
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (1).jpg', 'fotos/com leandro/foto (2).jpg'], ly: 'a', m: 'Nossa história. 💑💖' }, b: { p: ['fotos/com leandro/foto (3).jpg', 'fotos/com leandro/foto (4).jpg'], ly: 'a', m: 'Momentos tesouros.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (5).png', 'fotos/com leandro/foto (6).jpg'], ly: 'a', m: 'Nosso mundo.' }, b: { p: ['fotos/com leandro/foto (7).jpg', 'fotos/com leandro/foto (8).jpg'], ly: 'a', m: 'Amor que se fortalece.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (9).jpg', 'fotos/com leandro/foto (10).jpg'], ly: 'a', m: 'Melhor companhia.' }, b: { p: ['fotos/com leandro/foto (11).JPG', 'fotos/com leandro/foto (13).jpg'], ly: 'a', m: 'Sorrisos.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (14).jpg', 'fotos/com leandro/foto (15).jpg'], ly: 'a', m: 'Porto seguro.' }, b: { p: ['fotos/com leandro/foto (16).jpg', 'fotos/com leandro/foto (17).JPG'], ly: 'a', m: 'De mãos dadas.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (18).jpg', 'fotos/com leandro/foto (19).jpg'], ly: 'a', m: 'Melhor escolha.' }, b: { p: ['fotos/com leandro/foto (20).jpg', 'fotos/com leandro/foto (21).jpg'], ly: 'a', m: 'Vida com amor.' } },
+      { t: '', r: 1, f: { p: ['fotos/casamento/foto (1).jpg'], ly: 'g', m: 'O nosso sim. 💍💒' }, b: { p: ['fotos/casamento/foto (2).jpg'], ly: 'g', m: 'Um dia inesquecível.' } },
+
+      // CASAMENTO & COM MEL (P58 a P69)
+      { t: '', r: 1, f: { p: ['fotos/casamento/foto (3).jpg', 'fotos/casamento/foto (4).jpg'], ly: 'a', m: 'Onde tudo se tornou um.' }, b: { p: ['fotos/casamento/foto (5).mp4'], ly: 'g', m: 'Emoção eterna.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (1).JPG'], ly: 'g', m: 'Nosso maior presente. 🤱🍼💞' }, b: { p: ['fotos/com mel/foto (2).JPG', 'fotos/com mel/foto (3).jpg'], ly: 'a', m: 'Fruto de tanto amor.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (4).JPG', 'fotos/com mel/foto (5).JPG'], ly: 'a', m: 'Cuidando e amando.' }, b: { p: ['fotos/com mel/foto (6).jpg', 'fotos/com mel/foto (7).png'], ly: 'a', m: 'Família que cresce.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (8).JPG', 'fotos/com mel/foto (9).jpg'], ly: 'a', m: 'Princesa da casa.' }, b: { p: ['fotos/com mel/foto (10).jpg', 'fotos/com mel/foto (11).png'], ly: 'a', m: 'Coração do nosso lar.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (12).jpg'], ly: 'g', m: 'Nossa alegria diária.' }, b: { p: ['fotos/com mel/foto (13).png'], ly: 'g', m: 'Para sempre nós.' } },
     ];
+
+    function mkB(el) {
+      if (!el) return;
+      var colors = ['#ff7473', '#ffc952', '#47b8e0', '#d4a0c0', '#95afc0'];
+      for (var i = 0; i < 8; i++) {
+        setTimeout(function() {
+          var b = document.createElement('div');
+          b.className = 'balao';
+          b.style.left = (Math.random() * 80 + 10) + '%';
+          b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          b.style.animationDelay = (Math.random() * 2) + 's';
+          el.appendChild(b);
+          setTimeout(function() { if(b.parentNode) b.parentNode.removeChild(b) }, 6000);
+        }, i * 300);
+      }
+    }
 
     var N = D.length + 1;
     var cur = 0, mp = 0, actx = null, animating = 0, closing = 0;
@@ -1089,14 +1220,14 @@
       // We need at least 20px (10px top/bottom) for the shadows.
       var marginV = (vw < 500) ? 20 : 40;
       var bh = vh - marginV;
-      
+
       // Horizontal margin: 10px each side on mobile, 20px on desktop
       var marginH = (vw < 500) ? 20 : 40;
       var maxW = vw - marginH;
-      
+
       // Page width is half the available width
       PW = Math.floor(maxW / 2);
-      
+
       var w = $('wrap');
       w.style.height = bh + 'px';
       if (cur === 0) {
@@ -1123,12 +1254,17 @@
           '<div class="t-row"><span class="t-val-m" id="t-hh">-</span><span class="t-lab-m">Horas de sonhos</span></div>' +
           '<div class="t-row"><span class="t-val-m" id="t-mm">-</span><span class="t-lab-m">Minutos de luz</span></div>' +
           '<div class="t-foot">...e o mundo continua melhor.</div>' +
-        '</div>';
+          '</div>';
       }
+      if (ly === 'empty') return '<div class="pg-empty"></div>';
       if (!a || !Array.isArray(a)) return '<div class="pg-grid"></div>';
       return '<div class="pg-grid">' + a.map(function (s, j) {
-        if (isVid(s)) return '<div class="fr"><video src="' + s + '" playsinline muted loop autoplay preload="auto"></video></div>';
-        return '<div class="fr"><div class="bb b1"><img src="' + s + '"></div><div class="bb b2"><img src="' + s + '"></div><img src="' + s + '" alt="" loading="eager"></div>';
+        var extraCls = (ly === 'reflected' ? ' reflected' : '');
+        if (isVid(s)) {
+          var rot = (s.indexOf('video4.mp4') > -1 ? ' upside-down' : '') + extraCls;
+          return '<div class="fr"><video src="' + s + '" class="' + rot + '" playsinline muted loop autoplay preload="auto"></video></div>';
+        }
+        return '<div class="fr"><div class="bb b1' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><div class="bb b2' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><img src="' + s + '" class="' + extraCls + '" alt="" loading="eager"></div>';
       }).join('') + '</div>';
     }
 
@@ -1331,10 +1467,10 @@
           var visible = false;
           if (isSF && i === cur) visible = true;
           if (isSB && i === cur - 1) visible = true;
-          
+
           if (visible) {
             v.muted = true;
-            v.play().catch(function() { });
+            v.play().catch(function () { });
             visVids.push(v);
           } else {
             v.pause();
@@ -1385,6 +1521,11 @@
         var flipping = $('s' + (cur - 1));
         flipping.style.zIndex = 100;
         flipping.classList.add('flip');
+        if (cur === 1) {
+          mkB(flipping.querySelector('.sb'));
+          var nextS = $('s' + cur);
+          if (nextS) mkB(nextS.querySelector('.sf'));
+        }
 
         var sfBefore = flipping.querySelector('.sf').appendChild(document.createElement('div'));
         sfBefore.className = 'page-lighting left-lighting';
@@ -1509,10 +1650,10 @@
           var elR = $('s' + cur).querySelector('.sf .pm');
           if (elR) fi(elR);
         }
-        setTimeout(function () { 
-          flipping.style.zIndex = N - cur; 
-          animating = 0; 
-          updateTimer(); 
+        setTimeout(function () {
+          flipping.style.zIndex = N - cur;
+          animating = 0;
+          updateTimer();
           playVisibleVideos();
         }, 1200);
         playVisibleVideos();
@@ -1550,7 +1691,7 @@
         // Step 3: Slide back to center while flipping cover
         w.style.transition = 'transform .8s cubic-bezier(.4,0,.2,1)';
         w.style.transform = 'translateX(0)';
-        snd(); 
+        snd();
 
         var flipping = $('s0');
         flipping.classList.add('flip');
@@ -1587,6 +1728,8 @@
         setTimeout(function () {
           animating = 0;
           updateTimer();
+          mkB($('s0').querySelector('.sb'));
+          mkB($('s1').querySelector('.sf'));
           var elL = $('s0').querySelector('.sb .pm');
           var elR = $('s' + cur).querySelector('.sf .pm');
           if (elL && !elL._done) {
@@ -1650,12 +1793,12 @@
         var d1 = fr.querySelector('.b1'), d2 = fr.querySelector('.b2');
         var media = fr.querySelector(':scope>img') || fr.querySelector(':scope>video');
         if (!d1 || !d2 || !media) { if (d1) d1.style.display = 'none'; if (d2) d2.style.display = 'none'; return }
-        
+
         var isImg = media.tagName === 'IMG';
         var mw = isImg ? media.naturalWidth : media.videoWidth;
         var mh = isImg ? media.naturalHeight : media.videoHeight;
 
-        if (!mw || !mh) { 
+        if (!mw || !mh) {
           if (isImg) { d1.style.display = 'none'; d2.style.display = 'none'; return }
           // For videos, if dimensions aren't ready, wait for metadata
           media.onloadedmetadata = applyBlur;
@@ -1666,23 +1809,28 @@
         fr.style.maxWidth = '';
         var fw = fr.offsetWidth, fh = fr.offsetHeight, p = 40;
         if (!fw || !fh) { d1.style.display = 'none'; d2.style.display = 'none'; return }
-        
+
         var blurCSS = 'position:absolute;object-fit:cover;filter:blur(20px) brightness(.85);';
         var i1 = d1.querySelector('img, video'), i2 = d2.querySelector('img, video');
-        
+
         // Ensure background elements match the media type (create if needed)
         function syncBg(container, source) {
           var bg = container.querySelector('img, video');
           if (bg && bg.tagName !== source.tagName) { container.removeChild(bg); bg = null; }
           if (!bg) {
             bg = document.createElement(source.tagName === 'IMG' ? 'img' : 'video');
-            if (source.tagName === 'VIDEO') { bg.muted = true; bg.loop = true; bg.autoplay = true; }
+            if (source.tagName === 'VIDEO') {
+              bg.muted = true;
+              bg.loop = true;
+              bg.autoplay = true;
+              if (source.classList.contains('upside-down')) bg.classList.add('upside-down');
+            }
             container.appendChild(bg);
           }
           if (bg.src !== source.src) bg.src = source.src;
           return bg;
         }
-        
+
         var bg1 = syncBg(d1, media), bg2 = syncBg(d2, media);
 
         if (mh > mw) {
@@ -1723,13 +1871,13 @@
     }
 
     document.querySelectorAll('.fr>img').forEach(function (img) {
-      img.addEventListener('load', function() { applyBlur(); fixCirc(); });
-      if (img.complete) setTimeout(function() { applyBlur(); fixCirc(); }, 50);
+      img.addEventListener('load', function () { applyBlur(); fixCirc(); });
+      if (img.complete) setTimeout(function () { applyBlur(); fixCirc(); }, 50);
     });
-    window.addEventListener('resize', function() { applyBlur(); fixCirc(); });
+    window.addEventListener('resize', function () { applyBlur(); fixCirc(); });
 
     build();
-    
+
     // Attach listeners only AFTER build() has created the buttons
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
     if ($('bm')) $('bm').addEventListener('click', togM);
@@ -1762,25 +1910,25 @@
         }
       }
       assets.forEach(function (a) {
-        if (a.t === 'i') { 
-          var img = new Image(); 
-          img.onload = update; 
-          img.onerror = update; 
-          img.src = a.u; 
-        } else if (a.t === 'v') { 
-          var v = document.createElement('video'); 
+        if (a.t === 'i') {
+          var img = new Image();
+          img.onload = update;
+          img.onerror = update;
+          img.src = a.u;
+        } else if (a.t === 'v') {
+          var v = document.createElement('video');
           v.preload = 'auto';
-          v.oncanplaythrough = update; 
-          v.onerror = update; 
-          v.src = a.u; 
-          v.load(); 
-        } else if (a.t === 'a') { 
-          var au = new Audio(); 
+          v.oncanplaythrough = update;
+          v.onerror = update;
+          v.src = a.u;
+          v.load();
+        } else if (a.t === 'a') {
+          var au = new Audio();
           au.preload = 'auto';
-          au.oncanplaythrough = update; 
-          au.onerror = update; 
-          au.src = a.u; 
-          au.load(); 
+          au.oncanplaythrough = update;
+          au.onerror = update;
+          au.src = a.u;
+          au.load();
         }
       });
       setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
@@ -1794,7 +1942,7 @@
       w.style.transform = 'translateX(0)';
       w.style.width = PW + 'px';
       w.classList.add('closed');
-      
+
       for (var i = 0; i < N; i++) {
         var s = $('s' + i);
         s.style.display = '';
@@ -1815,10 +1963,11 @@
         btn.disabled = false;
         btn.querySelector('span').textContent = 'Abrir Álbum';
         btn.style.animation = 'gl 2s infinite';
+        mkB($('s0'));
       }
     }
     function togM() {
-      if (aud.paused) { aud.play().catch(function(){}); $('bm').classList.add('on'); }
+      if (aud.paused) { aud.play().catch(function () { }); $('bm').classList.add('on'); }
       else { aud.pause(); $('bm').classList.remove('on'); }
     }
 
