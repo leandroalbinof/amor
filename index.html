@@ -722,13 +722,7 @@
       border: 4px solid #fdfaf6;
       border-radius: 4px;
       box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.4);
-      filter: grayscale(1);
-      transition: filter .5s;
       z-index: 1
-    }
-
-    .fr video.playing {
-      filter: grayscale(0)
     }
 
     .fr::after {
@@ -1133,7 +1127,7 @@
       }
       if (!a || !Array.isArray(a)) return '<div class="pg-grid"></div>';
       return '<div class="pg-grid">' + a.map(function (s, j) {
-        if (isVid(s)) return '<div class="fr"><video src="' + s + '" playsinline muted preload="auto"></video></div>';
+        if (isVid(s)) return '<div class="fr"><video src="' + s + '" playsinline muted loop autoplay preload="auto"></video></div>';
         return '<div class="fr"><div class="bb b1"><img src="' + s + '"></div><div class="bb b2"><img src="' + s + '"></div><img src="' + s + '" alt="" loading="eager"></div>';
       }).join('') + '</div>';
     }
@@ -1328,6 +1322,7 @@
     }
 
     function playVisibleVideos() {
+      var visVids = [];
       for (var i = 0; i < N; i++) {
         var s = $('s' + i);
         s.querySelectorAll('video').forEach(function (v) {
@@ -1336,38 +1331,17 @@
           var visible = false;
           if (isSF && i === cur) visible = true;
           if (isSB && i === cur - 1) visible = true;
-          if (!visible) { v.pause(); v.currentTime = 0; v.classList.remove('playing'); v.onended = null; v.volume = 0 }
+          
+          if (visible) {
+            v.muted = true;
+            v.play().catch(function() { });
+            visVids.push(v);
+          } else {
+            v.pause();
+            v.currentTime = 0;
+          }
         });
       }
-      var visVids = [];
-      if (cur > 0) $('s' + (cur - 1)).querySelectorAll('.sb video').forEach(function (v) { visVids.push(v) });
-      if (cur < N) $('s' + cur).querySelectorAll('.sf video').forEach(function (v) { visVids.push(v) });
-      function playSeq(idx) {
-        if (idx >= visVids.length) { fadeAudio(1, 800); return }
-        var v = visVids[idx];
-        v.currentTime = 0;
-        v.volume = 0;
-        v.classList.add('playing');
-        fadeAudio(0.15, 600);
-        v.muted = false;
-        v.play().catch(function () { v.muted = true; v.play().catch(function () { }) });
-        // Limit video to 15 seconds
-        var maxTime = 15;
-        var timeCheck = setInterval(function () { if (v.currentTime >= maxTime) { clearInterval(timeCheck); v.dispatchEvent(new Event('ended')) } }, 200);
-        // Fade in video volume
-        var vs = 0, viv = setInterval(function () { vs++; v.volume = Math.min(1, vs / 20); if (vs >= 20) clearInterval(viv) }, 30);
-        if (idx > 0) {
-          var elR = cur < N ? $('s' + cur).querySelector('.sf .pm') : null;
-          if (elR && !elR._done) tw(elR);
-        }
-        v.onended = function () {
-          clearInterval(timeCheck);
-          // Fade out video volume
-          var vo = 20, vov = setInterval(function () { vo--; v.volume = Math.max(0, vo / 20); if (vo <= 0) { clearInterval(vov); v.classList.remove('playing'); playSeq(idx + 1) } }, 30);
-        };
-      }
-      if (visVids.length > 0) playSeq(0);
-      else fadeAudio(1, 600);
     }
 
     function pageHasVideos() {
