@@ -346,15 +346,26 @@
     }
 
     @keyframes gl {
-
-      0%,
-      100% {
-        box-shadow: 0 0 8px rgba(255, 255, 255, .2)
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.2), inset 0 0 0px rgba(255, 255, 255, 0);
       }
-
       50% {
-        box-shadow: 0 0 20px rgba(255, 255, 255, .4)
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.3);
+        transform: scale(1.03);
       }
+    }
+
+    .bo .progress::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     .page-lighting {
@@ -1294,7 +1305,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">15/05/1994</p><p class="ct">A Jornada de uma Vida</p><div class="progress" id="lp"></div><button class="bo" id="bo" disabled><span>Carregando...</span></button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">15/05/1994</p><p class="ct">A Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1883,17 +1894,22 @@
     if ($('bm')) $('bm').addEventListener('click', togM);
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     function loadAssets() {
-      var assets = [];
+      var assets = new Set();
       D.forEach(function (p) {
-        if (p.f && p.f.p) p.f.p.forEach(function (u) { assets.push({ u: u, t: isVid(u) ? 'v' : 'i' }) });
-        if (p.b && p.b.p) p.b.p.forEach(function (u) { assets.push({ u: u, t: isVid(u) ? 'v' : 'i' }) });
+        if (p.f && p.f.p) p.f.p.forEach(function (u) { assets.add(u) });
+        if (p.b && p.b.p) p.b.p.forEach(function (u) { assets.add(u) });
       });
-      assets.push({ u: 'musica/musica.mp3', t: 'a' });
-      assets.push({ u: 'assets/leather.png', t: 'i' });
-      assets.push({ u: 'assets/paper.png', t: 'i' });
-      assets.push({ u: 'assets/gold.png', t: 'i' });
+      assets.add('musica/musica.mp3');
+      assets.add('assets/leather.png');
+      assets.add('assets/paper.png');
+      assets.add('assets/gold.png');
 
-      var total = assets.length, loaded = 0, btn = $('bo'), lp = $('lp');
+      var total = assets.size, loaded = 0, btn = $('bo'), lp = $('lp');
+      if (total === 0) {
+        if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; btn.style.animation = 'gl 2s infinite'; }
+        return;
+      }
+
       function update() {
         loaded++;
         var pct = Math.floor((loaded / total) * 100);
@@ -1909,29 +1925,30 @@
           }, 500);
         }
       }
-      assets.forEach(function (a) {
-        if (a.t === 'i') {
+
+      assets.forEach(function (u) {
+        if (isVid(u)) {
+          var v = document.createElement('video');
+          v.preload = 'auto';
+          v.oncanplaythrough = function() { if(!v._done) { v._done=1; update(); } };
+          v.onerror = function() { if(!v._done) { v._done=1; update(); } };
+          v.src = u;
+          v.load();
+        } else if (/\.(mp3|wav|ogg)$/i.test(u)) {
+          var au = new Audio();
+          au.preload = 'auto';
+          au.oncanplaythrough = function() { if(!au._done) { au._done=1; update(); } };
+          au.onerror = function() { if(!au._done) { au._done=1; update(); } };
+          au.src = u;
+          au.load();
+        } else {
           var img = new Image();
           img.onload = update;
           img.onerror = update;
-          img.src = a.u;
-        } else if (a.t === 'v') {
-          var v = document.createElement('video');
-          v.preload = 'auto';
-          v.oncanplaythrough = update;
-          v.onerror = update;
-          v.src = a.u;
-          v.load();
-        } else if (a.t === 'a') {
-          var au = new Audio();
-          au.preload = 'auto';
-          au.oncanplaythrough = update;
-          au.onerror = update;
-          au.src = a.u;
-          au.load();
+          img.src = u;
         }
       });
-      setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; } }, 15000);
+      setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; btn.style.animation = 'gl 2s infinite'; } }, 30000);
     }
 
     function restart() {
