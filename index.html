@@ -352,9 +352,12 @@
     }
 
     @keyframes gl {
-      0%, 100% {
+
+      0%,
+      100% {
         box-shadow: 0 0 12px rgba(255, 255, 255, 0.2), inset 0 0 0px rgba(255, 255, 255, 0);
       }
+
       50% {
         box-shadow: 0 0 25px rgba(255, 255, 255, 0.5), inset 0 0 8px rgba(255, 255, 255, 0.3);
         transform: scale(1.03);
@@ -364,14 +367,22 @@
     .bo .progress::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
       animation: shimmer 1.5s infinite;
     }
 
     @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
     }
 
     .page-lighting {
@@ -697,7 +708,8 @@
     }
 
     .ly-letter .pm {
-      font-size: 1rem; /* auto-fitted by JS */
+      font-size: 1rem;
+      /* auto-fitted by JS */
       text-align: justify;
       line-height: 1.55;
       text-indent: 1.5em;
@@ -715,12 +727,7 @@
       justify-content: center;
     }
 
-    .pg-letter-decor::after {
-      content: '❦';
-      font-size: 1.3rem;
-      color: #d4a0c0;
-      opacity: 0.6;
-    }
+
 
     /* Landscape on small phones */
     @media (max-height: 500px) and (orientation: landscape) {
@@ -730,10 +737,12 @@
         text-indent: 1em;
         padding: 0 0.2rem;
       }
+
       .pg-letter-decor {
         height: 20px;
         margin-bottom: 0.2rem;
       }
+
       .pg-letter-decor::after {
         font-size: 0.9rem;
       }
@@ -746,6 +755,7 @@
         line-height: 1.4;
         text-indent: 1.2em;
       }
+
       .pg-letter-decor {
         height: 24px;
         margin-bottom: 0.3rem;
@@ -898,7 +908,7 @@
       left: 18px;
       width: 4px;
       height: 10px;
-      background: rgba(0,0,0,0.1);
+      background: rgba(0, 0, 0, 0.1);
     }
 
     .balao::after {
@@ -912,8 +922,15 @@
     }
 
     @keyframes subir {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(20deg); opacity: 0; }
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-120vh) rotate(20deg);
+        opacity: 0;
+      }
     }
 
     .ltr .pm {
@@ -1289,14 +1306,14 @@
       if (!el) return;
       var colors = ['#ff7473', '#ffc952', '#47b8e0', '#d4a0c0', '#95afc0'];
       for (var i = 0; i < 8; i++) {
-        setTimeout(function() {
+        setTimeout(function () {
           var b = document.createElement('div');
           b.className = 'balao';
           b.style.left = (Math.random() * 80 + 10) + '%';
           b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
           b.style.animationDelay = (Math.random() * 2) + 's';
           el.appendChild(b);
-          setTimeout(function() { if(b.parentNode) b.parentNode.removeChild(b) }, 6000);
+          setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b) }, 6000);
         }, i * 300);
       }
     }
@@ -2012,14 +2029,14 @@
       var imgUrls = new Set();
       var vidUrls = new Set();
       D.forEach(function (p) {
-        [p.f, p.b].forEach(function(side) {
+        [p.f, p.b].forEach(function (side) {
           if (side && side.p) side.p.forEach(function (u) {
             if (isVid(u)) vidUrls.add(u); else imgUrls.add(u);
           });
         });
       });
       // Add static CSS assets
-      ['assets/leather.png', 'assets/paper.png', 'assets/gold.png'].forEach(function(u){ imgUrls.add(u); });
+      ['assets/leather.png', 'assets/paper.png', 'assets/gold.png'].forEach(function (u) { imgUrls.add(u); });
 
       var total = imgUrls.size + vidUrls.size + 1; // +1 for audio
       var loaded = 0;
@@ -2033,14 +2050,14 @@
           // Double-check: all DOM <img> elements must also be complete
           var domImgs = document.querySelectorAll('.book img');
           var pending = [];
-          domImgs.forEach(function(img) { if (!img.complete) pending.push(img); });
+          domImgs.forEach(function (img) { if (!img.complete) pending.push(img); });
           if (pending.length === 0) {
             enableBtn();
           } else {
             var waitedFor = 0;
-            pending.forEach(function(img) {
-              img.addEventListener('load', function() { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, {once: true});
-              img.addEventListener('error', function() { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, {once: true});
+            pending.forEach(function (img) {
+              img.addEventListener('load', function () { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, { once: true });
+              img.addEventListener('error', function () { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, { once: true });
             });
           }
         }
@@ -2071,16 +2088,16 @@
       vidUrls.forEach(function (u) {
         var v = document.createElement('video');
         v.preload = 'metadata';
-        v.onloadedmetadata = function() { if(!v._d) { v._d=1; onDone(); } };
-        v.onerror = function() { if(!v._d) { v._d=1; onDone(); } };
+        v.onloadedmetadata = function () { if (!v._d) { v._d = 1; onDone(); } };
+        v.onerror = function () { if (!v._d) { v._d = 1; onDone(); } };
         v.src = u;
       });
 
       // Preload audio
       var au = new Audio();
       au.preload = 'auto';
-      au.oncanplaythrough = function() { if(!au._d) { au._d=1; onDone(); } };
-      au.onerror = function() { if(!au._d) { au._d=1; onDone(); } };
+      au.oncanplaythrough = function () { if (!au._d) { au._d = 1; onDone(); } };
+      au.onerror = function () { if (!au._d) { au._d = 1; onDone(); } };
       au.src = 'musica/musica.mp3';
 
       // Safety fallback: force-enable after 30s even if something stalls
