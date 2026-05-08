@@ -690,6 +690,31 @@
       gap: .5rem
     }
 
+    .ly-letter .pm {
+      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      text-align: justify;
+      line-height: 1.6;
+      text-indent: 2em;
+      padding: 0 0.5rem;
+    }
+
+    .pg-letter-decor {
+      width: 100%;
+      height: 40px;
+      background: radial-gradient(circle, rgba(212, 160, 192, 0.2) 0%, transparent 70%);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pg-letter-decor::after {
+      content: '❦';
+      font-size: 1.5rem;
+      color: #d4a0c0;
+      opacity: 0.6;
+    }
+
     .fr {
       overflow: visible;
       transition: transform .4s;
@@ -771,7 +796,8 @@
       width: 100%;
       text-indent: 1.5em;
       position: relative;
-      font-weight: 700
+      font-weight: 700;
+      white-space: pre-wrap;
     }
 
     .pm .pm-reserve {
@@ -1206,6 +1232,20 @@
       { t: '', r: 1, f: { p: ['fotos/com mel/foto (4).JPG', 'fotos/com mel/video8.mp4'], ly: 'a', m: 'Família que cresce.' }, b: { p: ['fotos/com mel/foto (5).JPG', 'fotos/com mel/video10.mp4'], ly: 'a', m: 'Princesa da casa.' } },
       { t: '', r: 1, f: { p: ['fotos/com mel/foto (6).jpg', 'fotos/com mel/video11.mp4'], ly: 'a', m: 'Coração do nosso lar.' }, b: { p: ['fotos/com mel/foto (9).jpg', 'fotos/com mel/video12.mp4'], ly: 'a', m: 'Nossa alegria diária.' } },
       { t: '', r: 1, f: { p: ['fotos/com mel/foto (11).png', 'fotos/com mel/video14.mp4'], ly: 'a', m: 'Crescendo com amor.' }, b: { p: ['fotos/com mel/foto (13).png'], ly: 'g', m: 'Para sempre nós.' } },
+      {
+        t: 'Uma Carta para Você',
+        r: 1,
+        f: {
+          p: [],
+          ly: 'letter',
+          m: 'Amada Késia,\n\nAo folhear estas páginas e ver a trajetória linda que construímos, meu coração transborda de um orgulho imenso por quem você se tornou. Desde os primeiros passos até aqui, sua jornada é marcada por uma força admirável e uma determinação que me inspira todos os dias.\n\nTenho um orgulho profundo de cada uma de suas conquistas, das pequenas vitórias diárias aos grandes marcos, como sua graduação e a formação da nossa família. Você enfrenta a vida com uma doçura e uma coragem raras, e ver você florescer é o maior privilégio da minha vida.'
+        },
+        b: {
+          p: [],
+          ly: 'letter',
+          m: 'Como mãe, você é um exemplo de dedicação e amor incondicional. Ver o cuidado que você tem com a nossa Mel me faz te amar ainda mais. Você é o pilar que sustenta o nosso lar com alegria e luz.\n\nNeste seu aniversário, meu desejo é que a vida continue sendo generosa com você. Que você tenha muitos e muitos anos de vida, repletos de saúde, paz e descobertas. Que o seu sorriso nunca perca o brilho.\n\nSaiba que estarei sempre aqui, ao seu lado, para te apoiar e celebrar cada nova vitória. Você é o meu grande amor, minha melhor amiga e minha eterna companheira.\n\nParabéns por ser essa mulher extraordinária. Eu te amo infinitamente!\n\nCom todo o meu amor,\nLeandro'
+        }
+      }
     ];
 
     function mkB(el) {
@@ -1273,6 +1313,7 @@
           '<div class="t-foot">...e o mundo continua melhor.</div>' +
           '</div>';
       }
+      if (ly === 'letter') return '<div class="pg-letter-decor"></div>';
       if (ly === 'empty') return '<div class="pg-empty"></div>';
       if (!a || !Array.isArray(a)) return '<div class="pg-grid"></div>';
       return '<div class="pg-grid">' + a.map(function (s, j) {
