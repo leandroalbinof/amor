@@ -112,6 +112,12 @@
       z-index: 3
     }
 
+    .ly-letter .pm {
+      flex: 1 1 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
     .page .ltr {
       flex-shrink: 0;
       z-index: 3
@@ -691,28 +697,59 @@
     }
 
     .ly-letter .pm {
-      font-size: clamp(1rem, 2.2vw, 1.15rem);
+      font-size: 1rem; /* auto-fitted by JS */
       text-align: justify;
-      line-height: 1.6;
-      text-indent: 2em;
-      padding: 0 0.5rem;
+      line-height: 1.55;
+      text-indent: 1.5em;
+      padding: 0 0.4rem;
     }
 
     .pg-letter-decor {
       width: 100%;
-      height: 40px;
+      height: 32px;
+      flex-shrink: 0;
       background: radial-gradient(circle, rgba(212, 160, 192, 0.2) 0%, transparent 70%);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .pg-letter-decor::after {
-      content: '❦';
-      font-size: 1.5rem;
+      content: '\u2766';
+      font-size: 1.3rem;
       color: #d4a0c0;
       opacity: 0.6;
+    }
+
+    /* Landscape on small phones */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .ly-letter .pm {
+        font-size: clamp(0.55rem, 1.4vh, 0.8rem);
+        line-height: 1.35;
+        text-indent: 1em;
+        padding: 0 0.2rem;
+      }
+      .pg-letter-decor {
+        height: 20px;
+        margin-bottom: 0.2rem;
+      }
+      .pg-letter-decor::after {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Small portrait phones */
+    @media (max-width: 500px) and (orientation: portrait) {
+      .ly-letter .pm {
+        font-size: clamp(0.65rem, 2.5vw, 0.85rem);
+        line-height: 1.4;
+        text-indent: 1.2em;
+      }
+      .pg-letter-decor {
+        height: 24px;
+        margin-bottom: 0.3rem;
+      }
     }
 
     .fr {
@@ -1615,7 +1652,7 @@
         if (cur < N) sz();
         if (cur > 0 && cur < N) setTimeout(function () { $('spine').classList.add('show') }, 850);
         $('ctrl').style.visibility = 'visible';
-        setTimeout(function () { flipping.style.zIndex = cur - 1 + 1; animating = 0; }, 1200);
+        setTimeout(function () { flipping.style.zIndex = cur - 1 + 1; animating = 0; fitLetterText(); }, 1200);
         doTW();
         playVisibleVideos();
         updateTimer();
@@ -1713,6 +1750,7 @@
           animating = 0;
           updateTimer();
           playVisibleVideos();
+          fitLetterText();
         }, 1200);
         playVisibleVideos();
       }
@@ -1931,11 +1969,37 @@
 
     build();
 
+    function fitLetterText() {
+      document.querySelectorAll('.ly-letter .pm').forEach(function (pm) {
+        var page = pm.closest('.page');
+        if (!page) return;
+        pm.style.fontSize = '8px'; // reset before measuring
+        var pageH = page.clientHeight;
+        var usedH = 0;
+        Array.from(page.children).forEach(function (child) {
+          if (child !== pm) usedH += child.offsetHeight;
+        });
+        var available = pageH - usedH - 8; // 8px safety margin
+        if (available <= 0) return;
+        // Binary-search for largest font size that fits
+        var lo = 8, hi = 28, best = lo;
+        while (lo <= hi) {
+          var mid = Math.floor((lo + hi) / 2);
+          pm.style.fontSize = mid + 'px';
+          if (pm.scrollHeight <= available) { best = mid; lo = mid + 1; }
+          else hi = mid - 1;
+        }
+        pm.style.fontSize = best + 'px';
+      });
+    }
+
     document.querySelectorAll('.fr>img').forEach(function (img) {
       img.addEventListener('load', function () { applyBlur(); fixCirc(); });
       if (img.complete) setTimeout(function () { applyBlur(); fixCirc(); }, 50);
     });
     window.addEventListener('resize', function () { applyBlur(); fixCirc(); });
+    // Run fitLetterText once after build so initial size is correct
+    setTimeout(fitLetterText, 100);
 
     // Attach listeners only AFTER build() has created the buttons
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
@@ -2088,11 +2152,11 @@
     fixZ();
     if ($('bm')) $('bm').addEventListener('click', togM);
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
-    window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); } });
+    window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); fitLetterText(); } });
     document.addEventListener('fullscreenchange', function () {
       // Multi-step check to catch the final viewport size on mobile
       [100, 300, 600, 1000].forEach(function (d) {
-        setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); } }, d);
+        setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); fitLetterText(); } }, d);
       });
     });
 
