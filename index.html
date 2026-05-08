@@ -1320,7 +1320,7 @@
         var extraCls = (ly === 'reflected' ? ' reflected' : '');
         if (isVid(s)) {
           var rot = (s.indexOf('video4.mp4') > -1 ? ' upside-down' : '') + extraCls;
-          return '<div class="fr"><video src="' + s + '" class="' + rot + '" playsinline muted loop autoplay preload="auto"></video></div>';
+          return '<div class="fr"><video src="' + s + '" class="' + rot + '" playsinline muted loop preload="none"></video></div>';
         }
         return '<div class="fr"><div class="bb b1' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><div class="bb b2' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><img src="' + s + '" class="' + extraCls + '" alt="" loading="eager"></div>';
       }).join('') + '</div>';
@@ -1727,7 +1727,6 @@
 
     function openBook() {
       if (animating) return;
-      goFS();
       animating = 1;
       var w = $('wrap');
       // Step 1: Slide to the right
@@ -1803,6 +1802,8 @@
             else if (elR) fi(elR);
           }
         }, 1400);
+        // Enter fullscreen only after the opening animation is done (avoids resize/reflow conflict)
+        goFS();
       }, 1000);
       aud.play().then(function () { mp = 1; $('bm').textContent = '\ud83d\udd0a'; $('bm').classList.add('on') }).catch(function () { });
     }
@@ -1928,74 +1929,100 @@
       });
     }
 
+    build();
+
     document.querySelectorAll('.fr>img').forEach(function (img) {
       img.addEventListener('load', function () { applyBlur(); fixCirc(); });
       if (img.complete) setTimeout(function () { applyBlur(); fixCirc(); }, 50);
     });
     window.addEventListener('resize', function () { applyBlur(); fixCirc(); });
 
-    build();
-
     // Attach listeners only AFTER build() has created the buttons
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
     if ($('bm')) $('bm').addEventListener('click', togM);
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     function loadAssets() {
-      var assets = new Set();
+      var btn = $('bo'), lp = $('lp');
+
+      // Collect all media URLs from the data array
+      var imgUrls = new Set();
+      var vidUrls = new Set();
       D.forEach(function (p) {
-        if (p.f && p.f.p) p.f.p.forEach(function (u) { assets.add(u) });
-        if (p.b && p.b.p) p.b.p.forEach(function (u) { assets.add(u) });
+        [p.f, p.b].forEach(function(side) {
+          if (side && side.p) side.p.forEach(function (u) {
+            if (isVid(u)) vidUrls.add(u); else imgUrls.add(u);
+          });
+        });
       });
-      assets.add('musica/musica.mp3');
-      assets.add('assets/leather.png');
-      assets.add('assets/paper.png');
-      assets.add('assets/gold.png');
+      // Add static CSS assets
+      ['assets/leather.png', 'assets/paper.png', 'assets/gold.png'].forEach(function(u){ imgUrls.add(u); });
 
-      var total = assets.size, loaded = 0, btn = $('bo'), lp = $('lp');
-      if (total === 0) {
-        if (btn) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; btn.style.animation = 'gl 2s infinite'; }
-        return;
-      }
+      var total = imgUrls.size + vidUrls.size + 1; // +1 for audio
+      var loaded = 0;
 
-      function update() {
+      function onDone() {
         loaded++;
-        var pct = Math.floor((loaded / total) * 100);
+        var pct = Math.min(100, Math.floor((loaded / total) * 100));
         if (lp) lp.style.width = pct + '%';
         if (btn) btn.querySelector('span').textContent = 'Carregando ' + pct + '%';
         if (loaded >= total) {
-          setTimeout(function () {
-            if (btn) {
-              btn.querySelector('span').textContent = 'Abrir Álbum';
-              btn.disabled = false;
-              btn.style.animation = 'gl 2s infinite';
-            }
-          }, 500);
+          // Double-check: all DOM <img> elements must also be complete
+          var domImgs = document.querySelectorAll('.book img');
+          var pending = [];
+          domImgs.forEach(function(img) { if (!img.complete) pending.push(img); });
+          if (pending.length === 0) {
+            enableBtn();
+          } else {
+            var waitedFor = 0;
+            pending.forEach(function(img) {
+              img.addEventListener('load', function() { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, {once: true});
+              img.addEventListener('error', function() { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, {once: true});
+            });
+          }
         }
       }
 
-      assets.forEach(function (u) {
-        if (isVid(u)) {
-          var v = document.createElement('video');
-          v.preload = 'auto';
-          v.oncanplaythrough = function() { if(!v._done) { v._done=1; update(); } };
-          v.onerror = function() { if(!v._done) { v._done=1; update(); } };
-          v.src = u;
-          v.load();
-        } else if (/\.(mp3|wav|ogg)$/i.test(u)) {
-          var au = new Audio();
-          au.preload = 'auto';
-          au.oncanplaythrough = function() { if(!au._done) { au._done=1; update(); } };
-          au.onerror = function() { if(!au._done) { au._done=1; update(); } };
-          au.src = u;
-          au.load();
-        } else {
-          var img = new Image();
-          img.onload = update;
-          img.onerror = update;
-          img.src = u;
-        }
+      function enableBtn() {
+        setTimeout(function () {
+          if (btn) {
+            btn.querySelector('span').textContent = 'Abrir Album';
+            btn.disabled = false;
+            btn.style.animation = 'gl 2s infinite';
+          }
+        }, 300);
+      }
+
+      if (total <= 1) { enableBtn(); return; }
+
+      // Preload all images into the browser cache so DOM elements load instantly
+      imgUrls.forEach(function (u) {
+        var img = new Image();
+        img.onload = onDone;
+        img.onerror = onDone;
+        img.src = u;
+        if (img.complete) { img.onload = null; img.onerror = null; onDone(); }
       });
-      setTimeout(function () { if (btn && btn.disabled) { btn.disabled = false; btn.querySelector('span').textContent = 'Abrir Álbum'; btn.style.animation = 'gl 2s infinite'; } }, 30000);
+
+      // Preload video metadata
+      vidUrls.forEach(function (u) {
+        var v = document.createElement('video');
+        v.preload = 'metadata';
+        v.onloadedmetadata = function() { if(!v._d) { v._d=1; onDone(); } };
+        v.onerror = function() { if(!v._d) { v._d=1; onDone(); } };
+        v.src = u;
+      });
+
+      // Preload audio
+      var au = new Audio();
+      au.preload = 'auto';
+      au.oncanplaythrough = function() { if(!au._d) { au._d=1; onDone(); } };
+      au.onerror = function() { if(!au._d) { au._d=1; onDone(); } };
+      au.src = 'musica/musica.mp3';
+
+      // Safety fallback: force-enable after 30s even if something stalls
+      setTimeout(function () {
+        if (btn && btn.disabled) enableBtn();
+      }, 30000);
     }
 
     function restart() {
