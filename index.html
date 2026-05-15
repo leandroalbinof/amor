@@ -78,7 +78,8 @@
     .sb {
       position: absolute;
       inset: 0;
-      backface-visibility: hidden
+      backface-visibility: hidden;
+      transform-style: preserve-3d
     }
 
     .sf {
@@ -131,23 +132,23 @@
     .page-r {
       left: 0;
       border-radius: 0 4px 4px 0;
-      background: #fdf6ee url('assets/paper.webp') center/cover;
+      background: #fdf6ee url('assets/paper.png') center/cover;
       box-shadow: inset 30px 0 40px -10px rgba(0, 0, 0, 0.3)
     }
 
     .page-l {
       right: 0;
       border-radius: 4px 0 0 4px;
-      background: #fdf6ee url('assets/paper.webp') center/cover;
+      background: #fdf6ee url('assets/paper.png') center/cover;
       box-shadow: inset -30px 0 40px -10px rgba(0, 0, 0, 0.3)
     }
 
     .page.romantic.page-r {
-      background: #fdf6ee url('assets/paper.webp') center/cover
+      background: #fdf6ee url('assets/paper.png') center/cover
     }
 
     .page.romantic.page-l {
-      background: #fdf6ee url('assets/paper.webp') center/cover
+      background: #fdf6ee url('assets/paper.png') center/cover
     }
 
     .sf::after {
@@ -182,7 +183,7 @@
       text-align: center;
       color: #fdf6ee;
       padding: 1.5rem 1rem;
-      background: #3e2716 url('assets/leather.webp') center/cover;
+      background: #3e2716 url('assets/leather.png') center/cover;
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -209,7 +210,7 @@
     .cover-inside {
       position: absolute;
       inset: 0;
-      background: #3e2716 url('assets/leather.webp') center/cover;
+      background: #3e2716 url('assets/leather.png') center/cover;
       box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9)
     }
 
@@ -790,7 +791,7 @@
       z-index: 1;
       border: 4px solid #fdfaf6;
       border-radius: 2px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .fr video {
@@ -804,7 +805,7 @@
       z-index: 1;
       border: 4px solid #fdfaf6;
       border-radius: 2px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     }
 
     .upside-down {
@@ -1858,33 +1859,48 @@
     }
 
     function restart() {
+      if (animating) return;
+      animating = 1;
+      
       document.querySelectorAll('.pm').forEach(function (el) {
         if (el._i) clearInterval(el._i);
         el._done = 0;
         var span = el.querySelector('.pm-text');
         if (span) span.textContent = '';
-        var res = el.querySelector('.pm-reserve');
-        if (res) res.style.display = '';
       });
+
+      // Step 1: Flip all pages back to front
+      for (var i = 0; i < N; i++) {
+        var s = $('s' + i);
+        s.style.transition = 'transform 1s cubic-bezier(.4, 0, .2, 1)';
+        s.classList.remove('flip');
+      }
+      
       $('spine').classList.remove('show');
       $('bc').classList.remove('show');
-      $('bc').style.transition = '';
-      $('bc').style.left = '';
-      $('bReopen').style.opacity = '';
-      $('bReopen').style.transition = '';
-      $('wrap').style.transform = '';
-      $('wrap').classList.add('closed');
-      $('wrap').style.width = PW + 'px';
-      cur = 0; animating = 0; closing = 0;
-      for (var i = 0; i < N; i++) {
-        $('s' + i).classList.remove('flip');
-        $('s' + i).style.visibility = '';
-        $('s' + i).style.display = '';
-        $('s' + i).style.transition = '';
-        $('s' + i).style.transform = '';
-      }
-      fixZ();
-      $('ctrl').style.visibility = 'hidden';
+
+      // Step 2: Wait for flip animation to be 100% done, then shrink the book
+      setTimeout(function() {
+        var w = $('wrap');
+        if (w) {
+          w.style.transition = 'transform 1s cubic-bezier(.4, 0, .2, 1), width 1s cubic-bezier(.4, 0, .2, 1)';
+          w.classList.add('closed');
+          w.style.width = PW + 'px';
+          w.style.transform = 'translateX(0)';
+        }
+        
+        cur = 0;
+        
+        setTimeout(function() {
+          animating = 0;
+          fixZ();
+          $('ctrl').style.visibility = 'hidden';
+          if (w) w.style.transition = '';
+          for (var i = 0; i < N; i++) {
+            $('s' + i).style.transition = '';
+          }
+        }, 1000);
+      }, 1200);
     }
 
     function togM() {
