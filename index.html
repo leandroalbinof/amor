@@ -40,9 +40,8 @@
       position: relative;
       transition: width .8s, height .8s;
       user-select: none;
+      /* Ensure shadows are visible even when book is near screen edges */
       overflow: visible;
-      -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;
     }
 
     .wrap.closed #s0 {
@@ -57,10 +56,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      -webkit-transform-style: preserve-3d;
-      transform-style: preserve-3d;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
+      transform-style: preserve-3d
     }
 
     .spread {
@@ -102,11 +98,7 @@
       flex-direction: column;
       align-items: center;
       padding: 0.8rem 0.7rem;
-      overflow: hidden;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
+      overflow: hidden
     }
 
     .page .pg-grid {
@@ -1408,7 +1400,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">A Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1431,19 +1423,14 @@
       var isMobile = window.innerWidth < 600;
       for (var i = 0; i < N; i++) {
         var s = $('s' + i);
-        // Drastic optimization for mobile: hide spreads that are far away
-        if (isMobile && (i < cur - 2 || i > cur + 2)) {
-          s.style.visibility = 'hidden';
-          s.style.display = 'none';
-          continue;
-        }
-        s.style.display = '';
         s.style.visibility = '';
+        s.style.display = '';
 
         if (i < cur) s.style.zIndex = i + 1;
         else if (i === cur) s.style.zIndex = N;
         else s.style.zIndex = N - i;
 
+        // Shadow optimization still helps performance on mobile
         if (isMobile && i > 0 && i < N - 1) continue;
 
         var cF = s.querySelector('.sf .cover-pg.front-c');
