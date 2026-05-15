@@ -67,8 +67,7 @@
       height: 100%;
       transform-origin: left center;
       transform-style: preserve-3d;
-      transition: transform 1.2s cubic-bezier(.4, .05, .2, 1);
-      will-change: transform
+      transition: transform 1.2s cubic-bezier(.4, .05, .2, 1)
     }
 
     .spread.flip {
@@ -132,23 +131,23 @@
     .page-r {
       left: 0;
       border-radius: 0 4px 4px 0;
-      background: url('assets/paper.png') center/cover;
+      background: #fdf6ee url('assets/paper.webp') center/cover;
       box-shadow: inset 30px 0 40px -10px rgba(0, 0, 0, 0.3)
     }
 
     .page-l {
       right: 0;
       border-radius: 4px 0 0 4px;
-      background: url('assets/paper.png') center/cover;
+      background: #fdf6ee url('assets/paper.webp') center/cover;
       box-shadow: inset -30px 0 40px -10px rgba(0, 0, 0, 0.3)
     }
 
     .page.romantic.page-r {
-      background: url('assets/paper.png') center/cover
+      background: #fdf6ee url('assets/paper.webp') center/cover
     }
 
     .page.romantic.page-l {
-      background: url('assets/paper.png') center/cover
+      background: #fdf6ee url('assets/paper.webp') center/cover
     }
 
     .sf::after {
@@ -183,7 +182,7 @@
       text-align: center;
       color: #fdf6ee;
       padding: 1.5rem 1rem;
-      background: url('assets/leather.png') center/cover;
+      background: #3e2716 url('assets/leather.webp') center/cover;
       position: relative;
       overflow: hidden;
       width: 100%;
@@ -210,7 +209,7 @@
     .cover-inside {
       position: absolute;
       inset: 0;
-      background: url('assets/leather.png') center/cover;
+      background: #3e2716 url('assets/leather.webp') center/cover;
       box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.9)
     }
 
@@ -234,7 +233,7 @@
       position: absolute;
       width: 45px;
       height: 45px;
-      background: url('assets/gold.png') center/cover;
+      background: url('assets/gold.webp') center/cover;
       box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.4), inset -1px -1px 3px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(0, 0, 0, 0.8);
       z-index: 10
     }
@@ -1228,59 +1227,59 @@
   <script>
     var D = [
       // INÍCIO (P1: Capa, P2: Timer) -> 2 páginas
-      { t: '', r: 1, f: { p: ['fotos/capa.png'], ly: 'g', m: 'O início de um sonho que se tornou minha vida. Feliz aniversário, meu amor!' }, b: { p: [], ly: 'timer', m: '' } },
+      { t: '', r: 1, f: { p: ['fotos/capa.webp'], ly: 'g', m: 'O início de um sonho que se tornou minha vida. Feliz aniversário, meu amor!' }, b: { p: [], ly: 'timer', m: '' } },
 
       // BEBÊ (20 fotos)
-      { t: 'Onde tudo começou... 👶💕', r: 1, f: { p: ['fotos/bebe/foto (2).jpg', 'fotos/bebe/foto (5).jpg'], ly: 'a', m: 'Mal sabia o mundo a luz que acabava de chegar.' }, b: { p: ['fotos/bebe/foto (6).jpg', 'fotos/bebe/foto (7).JPG'], ly: 'a', m: 'Cada pequeno traço já desenhava a mulher incrível que você seria.' } },
-      { t: '', r: 1, f: { p: ['fotos/bebe/foto (8).jpg', 'fotos/bebe/foto (9).jpg'], ly: 'a', m: 'A doçura que o tempo só fez florescer.' }, b: { p: ['fotos/bebe/foto (10).jpg', 'fotos/bebe/foto (11).jpg'], ly: 'a', m: 'Passos tímidos de quem conquistaria o meu coração.' } },
-      { t: '', r: 1, f: { p: ['fotos/bebe/foto (12).jpg', 'fotos/bebe/foto (13).jpg'], ly: 'a', m: 'Um olhar que já guardava todo o brilho das estrelas.' }, b: { p: ['fotos/bebe/foto (14).jpg', 'fotos/bebe/foto (15).jpg'], ly: 'a', m: 'Explorando a vida com a curiosidade mais linda.' } },
-      { t: '', r: 1, f: { p: ['fotos/bebe/foto (16).jpg', 'fotos/bebe/foto (17).jpg'], ly: 'a', m: 'A pureza que ainda vive em cada sorriso seu.' }, b: { p: ['fotos/bebe/foto (20).jpg', 'fotos/bebe/foto (22).jpg'], ly: 'a', m: 'Alegria em estado puro, transbordando nos seus olhos.' } },
-      { t: '', r: 1, f: { p: ['fotos/bebe/foto (23).jpg', 'fotos/bebe/foto (24).jpg'], ly: 'a', m: 'Amor em cada detalhe, desde o primeiro instante.' }, b: { p: ['fotos/bebe/foto (25).jpg', 'fotos/bebe/foto (26).jpg'], ly: 'a', m: 'A obra-prima mais linda que a vida já rascunhou.' } },
+      { t: 'Onde tudo começou... 👶💕', r: 1, f: { p: ['fotos/bebe/foto (2).webp', 'fotos/bebe/foto (5).webp'], ly: 'a', m: 'Mal sabia o mundo a luz que acabava de chegar.' }, b: { p: ['fotos/bebe/foto (6).webp', 'fotos/bebe/foto (7).webp'], ly: 'a', m: 'Cada pequeno traço já desenhava a mulher incrível que você seria.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (8).webp', 'fotos/bebe/foto (9).webp'], ly: 'a', m: 'A doçura que o tempo só fez florescer.' }, b: { p: ['fotos/bebe/foto (10).webp', 'fotos/bebe/foto (11).webp'], ly: 'a', m: 'Passos tímidos de quem conquistaria o meu coração.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (12).webp', 'fotos/bebe/foto (13).webp'], ly: 'a', m: 'Um olhar que já guardava todo o brilho das estrelas.' }, b: { p: ['fotos/bebe/foto (14).webp', 'fotos/bebe/foto (15).webp'], ly: 'a', m: 'Explorando a vida com a curiosidade mais linda.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (16).webp', 'fotos/bebe/foto (17).webp'], ly: 'a', m: 'A pureza que ainda vive em cada sorriso seu.' }, b: { p: ['fotos/bebe/foto (20).webp', 'fotos/bebe/foto (22).webp'], ly: 'a', m: 'Alegria em estado puro, transbordando nos seus olhos.' } },
+      { t: '', r: 1, f: { p: ['fotos/bebe/foto (23).webp', 'fotos/bebe/foto (24).webp'], ly: 'a', m: 'Amor em cada detalhe, desde o primeiro instante.' }, b: { p: ['fotos/bebe/foto (25).webp', 'fotos/bebe/foto (26).webp'], ly: 'a', m: 'A obra-prima mais linda que a vida já rascunhou.' } },
 
       // CRIANÇA (12 fotos)
-      { t: 'A magia de ser criança. 👧✨', r: 1, f: { p: ['fotos/criança/foto (1).JPG', 'fotos/criança/foto (2).jpg'], ly: 'a', m: 'Sonhos que cabiam em um abraço e transbordavam em risos.' }, b: { p: ['fotos/criança/foto (3).jpg', 'fotos/criança/foto (4).jpg'], ly: 'a', m: 'O mundo era o seu jardim, e você, a flor mais rara.' } },
-      { t: '', r: 1, f: { p: ['fotos/criança/foto (5).jpg', 'fotos/criança/foto (6).jpg'], ly: 'a', m: 'Crescendo com a leveza de quem sabe ser feliz.' }, b: { p: ['fotos/criança/foto (7).jpg', 'fotos/criança/foto (8).JPG'], ly: 'a', m: 'Sempre iluminando tudo ao seu redor.' } },
-      { t: '', r: 1, f: { p: ['fotos/criança/foto (9).JPG', 'fotos/criança/foto (10).JPG'], ly: 'a', m: 'Fases que guardam a essência da sua doçura.' }, b: { p: ['fotos/criança/foto (11).png', 'fotos/criança/foto (12).jpg'], ly: 'a', m: 'A liberdade de ser exatamente quem você nasceu para ser.' } },
+      { t: 'A magia de ser criança. 👧✨', r: 1, f: { p: ['fotos/criança/foto (1).webp', 'fotos/criança/foto (2).webp'], ly: 'a', m: 'Sonhos que cabiam em um abraço e transbordavam em risos.' }, b: { p: ['fotos/criança/foto (3).webp', 'fotos/criança/foto (4).webp'], ly: 'a', m: 'O mundo era o seu jardim, e você, a flor mais rara.' } },
+      { t: '', r: 1, f: { p: ['fotos/criança/foto (5).webp', 'fotos/criança/foto (6).webp'], ly: 'a', m: 'Crescendo com a leveza de quem sabe ser feliz.' }, b: { p: ['fotos/criança/foto (7).webp', 'fotos/criança/foto (8).webp'], ly: 'a', m: 'Sempre iluminando tudo ao seu redor.' } },
+      { t: '', r: 1, f: { p: ['fotos/criança/foto (9).webp', 'fotos/criança/foto (10).webp'], ly: 'a', m: 'Fases que guardam a essência da sua doçura.' }, b: { p: ['fotos/criança/foto (11).webp', 'fotos/criança/foto (12).webp'], ly: 'a', m: 'A liberdade de ser exatamente quem você nasceu para ser.' } },
 
       // ADOLESCENTE (16 fotos)
-      { t: 'Desabrochando para a vida. 🌟', r: 1, f: { p: ['fotos/adolescente/foto (1).JPG', 'fotos/adolescente/foto (3).JPG'], ly: 'a', m: 'A fase das descobertas, onde os sonhos ganharam asas.' }, b: { p: ['fotos/adolescente/foto (4).JPG', 'fotos/adolescente/foto (5).JPG'], ly: 'a', m: 'A beleza que começava a revelar a alma radiante.' } },
-      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (6).png', 'fotos/adolescente/foto (8).JPG'], ly: 'a', m: 'Cada escolha, um degrau para a mulher incrível que você é.' }, b: { p: ['fotos/adolescente/foto (9).JPG', 'fotos/adolescente/foto (10).JPG'], ly: 'a', m: 'Momentos que esculpiram sua força e seu caráter.' } },
-      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (11).JPG', 'fotos/adolescente/foto (12).JPG'], ly: 'a', m: 'A intensidade de quem vive cada segundo com o coração.' }, b: { p: ['fotos/adolescente/foto (14).jpg', 'fotos/adolescente/foto (15).JPG'], ly: 'a', m: 'Radiante, como o sol que nasce para brilhar.' } },
-      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (16).JPG', 'fotos/adolescente/foto (17).JPG'], ly: 'a', m: 'O mundo era pequeno demais para a imensidão dos seus desejos.' }, b: { p: ['fotos/adolescente/foto (18).JPG', 'fotos/adolescente/foto (21).JPG'], ly: 'a', m: 'Pronta para enfrentar tudo com a coragem que te define.' } },
+      { t: 'Desabrochando para a vida. 🌟', r: 1, f: { p: ['fotos/adolescente/foto (1).webp', 'fotos/adolescente/foto (3).webp'], ly: 'a', m: 'A fase das descobertas, onde os sonhos ganharam asas.' }, b: { p: ['fotos/adolescente/foto (4).webp', 'fotos/adolescente/foto (5).webp'], ly: 'a', m: 'A beleza que começava a revelar a alma radiante.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (6).webp', 'fotos/adolescente/foto (8).webp'], ly: 'a', m: 'Cada escolha, um degrau para a mulher incrível que você é.' }, b: { p: ['fotos/adolescente/foto (9).webp', 'fotos/adolescente/foto (10).webp'], ly: 'a', m: 'Momentos que esculpiram sua força e seu caráter.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (11).webp', 'fotos/adolescente/foto (12).webp'], ly: 'a', m: 'A intensidade de quem vive cada segundo com o coração.' }, b: { p: ['fotos/adolescente/foto (14).webp', 'fotos/adolescente/foto (15).webp'], ly: 'a', m: 'Radiante, como o sol que nasce para brilhar.' } },
+      { t: '', r: 1, f: { p: ['fotos/adolescente/foto (16).webp', 'fotos/adolescente/foto (17).webp'], ly: 'a', m: 'O mundo era pequeno demais para a imensidão dos seus desejos.' }, b: { p: ['fotos/adolescente/foto (18).webp', 'fotos/adolescente/foto (21).webp'], ly: 'a', m: 'Pronta para enfrentar tudo com a coragem que te define.' } },
 
       // JOVEM (11 fotos)
-      { t: 'A força da sua juventude. 🌸', r: 1, f: { p: ['fotos/jovem/foto (1).jpg', 'fotos/jovem/foto (2).jpg'], ly: 'a', m: 'Uma energia que contagia e transforma tudo em amor.' }, b: { p: ['fotos/jovem/foto (3).PNG', 'fotos/jovem/foto (4).png'], ly: 'a', m: 'Sua presença sempre foi o meu lugar favorito.' } },
-      { t: '', r: 1, f: { p: ['fotos/jovem/foto (5).png', 'fotos/jovem/foto (6).jpg'], ly: 'a', m: 'A maturidade chegando com a elegância de quem sabe amar.' }, b: { p: ['fotos/jovem/foto (7).png', 'fotos/jovem/foto (8).jpg'], ly: 'a', m: 'Conquistando espaços, corações e, principalmente, o meu.' } },
-      { t: '', r: 1, f: { p: ['fotos/jovem/foto (9).jpg', 'fotos/jovem/foto (10).jpg'], ly: 'a', m: 'Sua essência em plenitude, revelando a joia rara que você é.' }, b: { p: ['fotos/jovem/foto (11).jpg'], ly: 'g', m: 'A definição mais perfeita de beleza e bondade.' } },
+      { t: 'A força da sua juventude. 🌸', r: 1, f: { p: ['fotos/jovem/foto (1).webp', 'fotos/jovem/foto (2).webp'], ly: 'a', m: 'Uma energia que contagia e transforma tudo em amor.' }, b: { p: ['fotos/jovem/foto (3).webp', 'fotos/jovem/foto (4).webp'], ly: 'a', m: 'Sua presença sempre foi o meu lugar favorito.' } },
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (5).webp', 'fotos/jovem/foto (6).webp'], ly: 'a', m: 'A maturidade chegando com a elegância de quem sabe amar.' }, b: { p: ['fotos/jovem/foto (7).webp', 'fotos/jovem/foto (8).webp'], ly: 'a', m: 'Conquistando espaços, corações e, principalmente, o meu.' } },
+      { t: '', r: 1, f: { p: ['fotos/jovem/foto (9).webp', 'fotos/jovem/foto (10).webp'], ly: 'a', m: 'Sua essência em plenitude, revelando a joia rara que você é.' }, b: { p: ['fotos/jovem/foto (11).webp'], ly: 'g', m: 'A definição mais perfeita de beleza e bondade.' } },
 
       // SOZINHA (1 foto, 7 vídeos - Alternados)
-      { t: 'Simplesmente Késia. ❤️', r: 1, f: { p: ['fotos/sozinha/foto (1).jpg', 'fotos/sozinha/video1.mp4'], ly: 'a', m: 'Sua luz própria não precisa de reflexos para iluminar a alma.' }, b: { p: ['fotos/sozinha/video13.mp4', 'fotos/sozinha/video2.mp4'], ly: 'a', m: 'A poesia silenciosa de ser quem você é.' } },
+      { t: 'Simplesmente Késia. ❤️', r: 1, f: { p: ['fotos/sozinha/foto (1).webp', 'fotos/sozinha/video1.mp4'], ly: 'a', m: 'Sua luz própria não precisa de reflexos para iluminar a alma.' }, b: { p: ['fotos/sozinha/video13.mp4', 'fotos/sozinha/video2.mp4'], ly: 'a', m: 'A poesia silenciosa de ser quem você é.' } },
       { t: '', r: 1, f: { p: ['fotos/sozinha/video3.mp4', 'fotos/sozinha/video4.mp4'], ly: 'a', m: 'Em cada frame, a prova de que a perfeição existe.' }, b: { p: ['fotos/sozinha/video7.mp4', 'fotos/sozinha/video9.mp4'], ly: 'a', m: 'O brilho do seu olhar é o meu guia nos dias mais escuros.' } },
 
       // ATUAL (4 fotos)
-      { t: 'Hoje, e para sempre. 😍❤️', r: 1, f: { p: ['fotos/atual/foto (1).JPG', 'fotos/atual/foto (2).jpg'], ly: 'a', m: 'Cada dia ao seu lado é uma nova chance de me apaixonar.' }, b: { p: ['fotos/atual/foto (4).JPG', 'fotos/atual/foto (5).JPG'], ly: 'a', m: 'O meu porto seguro, a minha melhor escolha todos os dias.' } },
+      { t: 'Hoje, e para sempre. 😍❤️', r: 1, f: { p: ['fotos/atual/foto (1).webp', 'fotos/atual/foto (2).webp'], ly: 'a', m: 'Cada dia ao seu lado é uma nova chance de me apaixonar.' }, b: { p: ['fotos/atual/foto (4).webp', 'fotos/atual/foto (5).webp'], ly: 'a', m: 'O meu porto seguro, a minha melhor escolha todos os dias.' } },
 
       // FACULDADE (4 fotos)
-      { t: 'Orgulho que transborda! 🎓', r: 1, f: { p: ['fotos/faculdade/foto (1).JPG', 'fotos/faculdade/foto (2).jpg'], ly: 'a', m: 'Sua dedicação é o reflexo da mulher forte que você se tornou.' }, b: { p: ['fotos/faculdade/foto (3).jpg', 'fotos/faculdade/4.png'], ly: 'a', m: 'A vitória do seu esforço é o nosso orgulho mais sincero.' } },
+      { t: 'Orgulho que transborda! 🎓', r: 1, f: { p: ['fotos/faculdade/foto (1).webp', 'fotos/faculdade/foto (2).webp'], ly: 'a', m: 'Sua dedicação é o reflexo da mulher forte que você se tornou.' }, b: { p: ['fotos/faculdade/foto (3).webp', 'fotos/faculdade/4.webp'], ly: 'a', m: 'A vitória do seu esforço é o nosso orgulho mais sincero.' } },
 
       // COM LEANDRO (16 fotos)
-      { t: 'O encontro das nossas almas. 💑💖', r: 1, f: { p: ['fotos/com leandro/foto (1).jpg', 'fotos/com leandro/foto (3).jpg'], ly: 'a', m: 'O dia em que o "eu" se tornou "nós" e a vida ganhou sentido.' }, b: { p: ['fotos/com leandro/foto (4).jpg', 'fotos/com leandro/foto (5).png'], ly: 'a', m: 'Guardando cada segundo nosso como o tesouro mais valioso.' } },
-      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (6).jpg', 'fotos/com leandro/foto (8).jpg'], ly: 'a', m: 'Nosso mundo particular, onde o amor é a única regra.' }, b: { p: ['fotos/com leandro/foto (9).jpg', 'fotos/com leandro/foto (10).jpg'], ly: 'a', m: 'Amor que se fortalece no café da manhã e se renova no boa noite.' } },
-      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (11).JPG', 'fotos/com leandro/foto (13).jpg'], ly: 'a', m: 'Sua mão na minha é tudo o que eu preciso para enfrentar o mundo.' }, b: { p: ['fotos/com leandro/foto (15).jpg', 'fotos/com leandro/foto (16).jpg'], ly: 'a', m: 'Sorrisos que são o eco da felicidade que vive em nós.' } },
-      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (17).JPG', 'fotos/com leandro/foto (18).jpg'], ly: 'a', m: 'Meu lugar no mundo é dentro do seu abraço.' }, b: { p: ['fotos/com leandro/foto (19).jpg', 'fotos/com leandro/foto (20).jpg'], ly: 'a', m: 'Caminhando lado a lado, construindo o nosso "para sempre".' } },
+      { t: 'O encontro das nossas almas. 💑💖', r: 1, f: { p: ['fotos/com leandro/foto (1).webp', 'fotos/com leandro/foto (3).webp'], ly: 'a', m: 'O dia em que o "eu" se tornou "nós" e a vida ganhou sentido.' }, b: { p: ['fotos/com leandro/foto (4).webp', 'fotos/com leandro/foto (5).webp'], ly: 'a', m: 'Guardando cada segundo nosso como o tesouro mais valioso.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (6).webp', 'fotos/com leandro/foto (8).webp'], ly: 'a', m: 'Nosso mundo particular, onde o amor é a única regra.' }, b: { p: ['fotos/com leandro/foto (9).webp', 'fotos/com leandro/foto (10).webp'], ly: 'a', m: 'Amor que se fortalece no café da manhã e se renova no boa noite.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (11).webp', 'fotos/com leandro/foto (13).webp'], ly: 'a', m: 'Sua mão na minha é tudo o que eu preciso para enfrentar o mundo.' }, b: { p: ['fotos/com leandro/foto (15).webp', 'fotos/com leandro/foto (16).webp'], ly: 'a', m: 'Sorrisos que são o eco da felicidade que vive em nós.' } },
+      { t: '', r: 1, f: { p: ['fotos/com leandro/foto (17).webp', 'fotos/com leandro/foto (18).webp'], ly: 'a', m: 'Meu lugar no mundo é dentro do seu abraço.' }, b: { p: ['fotos/com leandro/foto (19).webp', 'fotos/com leandro/foto (20).webp'], ly: 'a', m: 'Caminhando lado a lado, construindo o nosso "para sempre".' } },
 
       // CASAMENTO (4 fotos, 1 vídeo - Alternados)
-      { t: 'O nosso "Sim" eterno. 💍💒', r: 1, f: { p: ['fotos/casamento/foto (1).jpg', 'fotos/casamento/foto (5).mp4'], ly: 'a', m: 'O dia em que prometemos o mundo um ao outro sob o olhar de Deus.' }, b: { p: ['fotos/casamento/foto (2).jpg', 'fotos/casamento/foto (3).jpg'], ly: 'a', m: 'Onde duas vidas se tornaram uma só canção de amor.' } },
-      { t: '', r: 1, f: { p: ['fotos/casamento/foto (4).jpg'], ly: 'g', m: 'Um momento congelado no tempo, guardado na alma para sempre.' }, b: { p: ['fotos/gravidez/foto (3).jpg', 'fotos/gravidez/foto (7).png'], ly: 'a', m: 'O início do nosso sonho mais doce.' } },
+      { t: 'O nosso "Sim" eterno. 💍💒', r: 1, f: { p: ['fotos/casamento/foto (1).webp', 'fotos/casamento/foto (5).mp4'], ly: 'a', m: 'O dia em que prometemos o mundo um ao outro sob o olhar de Deus.' }, b: { p: ['fotos/casamento/foto (2).webp', 'fotos/casamento/foto (3).webp'], ly: 'a', m: 'Onde duas vidas se tornaram uma só canção de amor.' } },
+      { t: '', r: 1, f: { p: ['fotos/casamento/foto (4).webp'], ly: 'g', m: 'Um momento congelado no tempo, guardado na alma para sempre.' }, b: { p: ['fotos/gravidez/foto (3).webp', 'fotos/gravidez/foto (7).webp'], ly: 'a', m: 'O início do nosso sonho mais doce.' } },
 
       // GRAVIDEZ (5 fotos)
-      { t: 'A espera pelo nosso milagre. 🤰✨', r: 1, f: { p: ['fotos/gravidez/foto (8).JPG', 'fotos/gravidez/foto (10).jpg'], ly: 'a', m: 'O amor que crescia em você e transbordava em nós.' }, b: { p: ['fotos/gravidez/foto (12).jpg'], ly: 'g', m: 'Gerando a vida, cultivando o nosso futuro mais lindo.' } },
+      { t: 'A espera pelo nosso milagre. 🤰✨', r: 1, f: { p: ['fotos/gravidez/foto (8).webp', 'fotos/gravidez/foto (10).webp'], ly: 'a', m: 'O amor que crescia em você e transbordava em nós.' }, b: { p: ['fotos/gravidez/foto (12).webp'], ly: 'g', m: 'Gerando a vida, cultivando o nosso futuro mais lindo.' } },
 
       // COM MEL (8 fotos, 7 vídeos - Alternados)
-      { t: 'Mel: O fruto do nosso amor. 🤱🍼💞', r: 1, f: { p: ['fotos/com mel/foto (1).JPG', 'fotos/com mel/video5.mp4'], ly: 'a', m: 'Nosso maior presente, a prova viva de que o amor multiplica.' }, b: { p: ['fotos/com mel/foto (2).JPG', 'fotos/com mel/video6.mp4'], ly: 'a', m: 'Cada descoberta dela é um renascimento para nós.' } },
-      { t: '', r: 1, f: { p: ['fotos/com mel/foto (4).JPG', 'fotos/com mel/video8.mp4'], ly: 'a', m: 'Nossa pequena princesa, colorindo os nossos dias com alegria.' }, b: { p: ['fotos/com mel/foto (5).JPG', 'fotos/com mel/video10.mp4'], ly: 'a', m: 'O pilar do nosso lar, o sorriso que nos move todos os dias.' } },
-      { t: '', r: 1, f: { p: ['fotos/com mel/foto (6).jpg', 'fotos/com mel/video11.mp4'], ly: 'a', m: 'Família: Onde a vida começa e o amor nunca termina.' }, b: { p: ['fotos/com mel/foto (9).jpg', 'fotos/com mel/video12.mp4'], ly: 'a', m: 'Nossa alegria diária tem nome, cheiro e o seu olhar.' } },
-      { t: '', r: 1, f: { p: ['fotos/com mel/foto (11).png', 'fotos/com mel/video14.mp4'], ly: 'a', m: 'Crescendo sob o manto do nosso cuidado e da sua ternura.' }, b: { p: ['fotos/com mel/foto (13).png'], ly: 'g', m: 'Para sempre, o nosso porto mais seguro e feliz.' } },
+      { t: 'Mel: O fruto do nosso amor. 🤱🍼💞', r: 1, f: { p: ['fotos/com mel/foto (1).webp', 'fotos/com mel/video5.mp4'], ly: 'a', m: 'Nosso maior presente, a prova viva de que o amor multiplica.' }, b: { p: ['fotos/com mel/foto (2).webp', 'fotos/com mel/video6.mp4'], ly: 'a', m: 'Cada descoberta dela é um renascimento para nós.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (4).webp', 'fotos/com mel/video8.mp4'], ly: 'a', m: 'Nossa pequena princesa, colorindo os nossos dias com alegria.' }, b: { p: ['fotos/com mel/foto (5).webp', 'fotos/com mel/video10.mp4'], ly: 'a', m: 'O pilar do nosso lar, o sorriso que nos move todos os dias.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (6).webp', 'fotos/com mel/video11.mp4'], ly: 'a', m: 'Família: Onde a vida começa e o amor nunca termina.' }, b: { p: ['fotos/com mel/foto (9).webp', 'fotos/com mel/video12.mp4'], ly: 'a', m: 'Nossa alegria diária tem nome, cheiro e o seu olhar.' } },
+      { t: '', r: 1, f: { p: ['fotos/com mel/foto (11).webp', 'fotos/com mel/video14.mp4'], ly: 'a', m: 'Crescendo sob o manto do nosso cuidado e da sua ternura.' }, b: { p: ['fotos/com mel/foto (13).webp'], ly: 'g', m: 'Para sempre, o nosso porto mais seguro e feliz.' } },
       {
         t: 'Uma Carta para Você',
         r: 1,
@@ -1958,7 +1957,7 @@
         });
       });
       // Add static CSS assets
-      ['assets/leather.png', 'assets/paper.png', 'assets/gold.png'].forEach(function (u) { imgUrls.add(u); });
+      ['assets/leather.webp', 'assets/paper.webp', 'assets/gold.webp'].forEach(function (u) { imgUrls.add(u); });
 
       var total = imgUrls.size + vidUrls.size + 1; // +1 for audio
       var loaded = 0;
