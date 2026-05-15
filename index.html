@@ -67,7 +67,8 @@
       height: 100%;
       transform-origin: left center;
       transform-style: preserve-3d;
-      transition: transform 1.2s cubic-bezier(.4, .05, .2, 1)
+      transition: transform 1.2s cubic-bezier(.4, .05, .2, 1);
+      will-change: transform
     }
 
     .spread.flip {
@@ -763,7 +764,6 @@
     }
 
     .fr {
-      overflow: visible;
       transition: transform .4s;
       padding: 0;
       position: relative;
@@ -772,7 +772,7 @@
       align-items: center;
       justify-content: center;
       min-height: 0;
-      min-width: 0
+      min-width: 0;
     }
 
     .fr:hover {
@@ -789,10 +789,9 @@
       display: block;
       position: relative;
       z-index: 1;
-      background: #fff;
       border: 4px solid #fdfaf6;
-      border-radius: 4px;
-      box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.4)
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .fr video {
@@ -802,11 +801,11 @@
       max-height: 100%;
       object-fit: contain;
       display: block;
-      background: #000;
+      position: relative;
+      z-index: 1;
       border: 4px solid #fdfaf6;
-      border-radius: 4px;
-      box-shadow: 2px 3px 6px rgba(0, 0, 0, 0.4);
-      z-index: 1
+      border-radius: 2px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .upside-down {
@@ -815,10 +814,6 @@
 
     .reflected {
       transform: scaleX(-1) !important;
-    }
-
-    .fr::after {
-      display: none
     }
 
     .fr .bb {
@@ -1376,7 +1371,7 @@
           var rot = (s.indexOf('video4.mp4') > -1 ? ' upside-down' : '') + extraCls;
           return '<div class="fr"><video src="' + s + '" class="' + rot + '" playsinline muted loop preload="none"></video></div>';
         }
-        return '<div class="fr"><div class="bb b1' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><div class="bb b2' + extraCls + '"><img src="' + s + '" class="' + extraCls + '"></div><img src="' + s + '" class="' + extraCls + '" alt="" loading="eager"></div>';
+        return '<div class="fr"><img src="' + s + '" class="' + extraCls + '" alt="" loading="eager"></div>';
       }).join('') + '</div>';
     }
 
@@ -1901,75 +1896,6 @@
 
     build(); upd();
 
-    var BLUR_PCT = 0.15;
-    function applyBlur() {
-      document.querySelectorAll('.fr').forEach(function (fr) {
-        var d1 = fr.querySelector('.b1'), d2 = fr.querySelector('.b2');
-        var media = fr.querySelector(':scope>img') || fr.querySelector(':scope>video');
-        if (!d1 || !d2 || !media) { if (d1) d1.style.display = 'none'; if (d2) d2.style.display = 'none'; return }
-
-        var isImg = media.tagName === 'IMG';
-        var mw = isImg ? media.naturalWidth : media.videoWidth;
-        var mh = isImg ? media.naturalHeight : media.videoHeight;
-
-        if (!mw || !mh) {
-          if (isImg) { d1.style.display = 'none'; d2.style.display = 'none'; return }
-          // For videos, if dimensions aren't ready, wait for metadata
-          media.onloadedmetadata = applyBlur;
-          return;
-        }
-
-        fr.style.maxHeight = '';
-        fr.style.maxWidth = '';
-        var fw = fr.offsetWidth, fh = fr.offsetHeight, p = 40;
-        if (!fw || !fh) { d1.style.display = 'none'; d2.style.display = 'none'; return }
-
-        var blurCSS = 'position:absolute;object-fit:cover;filter:blur(20px) brightness(.85);';
-        var i1 = d1.querySelector('img, video'), i2 = d2.querySelector('img, video');
-
-        // Ensure background elements match the media type (create if needed)
-        function syncBg(container, source) {
-          var bg = container.querySelector('img, video');
-          if (bg && bg.tagName !== source.tagName) { container.removeChild(bg); bg = null; }
-          if (!bg) {
-            bg = document.createElement(source.tagName === 'IMG' ? 'img' : 'video');
-            if (source.tagName === 'VIDEO') {
-              bg.muted = true;
-              bg.loop = true;
-              bg.autoplay = true;
-              if (source.classList.contains('upside-down')) bg.classList.add('upside-down');
-            }
-            container.appendChild(bg);
-          }
-          if (bg.src !== source.src) bg.src = source.src;
-          return bg;
-        }
-
-        var bg1 = syncBg(d1, media), bg2 = syncBg(d2, media);
-
-        if (mh > mw) {
-          var rw = fh * (mw / mh);
-          var gap = (fw - rw) / 2;
-          if (gap < 3) { d1.style.display = 'none'; d2.style.display = 'none'; return }
-          d1.style.display = 'block'; d2.style.display = 'block';
-          var fullW = (fw + p * 2) + 'px', fullH = (fh + p * 2) + 'px';
-          d1.style.cssText = 'position:absolute;overflow:hidden;z-index:0;pointer-events:none;top:0;left:0;width:' + Math.ceil(gap) + 'px;height:' + fh + 'px';
-          bg1.style.cssText = blurCSS + 'top:-' + p + 'px;left:-' + p + 'px;width:' + fullW + ';height:' + fullH;
-          d2.style.cssText = 'position:absolute;overflow:hidden;z-index:0;pointer-events:none;top:0;right:0;width:' + Math.ceil(gap) + 'px;height:' + fh + 'px';
-          bg2.style.cssText = blurCSS + 'top:-' + p + 'px;right:-' + p + 'px;width:' + fullW + ';height:' + fullH;
-        } else {
-          var rh = fw * (mh / mw);
-          var gap = (fh - rh) / 2;
-          if (gap < 3) { d1.style.display = 'none'; d2.style.display = 'none'; return }
-          d1.style.display = 'block'; d2.style.display = 'block';
-          var fullW = (fw + p * 2) + 'px', fullH = (fh + p * 2) + 'px';
-          d1.style.cssText = 'position:absolute;overflow:hidden;z-index:0;pointer-events:none;top:0;left:0;width:' + fw + 'px;height:' + Math.ceil(gap) + 'px';
-          bg1.style.cssText = blurCSS + 'top:-' + p + 'px;left:-' + p + 'px;width:' + fullW + ';height:' + fullH;
-          d2.style.cssText = 'position:absolute;overflow:hidden;z-index:0;pointer-events:none;bottom:0;left:0;width:' + fw + 'px;height:' + Math.ceil(gap) + 'px';
-          bg2.style.cssText = blurCSS + 'bottom:-' + p + 'px;left:-' + p + 'px;width:' + fullW + ';height:' + fullH;
-        }
-      });
-    }
     function fixCirc() {
       document.querySelectorAll('.ly-e .fr').forEach(function (fr) {
         var p = fr.parentElement;
@@ -2010,11 +1936,7 @@
       });
     }
 
-    document.querySelectorAll('.fr>img').forEach(function (img) {
-      img.addEventListener('load', function () { applyBlur(); fixCirc(); });
-      if (img.complete) setTimeout(function () { applyBlur(); fixCirc(); }, 50);
-    });
-    window.addEventListener('resize', function () { applyBlur(); fixCirc(); });
+    window.addEventListener('resize', fixCirc);
     // Run fitLetterText once after build so initial size is correct
     setTimeout(fitLetterText, 100);
 
