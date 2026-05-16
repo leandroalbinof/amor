@@ -1400,7 +1400,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">A Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1420,43 +1420,36 @@
     }
 
     function fixZ() {
-      var isMobile = window.innerWidth < 600;
       for (var i = 0; i < N; i++) {
         var s = $('s' + i);
-        s.style.visibility = '';
-        s.style.display = '';
-
         if (i < cur) s.style.zIndex = i + 1;
         else if (i === cur) s.style.zIndex = N;
         else s.style.zIndex = N - i;
 
-        // Shadow optimization still helps performance on mobile
-        if (isMobile && i > 0 && i < N - 1) continue;
-
         var cF = s.querySelector('.sf .cover-pg.front-c');
         if (cF) {
-          var maxShR = isMobile ? 3 : 6, sh = '1px 1px 0px #2a170d, 2px 2px 0px #1a0e07';
+          var maxShR = 6, sh = '1px 1px 0px #2a170d, 2px 2px 0px #1a0e07';
           for (var j = 1; j <= maxShR; j++)sh += ', ' + (j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           sh += ', ' + (maxShR + 3) + 'px ' + (maxShR + 3) + 'px 0px #2a170d, ' + (maxShR + 4) + 'px ' + (maxShR + 4) + 'px 0px #1a0e07, ' + (maxShR + 5) + 'px ' + (maxShR + 5) + 'px 15px rgba(0,0,0,0.6)';
           cF.style.boxShadow = sh;
         }
         var f = s.querySelector('.sf .page-r');
         if (f) {
-          var maxShR = isMobile ? 2 : 6, sh = 'inset -20px 0 30px -10px rgba(0,0,0,.2)';
+          var maxShR = 6, sh = 'inset -20px 0 30px -10px rgba(0,0,0,.2)';
           for (var j = 1; j <= maxShR; j++)sh += ', ' + j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           sh += ', ' + (maxShR + 1) + 'px ' + (maxShR + 1) + 'px 5px rgba(0,0,0,0.3)';
           f.style.boxShadow = sh;
         }
         var cB = s.querySelector('.sb .cover-pg.back-c');
         if (cB) {
-          var maxShL = isMobile ? 3 : 6, shL = '-1px 1px 0px #2a170d, -2px 2px 0px #1a0e07';
+          var maxShL = 6, shL = '-1px 1px 0px #2a170d, -2px 2px 0px #1a0e07';
           for (var j = 1; j <= maxShL; j++)shL += ', ' + -(j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           shL += ', ' + -(maxShL + 3) + 'px ' + (maxShL + 3) + 'px 0px #2a170d, ' + -(maxShL + 4) + 'px ' + (maxShL + 4) + 'px 0px #1a0e07, ' + -(maxShL + 5) + 'px ' + (maxShL + 5) + 'px 15px rgba(0,0,0,0.6)';
           cB.style.boxShadow = shL;
         }
         var b = s.querySelector('.sb .page-l');
         if (b) {
-          var maxShL = isMobile ? 2 : 6, shL = 'inset 15px 0 30px -12px rgba(0,0,0,.2)';
+          var maxShL = 6, shL = 'inset 15px 0 30px -12px rgba(0,0,0,.2)';
           for (var j = 1; j <= maxShL; j++)shL += ', ' + -j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           shL += ', ' + -(maxShL + 1) + 'px ' + (maxShL + 1) + 'px 5px rgba(0,0,0,0.3)';
           b.style.boxShadow = shL;
@@ -1951,10 +1944,12 @@
     // Attach listeners only AFTER build() has created the buttons
     document.addEventListener('click', function (e) { if (e.target.closest('#bo')) { openBook(); setTimeout(fixCirc, 100); } });
     if ($('bm')) $('bm').addEventListener('click', togM);
+    if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     function loadAssets() {
       var btn = $('bo'), lp = $('lp');
       var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
+      // Collect all media URLs from the data array
       var imgUrls = new Set();
       var vidUrls = new Set();
       D.forEach(function (p) {
@@ -1964,9 +1959,10 @@
           });
         });
       });
+      // Add static CSS assets
       ['assets/leather.webp', 'assets/paper.webp', 'assets/gold.webp'].forEach(function (u) { imgUrls.add(u); });
 
-      var total = imgUrls.size + vidUrls.size + 1;
+      var total = imgUrls.size + vidUrls.size + 1; // +1 for audio
       var loaded = 0;
 
       function onDone() {
@@ -1975,11 +1971,13 @@
         if (lp) lp.style.width = pct + '%';
         if (btn) btn.querySelector('span').textContent = 'Carregando ' + pct + '%';
         if (loaded >= total) {
+          // Double-check: all DOM <img> elements must also be complete
           var domImgs = document.querySelectorAll('.book img');
           var pending = [];
           domImgs.forEach(function (img) { if (!img.complete) pending.push(img); });
-          if (pending.length === 0) { enableBtn(); }
-          else {
+          if (pending.length === 0) {
+            enableBtn();
+          } else {
             var waitedFor = 0;
             pending.forEach(function (img) {
               img.addEventListener('load', function () { waitedFor++; if (waitedFor >= pending.length) enableBtn(); }, { once: true });
@@ -1992,7 +1990,7 @@
       function enableBtn() {
         setTimeout(function () {
           if (btn) {
-            btn.querySelector('span').textContent = 'Abrir Álbum';
+            btn.querySelector('span').textContent = 'Abrir Album';
             btn.disabled = false;
             btn.style.animation = 'gl 2s infinite';
           }
@@ -2001,6 +1999,7 @@
 
       if (total <= 1) { enableBtn(); return; }
 
+      // Preload all images into the browser cache so DOM elements load instantly
       imgUrls.forEach(function (u) {
         var img = new Image();
         img.onload = onDone;
@@ -2009,6 +2008,7 @@
         if (img.complete) { img.onload = null; img.onerror = null; onDone(); }
       });
 
+      // Preload video metadata - on iOS we don't block for videos
       vidUrls.forEach(function (u) {
         if (isIOS) { onDone(); return; }
         var v = document.createElement('video');
@@ -2018,6 +2018,7 @@
         v.src = u;
       });
 
+      // Preload audio - on iOS we don't block for audio
       if (isIOS) {
         onDone();
       } else {
@@ -2028,7 +2029,10 @@
         au.src = 'musica/musica.mp3';
       }
 
-      setTimeout(function () { if (btn && btn.disabled) enableBtn(); }, 8000);
+      // Safety fallback: force-enable after 8s (reduced from 30s) even if something stalls
+      setTimeout(function () {
+        if (btn && btn.disabled) enableBtn();
+      }, 8000);
     }
 
     function restart() {
