@@ -1317,6 +1317,7 @@
     var $ = function (i) { return document.getElementById(i) };
     var aud = $('aud');
     var PW; // single page width
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
     function sz() {
       var vw = window.innerWidth, vh = window.innerHeight;
@@ -1370,7 +1371,8 @@
           var rot = (s.indexOf('video4.mp4') > -1 ? ' upside-down' : '') + extraCls;
           return '<div class="fr"><video data-src="' + s + '" class="' + rot + '" playsinline muted loop preload="none"></video></div>';
         }
-        return '<div class="fr"><img data-src="' + s + '" class="' + extraCls + '" alt=""></div>';
+        var attr = isIOS ? 'data-src' : 'src';
+        return '<div class="fr"><img ' + attr + '="' + s + '" class="' + extraCls + '" alt=""></div>';
       }).join('') + '</div>';
     }
 
@@ -1400,7 +1402,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">Jornada da Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">A Jornada da Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1575,34 +1577,31 @@
     }
 
     function loadSpreadMedia(idx) {
-      if (idx < 0 || idx >= N) return;
+      if (!isIOS || idx < 0 || idx >= N) return;
       var s = $('s' + idx);
       s.querySelectorAll('img[data-src]').forEach(function (img) {
         img.src = img.dataset.src;
         img.removeAttribute('data-src');
+        if (img.decode) img.decode().catch(function () {});
       });
     }
 
     function unloadSpreadMedia(idx) {
-      if (idx < 0 || idx >= N) return;
-      var s = $('s' + idx);
-      s.querySelectorAll('video[src]').forEach(function (v) {
+      if (!isIOS || idx < 0 || idx >= N) return;
+      $('s' + idx).querySelectorAll('video[src]').forEach(function (v) {
         v.pause(); v.removeAttribute('src'); v.load();
-      });
-      s.querySelectorAll('img:not([data-src])').forEach(function (img) {
-        if (img.src) { img.dataset.src = img.src; img.removeAttribute('src'); }
       });
     }
 
     function manageMedia() {
-      // Load current + 2 ahead
-      for (var i = cur - 1; i <= cur + 2; i++) loadSpreadMedia(i);
+      if (!isIOS) return;
+      for (var i = cur - 2; i <= cur + 3; i++) loadSpreadMedia(i);
     }
 
-    // Called AFTER flip animation ends to safely unload distant spreads
     function cleanupMedia() {
+      if (!isIOS) return;
       for (var i = 0; i < N; i++) {
-        if (Math.abs(i - cur) >= 3) unloadSpreadMedia(i);
+        if (Math.abs(i - cur) >= 5) unloadSpreadMedia(i);
       }
     }
 
@@ -1811,7 +1810,6 @@
 
     function goFS() {
       var el = document.documentElement;
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       if (isIOS) return; // Fullscreen API on iPhone usually doesn't work for document.documentElement
       if (el.requestFullscreen) el.requestFullscreen().catch(function () { });
       else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
@@ -1938,6 +1936,13 @@
       mp = !mp;
     }
 
+    // Pin CSS textures in memory to prevent Safari from evicting them
+    ['assets/leather.webp','assets/paper.webp','assets/gold.webp'].forEach(function(u){
+      var img = new Image(); img.src = u;
+      if (img.decode) img.decode().catch(function(){});
+      window['_pin_'+u] = img;
+    });
+
     build(); upd(); loadSpreadMedia(0);
 
     function fixCirc() {
@@ -1990,7 +1995,6 @@
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     function loadAssets() {
       var btn = $('bo'), lp = $('lp');
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
       // Collect all media URLs from the data array
       var imgUrls = new Set();
