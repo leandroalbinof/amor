@@ -1207,7 +1207,7 @@
       <div class="gold-corner corner-tl"></div>
       <div class="gold-corner corner-bl"></div>
       <div style="position:relative">
-        <p class="et">Parabéns, Amor!!</p>
+        <p class="et">Parabéns, Amor!</p>
         <p class="ee">💕</p>
       </div>
       <button class="bo" style="animation:none;position:relative;margin-top:1.3rem" id="bReopen">Reiniciar</button>
@@ -1400,7 +1400,7 @@
         s.className = 'spread'; s.id = 's' + i;
         var fH = '', bH = '';
         if (i === 0) {
-          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">Jornada de uma Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
+          fH = '<div class="sf"><div class="cover-pg front-c">' + cornersR + '<div class="co">✦</div><p class="cn">Késia Luna</p><p class="ct">Jornada da Vida</p><button class="bo" id="bo" disabled><div class="progress" id="lp"></div><span>Carregando...</span></button></div></div>';
           bH = '<div class="sb"><div class="cover-inside ci-l">' + cornersL + '</div>' + mkPage(D[0].f, 'm-0-f', D[0].t, D[0].r, 0, 'l') + '</div>';
         } else if (i < N - 1) {
           fH = '<div class="sf">' + mkPage(D[i - 1].b, 'm-' + (i - 1) + '-b', null, D[i - 1].r, 0, 'r') + '</div>';
@@ -1429,28 +1429,28 @@
         var cF = s.querySelector('.sf .cover-pg.front-c');
         if (cF) {
           var maxShR = 6, sh = '1px 1px 0px #2a170d, 2px 2px 0px #1a0e07';
-          for (var j = 1; j <= maxShR; j++)sh += ', ' + (j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
+          for (var j = 1; j <= maxShR; j++) sh += ', ' + (j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           sh += ', ' + (maxShR + 3) + 'px ' + (maxShR + 3) + 'px 0px #2a170d, ' + (maxShR + 4) + 'px ' + (maxShR + 4) + 'px 0px #1a0e07, ' + (maxShR + 5) + 'px ' + (maxShR + 5) + 'px 15px rgba(0,0,0,0.6)';
           cF.style.boxShadow = sh;
         }
         var f = s.querySelector('.sf .page-r');
         if (f) {
           var maxShR = 6, sh = 'inset -20px 0 30px -10px rgba(0,0,0,.2)';
-          for (var j = 1; j <= maxShR; j++)sh += ', ' + j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
+          for (var j = 1; j <= maxShR; j++) sh += ', ' + j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           sh += ', ' + (maxShR + 1) + 'px ' + (maxShR + 1) + 'px 5px rgba(0,0,0,0.3)';
           f.style.boxShadow = sh;
         }
         var cB = s.querySelector('.sb .cover-pg.back-c');
         if (cB) {
           var maxShL = 6, shL = '-1px 1px 0px #2a170d, -2px 2px 0px #1a0e07';
-          for (var j = 1; j <= maxShL; j++)shL += ', ' + -(j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
+          for (var j = 1; j <= maxShL; j++) shL += ', ' + -(j + 2) + 'px ' + (j + 2) + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           shL += ', ' + -(maxShL + 3) + 'px ' + (maxShL + 3) + 'px 0px #2a170d, ' + -(maxShL + 4) + 'px ' + (maxShL + 4) + 'px 0px #1a0e07, ' + -(maxShL + 5) + 'px ' + (maxShL + 5) + 'px 15px rgba(0,0,0,0.6)';
           cB.style.boxShadow = shL;
         }
         var b = s.querySelector('.sb .page-l');
         if (b) {
           var maxShL = 6, shL = 'inset 15px 0 30px -12px rgba(0,0,0,.2)';
-          for (var j = 1; j <= maxShL; j++)shL += ', ' + -j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
+          for (var j = 1; j <= maxShL; j++) shL += ', ' + -j + 'px ' + j + 'px 0px ' + (j % 2 === 0 ? '#e6dfc8' : '#f2ecd9');
           shL += ', ' + -(maxShL + 1) + 'px ' + (maxShL + 1) + 'px 5px rgba(0,0,0,0.3)';
           b.style.boxShadow = shL;
         }
@@ -1767,14 +1767,7 @@
       }
     }
 
-    function goFS() {
-      var el = document.documentElement;
-      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-      if (isIOS) return; // Fullscreen API on iPhone usually doesn't work for document.documentElement
-      if (el.requestFullscreen) el.requestFullscreen().catch(function () { });
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-      else if (el.msRequestFullscreen) el.msRequestFullscreen();
-    }
+
 
     function openBook() {
       if (animating) return;
@@ -2008,9 +2001,8 @@
         if (img.complete) { img.onload = null; img.onerror = null; onDone(); }
       });
 
-      // Preload video metadata - on iOS we don't block for videos
+      // Preload video metadata
       vidUrls.forEach(function (u) {
-        if (isIOS) { onDone(); return; }
         var v = document.createElement('video');
         v.preload = 'metadata';
         v.onloadedmetadata = function () { if (!v._d) { v._d = 1; onDone(); } };
@@ -2018,21 +2010,17 @@
         v.src = u;
       });
 
-      // Preload audio - on iOS we don't block for audio
-      if (isIOS) {
-        onDone();
-      } else {
-        var au = new Audio();
-        au.preload = 'auto';
-        au.oncanplay = function () { if (!au._d) { au._d = 1; onDone(); } };
-        au.onerror = function () { if (!au._d) { au._d = 1; onDone(); } };
-        au.src = 'musica/musica.mp3';
-      }
+      // Preload audio
+      var au = new Audio();
+      au.preload = 'auto';
+      au.oncanplaythrough = function () { if (!au._d) { au._d = 1; onDone(); } };
+      au.onerror = function () { if (!au._d) { au._d = 1; onDone(); } };
+      au.src = 'musica/musica.mp3';
 
-      // Safety fallback: force-enable after 8s (reduced from 30s) even if something stalls
+      // Safety fallback: force-enable after 30s even if something stalls
       setTimeout(function () {
         if (btn && btn.disabled) enableBtn();
-      }, 8000);
+      }, 30000);
     }
 
     function restart() {
@@ -2099,12 +2087,6 @@
     if ($('bm')) $('bm').addEventListener('click', togM);
     if ($('bReopen')) $('bReopen').addEventListener('click', restart);
     window.addEventListener('resize', function () { if (cur < N) { sz(); fixCirc(); fixZ(); fitLetterText(); } });
-    document.addEventListener('fullscreenchange', function () {
-      // Multi-step check to catch the final viewport size on mobile
-      [100, 300, 600, 1000].forEach(function (d) {
-        setTimeout(function () { if (cur < N) { sz(); fixCirc(); fixZ(); fitLetterText(); } }, d);
-      });
-    });
 
     var sx = 0, sy = 0, dragging = false;
     document.addEventListener('touchstart', function (e) { sx = e.changedTouches[0].screenX; sy = e.changedTouches[0].screenY }, { passive: 1 });
